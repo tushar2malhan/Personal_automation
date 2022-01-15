@@ -1,0 +1,133 @@
+using vscode (as advance version of notepad)
+MODULES = a file containing code written by somebody else , which can be imported and used in our program 
+  [eg - import os , import flask , import tensorflow]
+  .First, we need to INSTALL IT (IN THE TERMINAL) inorder to use their functions
+
+2 TYPES
+BUILT-IN MODULES = pre-installed in ur system [eg - os , abc ]
+EXTERNAL MODULES = download it via pip        [eg - pip install flask , pip install tensorflow]
+
+PIP = it is a packet manager for python , u can use pip to install a module on your system 
+(LIKE SERVANT WHO BRINGS FOR PYTHON)  [eg -  pip install flask] - it will download flask from internet to ur system
+
+Typing python on terminal will make it REPL [read evaluate print loop] = as using for the calculator
+exit() = exit after typing code 
+
+Comments = # single line , """   Multi - line comment  """ , ''' without print command = it will be a comment '''
+
+Strings can be printed in = " double - Quote "  , ' single - Quote ' , print(''' "tushar's " , 'tushar"s' ''')    ,
+                                                               '''     for multi-line 
+                                                                    string - will be printed same way shown      '''
+
+While providing PATH instead of  \  [single backslash] = we give [double backslash]  \\     \' = we give single coated comma with backslash 
+(as single backslash refers to escape sequence  )
+
+     / = will give float number
+use // = to have int 
+
+
+
+              VSCODE COMMANDS
+
+Ctrl + /                 = inorder to comment out multiple lines at once
+shft + ALT + up/down     = copy paste lines easily
+ALT  + mouse arrow point = inorder to make cursor(to change multiple values at once)
+Ctrl + z                 = undo anything
+
+
+
+
+TYPECASTING = Data_type u want to change into 
+print(Date_type(a))  typecasting any data or order type will require closed () only not []
+
+   
+       SYNTAX OF PRINT 
+where a =  variable_name  , a = INPUT()
+print()                                  = produces empty space in the terminal
+print ("STRING" , a)                     = WITH SPACE it shows all data types variable output .
+print ("STRING" + a)                     = WIHOUT SPACE it shows and adds same data_type output only . (String concatination)
+print("YOUR value is  ",(operators comparison 14 > 7 ))     print ("value is " + ( a + b)) 
+
+print("tushar"[0])                       = Get the index of the string or Variable 
+print(a[start:end:skip])                 = String slicing of variable a 
+   print("tushar"[::-1])                 = will reverse the order of the alphabets of the string   # string slicing  = #  MULTIPLE SUB SLICING CAN BE DONE OVER EACH OTHER
+
+print("STRING"  , myDict[a])             = finding the index of the variable[having input from user]
+print( "string" , or + str(15))          = string concatinate   
+print("string"  , myDict.get(a)) 
+
+STRING CONCATINATE ONLY POSSIBLE IN STRINGS , LIST , TUPLE ( not for dict , set FOR them WE USE " , ")
+
+
+FUNCTIONS (METHODS ) WHEN APPLIED TO STRING,LIST,DICT,TUPLE = WILL BE                              # USE METHODS AGAIN AND AGAIN TO KNOW THE ABSOLUTE RESULT
+either saved and return in the SPECIFIED VARIABLE l1=l.find(" ")           = IN STRING IT HAPPENS
+,it will sort the actual list l.sort() , print(l)                          = IN LIST IT HAPPENS
+ 
+                                      
+                                   OBJECT TYPES
+STRING =  " your string value    " 
+LIST []= [ can be updated , all data types presented , repeatable values allowed ]    >  advance version of string
+DICT {}= { NO REPEATBLE key values , can be updated , all data types presented   }
+TUPLE()= ( Can't be changed or Updated , all data types , repetable values allowed   ,   single element value (1,)           ) Otherwise if u don't put " , " it will seen as type int 
+SET  {}= { NO REPEATBLE key values ,Can't be changed or Updated ,all data types allowed, single element value b=set()        }                             }
+
+list.sort() will sort everything except str (bool value will be [first False , True] when sorting values) , (sorting str - will require all data type to be string only)
+take input values from user - then store it any object type
+ALWAYS think list values [] = as one unit , not confuse it with string 
+indexes [] can be done on any order type except  SET
+
+
+in dict = tuple can be added as key , but list can't be added as key [because tuple can't change their values but list can have repetable values ] which dosen't follow the law of DICT
+          list can come as VALUES  &   ANY DATE TYPE  can come as OUTPUT after printing dictionary items          >  print(list(b.keys())) , {"keys":[1,2,3,4,5]}
+          Slicing can be done here FOR THE VALUE WE GET , NOT ON THE particular ITEM  we got. 
+          if we have same key value output  , and if we get the either of them = it returns none  in GET FUNCTION ONLY , but if we use [] method inorder to find value = it shows ERROR
+          updating keys to other dictionary will overwrite the previous key value pair
+          print ( {'true':'tushar' , True:"okkk" ,True:'malhan'} )        # data type coming in between 2 True will be ignored by the terminal
+          my_dict["any data type"]  = will here refer to the keys
+          Check with 	SPACE   when typing keys in the Dictionary  A={"hi ": "HII"}    ,    NO " + " OPERAND ALLOWED HERE
+          When using functions / Methods always use () after method_name in order to utilize the function        > .update() , .keys() , .values()
+
+
+in SET =  can't add list  or dict - as it's unhashable but u can add tuple inside the set (as a value)
+UNIQUE    INDEXING AND SLICING NOT ALLOWED HERE  But can  CHANGE THE SET AS A WHOLE    [no index attached here ]
+          will always be ordered (even strings will be come )
+          We can't use empty set     b = set()       for mutliple values , we need to use this = { for multiple values } in SET
+          No string concatination allowed here  only  use  " , "
+
+# No slicing or index in dictionary and set and int  BUT USE THE VALUES TO USE THIS FUNCTION
+
+
+ALWAYS THINK OF LIST , TUPLE , DICT , SET AS SET OF DIFFERENT UNITS - THUS IN ORDER TO FIND PARTICULAR INDEX WE USE THEM AS SUB-INDEXING B[][] ie= after value   
+ PRINT(b[5][::-1]) = reverses characters of last string from the given data type  as  [-1 ] will start the string from the endt'h index
+
+in 
+PYTHON = if float and int have same values - it counts both of them as one   = 20 , 20.0
+
+
+digits come in [] , string in ()      - 
+[] USE IT ONLY FOR THE INDEX FUNCTION (to GET  specific value)
+() USE IT TO                           to GIVE specific value)
+If we need to use functions of any order type on the print we will use print(d.get(a))   = WE USE () FOR FUNCTIONS   # not print(d.get[a])    NOT [] FOR FUNCTIONS
+remember when using STRING METHODS ALWAYS SAVE FUNCTION IN THE VARIABLE IN ORDER TO UTILIZE THE METHOD
+
+list []  > all comes [{dict},(tuple),[list],{set}]
+tuple()  > all comes ({dict} ,[list] ,{set}, (tuple) )
+dict {}  > {(tuple):[list] ,keys:{keys:value} }
+set  {}  > {(tuple)}
+
+
+just like slicing        range(start:end:skip)   in FOR LOOP 
+                              [start:end:skip]   in STRINGS
+                              i=0        =start
+                              while i<10 =end
+                              i+=10      =skip    in WHILE LOOP  
+
+
+
+
+
+
+
+
+
+

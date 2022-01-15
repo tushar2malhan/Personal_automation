@@ -1,0 +1,91 @@
+
+bi = is the activity that contribute to growth of the company by transforming raw operational data into useful information for data analysis.
+   > it extracts info from company's operational systems.
+   > data is transformed and loaded in data warehouses.
+   > thus , used for bussiness insights.  BY USERS FROM WAREHOUSE
+eg - sales , employement , profit annual data stored in databases , excel
+
+WHY we need data warehouses ?
+ >>> because data collected from various sources & stored in seperate database cannot be directly VISUALIZED\
+   FROM DATA SOURCES = data needs to be integrated and processed before VISUALIZATION  takes place.
+
+your COMPANY'S data stored in 
+     data  sources  like sql server , sap hana , oracle 
+       >     DATA WAREHOUSE 
+             >      DATA VISUALIZATION
+
+
+WHAT IS data warehouses ? 
+ a central location where consolidated data from multiple loactions (data sources) are stored
+ . THIS WAREHOUSE is maintained seperatly from organisations operational database
+ (so that company's operational data won't get affected)   # DATA BACKUP OF UR COMPANY
+ . end users can directly access it  inoder to modify  via OLAP 
+   (EG od end users  can be bussiness analytics , data scientist)
+
+
+PROCESS of transferring data from multiple  sources into a data warehouses = ETL 
+(EXTRACTION , TRANSFORM , LOAD )
+> from data warehouse use OLAP STRATEGY[online analytic processing]  
+to do bussiness analysis  BY THE END USERS.
+FOR VISUALIZATION , INSIGHTS U CAN DO tabllieu , flipu
+(data warehouse does not load every time new data is added to database)
+DATA WAREHOUSE == LEGACY DATA (OLD) WHICH IS USED FOR VISUALIZATION BY END USERS.
+
+
+WHERE are data warehouses located?  ON SITE PREMISES
+Data warehouses are used as centralized data repositories for analytical and reporting purposes.
+A traditional data warehouse is located on-site at your offices. 
+You purchase the hardware, the server rooms and hire the staff to run it.
+
+
+"" data from multiple sources > database operational DATA > ETL > (only legacy data ) DATA WAREHOUSE > VIA OLAP VISUALIZATION FOR END USERS   ""
+
+DATABASE warehouse can't be a product where it's bought and sold,
+ NEEDS TO BE DESIGNED AND DEPENDS ENTIRELY ON THE COMPANY REQUIREMENT
+
+EACH TABLE OR DATABASE needs to have relation inorder to store it in data warehouse
+DATA WAREHOUSE == structured AND  RELTIONAL DATA
+WAREHOUSE IS faster AND ACCURATE
+
+properties of data warehouse
+- stored by subject 
+- collected from series of snapshots , have time logs details (when , why , whom by which it was stored)
+- DATA IS NOT UPDATED OR DELETED (no change = no corruption)
+
+eg in retail company  , inorder to get information about how sales were done , how marketing happened,
+how operations are done for particular month >> get info by data warehouse
+
+
+OLTP = DATABASE   
+running  queries on database is called online transaction processing 
+contains current data and legacy data (RELATIONAL data)
+helpful in running the bussiness
+based on RELATIONAL model
+HERE U WRITE THE DATA , any new updates database NEEDS TO BE UPDATED
+size 100 MB - 1 GB
+eg bank server which records for every transaction made by customer for particular account
+
+OLAP = DATA WAREHOUSE (DWH)  online analytical processing
+helpful in analysing the bussiness
+based on star , snowflake schema
+HERE U READ DATA - NO  NEED TO UPDATE EVERYTIME
+SIZE 100GB - 1 TB
+eg bank manager needs to know how many customers using atm of his branch, based on that he may take  a call to continue with atm or not
+
+
+
+S3 = DATA LAKE (storing all types of data )
+[structured , semi structured , unstructured data] , from s3 data goes into redshift
+if size of redshift grows it shfts data into s3 
+, here speed matters for specific datatype as nosql stored in s3 is slow as compared to dynomo db
+[whereas redshift is relational database warehouse] giving analytical tools, BI , reporting data
+
+
+Unlike Relational Database Management System (RDBMS), we cannot call Hadoop a database, 
+but it is more of a distributed file system that can store and process a huge volume of data sets across a cluster of computers.
+COMPONENTS -
+ HDFS      -  for storage layer - storing huge amounts of data
+ MapReduce, which is a programming model that help process huge data sets.
+ Hadoop YARN, which helps in managing the computing resources in multiple clusters
+ Hadoop is not a type of database, but rather a software ecosystem that allows for massively parallel computing
+ It is an enabler of certain types NoSQL distributed databases (such as HBase), which can allow for data to be spread across thousands of servers with little reduction in performance

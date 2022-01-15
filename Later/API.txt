@@ -1,0 +1,106 @@
+
+APPLICATION PROGRAM INTERFACE
+  CONNECT TWO APPLICATIONS 
+
+client sends data > server reverts data in a certain format [server is remote level , without screen ]
+API is the service which requests the data for the client from the server 
+   - API testing = Requesting to get response from server ON THE APPLICATION LAYER  NOT ON GUI [ do api testing by ur own code or tool POSTMAN]
+   - GUI testing = testing api on presentation layer - [selinium used for GUI testing ]
+
+WHY WE NEED IT ? > 2 apps can talk to each other independently - client take response from webserver automatically
+[ eg if u need to fetch [ GET ] any information from json.placeholder > u need to type code in programming language > takes time and effort , just use postman for this ]
+
+   WEB service API = when needs network , web to do operations 
+   [like clients order food from zomato and api sends order to server and thus reverts response to the client ]
+      TYPES    =  SOAP web services(legacy) , RESTful web services 
+            REST  FRAMEWORK     = represential state transfer
+            like == RESTful API = sending representation state of the object , not the actual object (sending only values of object to customers)
+   POSTMAN =  with certain URL > with post request > we send body  | we get response success or failure 
+   
+   TYPES OF ARCHITECTURE
+   1-Tier  > client and its own file system . hardrive , floppy , c
+   2-Tier  > Mulitple clients and database server . 
+   3-Tier  > here app server automatically fetch for client from database server 
+
+   Every web app have - presentation layer |  app layer  logic          | database layer 
+   -                    html , css , js    |  python, java , c , c++    | mysql ,postgreSql  , Sql server 
+   - user sends http request to app layer > app goes to database to get the info and reverts back 
+   - [ post , put , delete , get ] 
+
+EG =  https://reqres.in/api/users?page=2                 >>> URI  [ UNIFORM RESOURCE IDENTIFIER]  speifically this 
+      protocol|domain  | Path    | Query parameters      >>> URL  [ UNIFORM RESOURCE LOCATOR ]    both are same 
+
+      [Even browser can give api request , but we need Validations = Verifications which browsers cant do ] only use it for GET request 
+      Thus we get the response in Json , html , xml or text from server 
+   
+
+
+
+(for  running api ) = u need a ENVIORNMENT that supports the APPLICATION and part of the APPLICATION
+api is like a gatekeeper 
+(who checks ur credentials and if correct, then allows you to go to the server)
+and perform the job of providing data
+When someone needs data of the server - the server company exposed certain API endpoints  to the required company with API key
+(this server company - is any company who holds the particular data)
+
+- thus we can monitor API's as well, how much data someone used   
+- we can have a rule also - like hitting api only 40 times, after that we aren't allowed
+- api have docs (rules) = info how to use , how much data can be used 
+eg TOI gives api to public of getting and providing news to public with api key 
+   NEWS API , WEATHER API 
+
+
+
+USES HTTP METHODS in order to make calls between applications
+ [ GET ( used to retrieve a resource ) , PUT ( update resource ), POST ( create a resource,Insertion ) , DELETE (   delete a resource ) ] 
+- implement RESTful api by == jersey, sparing9
+- the user REQUESTS AND GET RESPONSE (in a html file) [ A WEB PAGE] , 
+- thus if u require only data u can IN 2 FORMAT (XML,JSON)    { json = user friendly }
+= it's because when you get data - you need a structure where RESPONSE will be send to user
+
+
+INSTALLATION 
+1. create django project = Django-admin startproject name 
+   (using python packet manager = pip )
+    . now install rest_framework = pip install djangorestframework
+2. create application[ INSIDE YOUR PROJECT ]    = python manage.py startapp name [cd into project] 
+   (application for storing employees information - first , last name)
+3. in project        setting.py - configure everything  = under INSTALLED_APPS > 'rest_framework','webapp' , whatever u install , u tell django u did it.
+4. in applications   models.py  - create database(model) = to see all info about employees
+                     admin.py   - add and delete employees from admin panel (import model first, which u created) = thus register ur models
+5. FISRT MIGRATE THE TABLE = python manage.py makemigrations    > this will update table structure   , 
+   python manage.py migrate  > updates table with current structure with model u created in class:employees
+   create a super user (in terminal) = python manage.py createsuperuser  (for ur /admin database page)
+   now , run the server              = python manage.py runserver
+   
+6. login to our webpage sever = we see it's successfully created , now go to /admin page inorder to sign in as super_user - which u created
+   > u see employees (ur web app model) > create employees (according to model - the structured u creatd there)
+7. create new file in your web application > from rest_frameworks import serializers
+   > import ur models employees and select the no.of column-name in order to display
+8. in views.py > request an api and get json back
+      from django.shortcuts import render # default
+      from django.http import HttpResponse # import response from http
+      from django.shortcuts import get_object_or_404 # when stated emlpoyee is not present , it shows 404 error
+      from rest_framework.views import APIView # so that normal views can return API DATA
+      from rest_framework.response import Response ## 200 status if everything is ok 
+      from rest_framework import status # send back  status
+      from . models import status # name of model
+      from . models import employees # name of serializer 
+
+
+POSTMAN  - API testing without code 
+   do Validations on URL's called tests > send 
+   PUT or POST will require you to give Body  > use POST method 
+   - sometimes server require authorization token inorder to add data > get the token (by passing correct details ) > validate it (optional) > 
+  
+   Test Validations = check if data is present or not 
+      tests['Validating Status code'] = responseCode.code == 200;
+      tests['Validating Status code'] = responseBody.has("tushar");
+
+      var response = JSON.parse(responseBody)
+      tests['page no'] = response.name == "tushar";
+      tests['page page no2'] = response.id == 4;
+
+RUN through command prompt 
+install newman                >>> npm install -g newman
+newman run  collection_name   >>> all requests in collection will be run 

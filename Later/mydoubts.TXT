@@ -1,0 +1,209 @@
+
+
+
+
+
+#python 
+	how python code works in hardware of the computer 
+	how python code works with computers 0 and 1        - via compiler 
+
+	why use python ? = inorder to understand and work with computer we created programming langauages so that both the computer and human can talk to each other (like english for human to human talk)
+	what all can be done and made with python  
+
+	interpreter , COMPILER   |  THEIR DIFFERENCE 
+	who is responisble for converting the source code into byte code 
+	what is a byte code ? 
+	how text editor work with python ?  are they compilers ??   
+	structure of how python code works from secondary memory to main memory to cpu ? 
+	shell , ide , script 
+	why and how pip works  - show the code of it 
+	how packages work as funciton 
+	whats memory in python , how memory gets consumed while coding programs ?
+	whats the repository of the python packages ?   ,    where are all these packages installed while we pip install 
+
+	
+	alternative way to create objects with @class method 
+	=  if we assign the string to the class  where
+	EMP.from_str(str) is passed 
+	how this class method created for the (input of string ) will carry the info of the constructor where  3 arguments needs to be passed 
+	- name, salary , age 
+	how class method determines the init constructor created inside the class ? 
+	(as the arguments are passed - we dont even which constructor gets which value ?)
+	# == no , u define the constructor with the args = that makes sure inside the str  u define the args but in init u combined it with init.split()
+
+	
+
+	PREFERENCE 
+	FIRST FROM child  INSTANCE method > ATTRIBUTE - THEN child CLASS  ATTRIBUTE - >>> THEN parent   CLASS'S[ INSTANCE ATTRIBUTE] - THEN parent CLASS  ATTRIBUTE
+
+
+	Q but why we need to type 
+ 	class newname:
+          pass     > when instance needs to take attribute value  from the previous class's attribute 
+
+	when i run super() method > [ i copy the init of parent class and we define the values with super method().__init(as arguments )   but 
+	when i create the object of the child  class i pass the arguments again ! 
+	Q whats the difference of args   between them   ?
+=  because  for child u have different args but u take the params from the parent , child order of giving values will depend upon child init  
+    and why arguments of the init super class method are prefferabled more than the arguments listed down when we create the object , while calling the function  !?
+>>>   it is because , when we use super().__init__ method  
+		- we didn't specify each attribute of new class                  self.name = name , self.age = age 
+		- this makes the new class reads arguments with super method().__init('as', 'arguments' )
+		- if we specify each attribute with self after super method , it reads arguments when we call the object r8 = Bmw('ok',5,'BLACK')
+
+
+
+# Servers !
+difference between local host and  .html file  > we can use .html file as well for testing and development purposes 
+
+Different type of servers 
+why differernt type of servers are used(web , application , mail server ) & why only http/https is shown when data gets travelled in requests via internet
+	because that is the room number via which package is deliveered 
+	- we request goes to GUI which are connected to the Database server 
+where we do we see other type of protocols - smtp, ftp,tcp...
+who controls the web server  - employees 
+
+how https works in tcp model . how bytes of data gets transferred from physical layer in tcp/ip model = signals 
+ 
+where and why tcp/ip model is used , who and y udp is brought - that is the means 
+what is Xampp - used when running database and apache server
+
+why binary number system is used ? 
+how 256 values are stored in BYTE  
+How ascii store only 127 values 
+why utf-8 was used?
+
+
+are these server s placed under various networks ?      or subnets ?  everyone in world is connected with unique public ip but private server have common ip address for each org
+by whom and how are these networks provided to them ?  IANA
+how private companies get their network  ? or private network 
+
+how internet is distrbibuted  between classful and classles addresses 
+- wont they interfer ? 
+how aws server get their network 
+
+how my laptop and all other world pc are given ip addresses ? 
+
+what if multiple requests sent to server or it crashes 
+
+differently managed by each company ? 
+
+
+
+
+
+
+
+# SQL data base   Questions ! 
+   Q2  Query 
+	WITH all_users AS (SELECT DISTINCT user_id, DATE_TRUNC('month', agreement_date)::DATE AS agreement_date 
+	FROM v3_loan_data WHERE loan_type = 'drawdown' AND row_status = 'active' AND rc_loan_status != 'EMI Not Started')
+	SELECT  NOW() AT TIME ZONE 'Asia/Kolkata' updated_at,
+
+	DATE_TRUNC('day', ld.agreement_date)::DATE AS txn_day,  DATE_TRUNC('month', ld.agreement_date)::DATE AS txn_month, 
+	DATE_TRUNC('week', ld.agreement_date)::DATE AS txn_week,
+ 
+	CASE WHEN EXTRACT (EPOCH FROM (AGE(DATE_TRUNC('month', NOW() AT TIME ZONE 'Asia/Kolkata')::DATE, 
+	all_users.agreement_date)) / (60*60*24*30))::INT > 3 THEN 'old' ELSE 'new' END AS type_of_user, 
+	COUNT(DISTINCT ld.user_id) AS total_users, SUM(ld.product_price) product_price  FROM v3_loan_data ld 
+	JOIN all_users ON all_users.user_id = ld.user_id WHERE ld.row_status = 'active' AND ld.loan_type = 'Card Txn'
+	AND ld.product_status = 'Confirmed' AND ld.agreement_date::DATE >= '2020-01-01'::dATE  GROUP BY 1, 2,3,4,5
+
+
+
+
+
+  #COMPLETED 
+def __init__(self , age):   # age given , so arg needs to be given 
+if we assign self.age = 21
+a= class() >>> remember init works with call ()  so its upto u , u assign paramteres - assign args too!     ,   if no parameteres then assign values in init only 
+a.call('OVER HERE') - when calling do we need to assign argument,          
+can't the object automatically check value of 21 is given .
+
+ multiplication table in float !  # completed 
+
+
+
+Q if u give def __init__(self):
+             self.age = 21      # here we directly give objects attribute - not by calling function 
+ tushar.getage()                 # we need to call function as self.age is stored in function
+ print(tushar.age)               # to call the object attributes 
+ THUS , U DONT NEED TO use parameter in def() ,You can use self directly with attribute and thus call the attribute with the object '''
+
+
+             def __init__(self,name,classs,salary):                                                 
+                        self.name=name                                                                     
+                        self.classs=classs                                                                
+                        self.salary=salary                                                                 
+                        def call(self):                                                                         
+                        print(f'name = {self.name} , class = {self.classs} , salary ={self.salary}')
+
+ HERE   WE  need to give values down to function when called ()                    >>> because in init we specified the parameters , thus need to assign args when call
+# thus when define self.age or whatevr params , we need to give args , because self means object attributes 
+
+
+
+
+
+Q  slice the attribtue when called in the arguments  | a = person(22)  |  print(a)  |   print(type(a))
+class company:
+    name = 'tushar'
+    salary = ('tushar'[::-1],3,442) , ('ok') , ['ok',23,4,4] 
+    set    = {1,3,'hi'}
+
+tushar = company()
+
+print(company.name , tushar.name[::-1] , tushar.salary[::-1])
+
+
+- when defining child class , is it mandatory to copy all the objects in child class,
+ what if i want only the name from parent class ? 
+   =inherit and distibute params and args accordingly  - just inherit the parent and specify in child init 
+
+
+- want  to copy only the first name or attribtue of parent class objects and display in child class ? 
+  use super().__init__(object_name) and pass that only object in class 
+
+
+Q how will u use funciton outside to define class 
+
+
+Q use *args , **kwargs ,default arg and init arguments in def arguments 
+Q use **kwargs to pass multiple values in class init arguments
+
+
+@ if parent class has **kname in init and i use super() method to bring values in child , 
+so without using **kwargs , can i give keyword arguments ?? 
+    - YES , parent do their job , child perform their own job 
+
+
+Q print list in Zigzag  like   1,2  3,4 ,56,
+    # for i,v in enumerate(a):
+    #     if i==0 or i%2==0:
+    #         print(v ,end=':')
+    #     else:                   # continue 
+    #         print(v,'\n')
+
+if default arg is given for single param  
+ and 2 args given for seperately for *arguments , 
+ but i dont want to give normal arg for default parameter and still utilize the other 2 arguments for *args like tuple  , how can it be ? 
+ 
+    # de =' d'
+    # def n( de='default',*args ,**kwargs):
+    #     print(args,kwargs)
+    # n('tushar','ok',0,1,de,name='==main',Truee=False,_='tuh')
+
+
+@new method
+
+@ is    vs   == ?
+
+ yield  where is it used   ?  diff with return  yield makes iterables on the fly , helps to save ram , runs by __next__()
+
+
+
+ DIFFERENCE between mal_func = functools.partial(mal_num,num)
+ and decorators  |  here with partial u can assign arg at later stage 
+
+
+

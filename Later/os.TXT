@@ -1,0 +1,115 @@
+Computers uses binary code = as it is a reliable way to store data .
+The main memory is built of transistors [ high or low voltage levels ] 
+The reading is done by CPU - which uses transistors to control devices 
+Each type of binary data is converted into UTF-8 so that it can be encoded into human readable language 
+
+We use decimal form inorder to type the number like 
+8*10**1   + 4*10**0 
+=  80     +   4      == 84
+
+Binary code for 84 is written as  [Instead of 10th power we use 2nd power]
+			1010100  = 84
+
+0*2**0 + 0*2**1 + 1*2**2 + 0*2**3 + 1*2**4 + 0*2**5 + 1*2**6
+ 0    +   0     +    4   +   0    +   16    +   0    +  64    == 84
+
+Jaha jaha 1 will be present , voltage will be true , and jis position par 1 hoga [0-n], vaha        0,1 * 2 **index_postition
+
+IN case of CHARACTERS , WE USE UTF-8 , WHICH ASSIGNS BINARY NUMBER INTO CHARACTERS  [LIKE 01000001 = A , 01000010 = B ,01000011 = C , 01010100 = T ]
+
+[1,10,11  ,  100 ,101,111  ,1000...] == 7 values
+
+Same way in video (each pixel is stored in binary) and sound is stored in pulse code modulation (each frequency is stored in BINARY ) where these binary codes are read by computers audio software , the numbers determine how quickly the coils in ur speakers should vibrate to create sounds of different frequencies {billion of bits required}
+Run length coding = compressed formats of binary code 
+Binary   = 0,1 circuts
+
+Ternary = 0,1,2 circuts
+Quantum = Multiple states simuntaneously
+
+
+SO everything u see and read through screen comes in form of True and false choice result made billion of times in form of binary form of code 
+
+
+When u run a program , os allocates area within short-term memory for performing those instructions 
+EG - when u press any key , the CPU will access one of these locations to retrieve bits of data from the RAM 
+- the time to give bits to CPU from RAM = is called memory's Latency
+- ram has transistor and capacitor that stores electrical charge 0 1
+- CPU can read and write to memory  and perform  basic calculations 
+
+-Inside cpu there is small Internal memory CACHE  made from static RAM = is the FASTEST memory in the computer havn 6 transistors , takes 3 times more space and price 
+
+COMPILER > converts human-readable code (source code ) into binary code(computer's language Byte-code )
+- the compiler divides the code into tokens , checks up the symbol and does analysis > converts into assembly language >>> then binary code 
+[compiler was made from compilers ]
+[IDE is where you write Your code which later goes into compiler !]
+
+
+
+DRAM = common type of RAM
+DDR4 = fastest ram in market 
+os is made of kernel and user space 
+Kernel = creates process , schedules them  and manages how processes are terminated   (not responsibility of CPU but kernel to handle the processes ) via 
+
+helping  in 
+- file management system  = for windows (filesystem is NTOS ) (for mac is HFS+ ) (for linux is ext4 )
+- We write to our hard-drives in form of code-blocks
+	BLOCK STORAGE - improves faster handling of data because data is stored as blocks , not in one-piece
+	METADATA - info about file (file type,extensions(jpeg,txt,py))
+
+   
+- Process management (order of managemen, space allocation ..) = its a program thats executing , program == application (like chrome)
+  . When we need to RUN PROGRAMS WE NEED TO DEDICATE RAM ,CPU called PROCESS ,our kernel is responsible for running various PROCESS for user , CPU dosent run these 	process at once , it runs each single process or instruction shorter than millisecond 
+
+
+
+- Memory management (optimizes memory usage so that enough memory is there inorder to run the apps) , Physical memory exists on chips (RAM memory) and on storage 	devices such as hard disks. Before a process can be executed, it must first load into RAM physical memory (also termed main memory). data can be constantly 	exchanged between the hard disk and RAM memory via virtual memory making it faster to run big applications. (like u dont neeed to read full cookbook 	inorder 	to create one recipe) 
+
+
+- I/O management this way kernel talks to mouse , keyboard , disk , audio devices and gives output from the following 
+
+User space - user interface of using the os (like settings , apps , code editors ..etc )  , 
+we interact with OS via SHELL (cli , powershell ) OR GRAPHICAL USER INTERFACE [GUI] -navigating with mouse 
+SHELL - program that interprets text commands and sends them to OS to execute ! (different type of shells are available ) we use BASH for linux , powershell for windows 
+
+
+Logs == saving checkpoint (tells what happened with our computer = detailed investigation )
+Files that record system events on computer 
+
+
+Booting = how starting up the computer  looks like ?
+[Power on 	> 	BIOS (basic input output system = to check if hardware is good to start)	> 	Boot device(bootloder - that laods the system) and then kernel gets loaded  ]
+-kernel loads up driver , output devices so we can interact with them , then system process is run (user login , spinning desktop env... )
+
+
+BIOS/UEFI = low level software - that initializes our computer hardware to make sure everything is good to go 	| it starts up the os when its powered on !
+
+
+vm virtual machine (virtual copy of physical machine - using memory , cpu and storage ) >>> using virtualbox 
+
+NETWORKING  - every computer connected like a web either by ethernet or routers 
+each computer that sends and recieves data have IP and MAC address ,sending data in packets to the receiver 
+IP = house addresss, mac - name of receipient 
+
+
+windows system gets attacked the most by hackers because it is GUI and is user-friendly , on the other hand linux systems are CLI based , which has various commands > so it is more secure , lightweight(has less ram consumption ) and open-source !
+
+Virtualization 
+
+vm ware has both type 1 hypervisior& type 2 - runs on server
+vsphere - consists of ESXi - type 1  = run vm from host 
+vCenter server is required 
+hypervisior is middleware that creates VM 
+
+Amazon EC2 relies on Xen Virtualization for launching all of its instances.
+
+type 1 = bare metal [directly run on hardware , more prefered ]
+type 2 = host os    [ on top of os , we run os, we run apps , conveinent , performance may looad up ]
+
+Docker uses Hyper-V which is in-built virtualization technology provided by Windows
+-works on the host kernel itself. Hence, it does not allow the user to create multiple instances of operating systems
+ 
+hardware without requirement of os 
+virtualization - infrasturctur diving resources for multiple peoplr in mutliple ways , create virtual source of any resource [like partitioning HD ]
+
+TYPES
+in os , app server , app virtualization[running app on ur host from another remote server], administrative [virtualize read , write access , give roles in company ] , 

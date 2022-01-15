@@ -1,0 +1,316 @@
+cat /etc/shells > check all shell available in ur system
+
+touch helloscript.sh > create script 
+#! /bin/bash 
+echo "hello bash script"
+
+execute  " we  here will run linux commands "  do
+command <<-EOH
+mkdir /secondcookboookS
+touch /file7
+EOH
+end
+
+execute 'my linux commands here'do
+command <<-EOH
+mkdir /tushar
+touch /myfile3
+EOH
+end
+
+execute 'we  here will run linux commands 'do
+command <<-EOH
+mkdir /tushar
+touch /file7
+EOH
+end
+
+#!/bin/bash   
+sudo su 
+yum update -y
+echo "* * * * * root chef-client" >> etc/crontab
+~       >>> Chef configuration management tool - script for updating all servers at once !
+
+
+
+We do ls > we see file not executable
+chmod +x shellocript.sh (giving permission to file)
+(only executable files are run with ./filename)
+
+Copy content to second file
+inside first file = vi
+echo ' hello again ' > second_file.txt
+
+
+RUN YOUR SCRIPT BY = 		./filename
+your commands run inside file (cat>name , echo > name)
+use cat >> to append content
+
+
+
+COMMENTS
+by #                  - single line comment
+: 'multi line 
+           comment'   - multi line comment
+
+Delimeter
+cat << heredoc = inorder to show comments, cat , echo done in particular file
+
+
+ECHO MEANS == PRINT
+
+
+CONDITIONAL STATEMENTS (vi/helloscrpit.sh)
+count=10
+if [ $count -eq 100 ]  (-ne == not equal  , -gt or > =greater then)
+then
+           echo ' the conditon is true '
+elif [ $count <=1 ]
+then 
+           echo ' the condition is true'
+else    
+           echo ' the conditon is false'
+fi
+
+
+
+&&   = and operator
+ (-a) || 
+
+-o   = or operator
+$age = specify variable
+-eq  = equal to ,  -ne  = not equal to ,  -gt = greater than
+\<   = less than 
+\>   = greater than
+echo${st1^}    = capitals single letter
+echo${st1^^}   = capitals all letters
+echo "${car[@]}"   = prints everything in variable 'ar'
+echo "${car[0]}"   = prints 0 index arraays
+
+LOOPS
+.until = loop until condition is false
+.while = loop until condition is true
+.for   = loop until iteration
+
+
+number = 1
+while [ $number -ge 10  ] 
+do 
+       echo "$number"
+       number =$ (( number+1 ))
+done
+
+
+
+
+for i in 1 2 3 4 5    or   # use {start..end..skip}  like range
+do 
+        if [ $i -gt 5 ] || [$i - gt 6]
+        then 
+            break continue pass
+        fi
+        echo$1$
+
+done
+
+INPUT / OUTPUT 
+echo $1 $2 $3  > run script and give 3 values
+($0 = will echo filename)
+
+args=('$@')
+echo $@     == give unlimited OUTPUT
+
+echo $#     == gives length of the array
+
+# echo ${args[0]} ${args[1]} ${args[2]}
+# we can assign specific index to the OUTPUT
+
+
+ls +al 1>file.txt 2>file2.txt
+
+ls -al >& file1.txt = shorcut to make file standard output ans error file
+                    (errors printed inside file)
+                    
+
+pipes = transfer one command to another           
+
+(first file)
+message =''
+export message     # export message to second file
+./filename(new)
+
+chmod +x new filename
+go inside new file
+echo 'hellooo : $message'
+
+run ./helloscript >> u see mesage from second file gets printed
+
+
+COMPARE STRINGS
+
+echo ' first file'
+read st1
+
+echo 'second string '
+read st2
+
+if [ $st1 == $st2 ]
+then
+     echo 'strings match'
+else
+     echo ' they dont match'
+fi
+
+if str1 == str2   > condition executed
+strings don't match > they are case sensitive
+
+CONCATITNATE
+c=$st1$st1    > st1 and st2 CONCATITNATED
+echo $c       > print concatination by echo $c
+
+echo{'$st1^'}  > prints letter with single capitals
+
+
+HOW TO ADD  (inside +x file)
+n=4
+n2=20
++ - * / %
+echo $(( n +n2  )) (( n % n2  ))
+
+Declare command
+declare myvaribable     > create variable 
+declare myvaribable=11  > update values
+
+
+    FUNCTIONS
+
+function name()                      - create new funciton
+{
+    echo 'this is new function'
+}
+
+
+name                                 -  call function
+
+function print()
+{
+    echo $1 $2 $3 $$                         - function with argument
+}
+
+print hi tushar passing arguments
+
+function printcheck()
+{
+    a = 'checking funciton'                  - check working of the function
+    echo '$a'
+}
+
+printcheck
+
+
+
+echo 'enter dir name'
+read direct
+
+if [ -d "$direct" ]         
+  -d = spec
+then
+    echo "$direct exist"
+else
+    echo  "$direct does not exist"
+fi
+
+
+
+if [[-d  = for directory , -f = for filename]]
+
+
+
+
+sudo apt install ssmtp
+
+google gmail settings > turn  ON  less secure apps
+
+open ssmtp file
+root=emai.com
+mailhub=smtp.gmail.com:587
+
+
+curls = sudo apt install curl
+how to download url to text file
+url='"http://www.ovh.net/files/1Mb.dat"'
+curl ${url} -o newfiledw
+
+url gets saved in newfiledw
+
+
+curl -I ${url}  to check the info of the server response message
+
+
+INOTIFY  = checks changes made in the directory
+sudo apt instakk inotify-tools
+
+whatever done on dir or files > will be stored as logs
+
+
+GREP
+search a pattern within file by processing line by line
+
+grep -i $grepvar $ filename    [-i for case sensitivity]
+                               [-c for count of occurenaces]
+                               [-n for showing index number]
+                    
+
+
+create file > give content
+> in ur executable file > create function >>>
+
+echo "enter a filename to search text from"
+read fileName             # file gets stored in filename
+if [[ -f $fileName ]]     # -f for checking up files from ur dir = if it exists or not
+then
+    echo "enter the text to search"
+    read grepvar                      # if file exist , find and save word in variable
+    grep $grepvar $fileName           # grepvar [the word entered by user]
+else
+    echo "$fileName doesn't exist"    # otherwise file not exist in directory
+fi
+
+
+
+
+AWK
+ produces formatted reports
+in executable file 
+
+echo "enter filename to print from awk"
+read fileName
+if [[ -f $fileName ]]
+then
+   
+    awk '/Linux/ {print}' $fileName        # prints line with linux string only
+else
+    echo "$fileName doesn't exist"
+fi
+
+
+
+
+SED 
+replace word specified in the filename
+
+
+echo "enter filename to substitute using sed"
+read fileName
+if [[ -f $fileName ]]
+then
+     sed 's/Linux/Unix/g' $fileName       >> use it to replace word from linux > unix
+   
+else
+    echo "$fileName doesn't exist"
+fi
+
+
+
+    DEBUG 
+IF there is an error > idenitfy error

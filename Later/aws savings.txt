@@ -1,0 +1,12 @@
+reduce ec2 and rds instance - stop it , pause it , terminate it 
+so that it dosent continue on weekends 
+on demand , spot , ri , dedicated host , dedicated instance 
+. snapshot of ebs volume and deleting them and using it future 
+. analysis s3 storage , can change storage tier 
+by s3 intelligent tiering 
+. stop paying idle redshift clusters - use aws trusted advisor to keep on clusters on redshift
+(pause and resume )
+.analysis dynomo db clusters with write and read capacity which performs autoscaling on it 
+.review autoscaling groups for ec2 
+. use reseeved intance to reduce RDS , redshift , and elasticcahe costs 
+.use various compute savings plan to 
