@@ -2,6 +2,7 @@ import webbrowser as web
 import os
 import time
 import pyautogui
+import credentials
 
 HEADS_URL = 'https://heads.thinkpalm.info/Home.aspx'
 
@@ -24,7 +25,7 @@ def navigate_to_image(image, clicks, off_x = 0, off_y = 0):
 
 def connect_fortclient():
      """ connect to fortclient """
-     passwd = 'PassTp!@3'
+     passwd = credentials.all_credentials.get('fortclient_password')
      os.startfile(r"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\FortiClient VPN\FortiClient VPN.lnk")
      time.sleep(5)
      navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\passwd.png',1, 10)
@@ -46,7 +47,7 @@ def mark_attendance():
      except web.Error:print('Error: Could not open  URL')
      time.sleep(5)
      navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\login_fotclient.png',2)     # login to HEADS
-     time.sleep(5)
+     time.sleep(15)
      pyautogui.click(x=1242, y=357)
      pyautogui.scroll(-2000)
      time.sleep(2)

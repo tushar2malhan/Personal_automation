@@ -42,7 +42,7 @@ We can create a report card by measuring how efficiently a data structure can do
 
 EG 
 If we need to store data that is easily accessible to the end user; for example, we might choose a data structure which can access elements the quickest. 
-Vice versa, if accessing elements isn’t the most important thing to us, 
+Vice versa, if accessing elements isn't the most important thing to us, 
 but we need a data structure which can be easily added to and deleted from, we would go for one which is most efficient in that specific functionality.
 
 The 4 criteria - accessing, searching, inserting, and deleting, are all scored using BigO notation Time Complexity equations.
@@ -151,7 +151,7 @@ deleting  elements = O(n)    >>> we have to shift every element down one to save
 
 
 
-USAGE = arrays for smaller tasks where you might not be interacting or changing the data that often, and arrayLists for more interactive programs where you’ll be modifying the data quite a bit.
+USAGE = arrays for smaller tasks where you might not be interacting or changing the data that often, and arrayLists for more interactive programs where you'll be modifying the data quite a bit.
 CALLED 
 RANDOM ACCESS DATA Structures - where each element is independent from each other and can be accessed []
 

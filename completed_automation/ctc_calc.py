@@ -30,7 +30,7 @@ def calculate_():
 
 for _ in range(3):
      try:
-          salary = int(input('\nYour annual salary in CTC: '))
+          salary = float(input('\nYour annual salary in CTC: '))
           calculate_()   
           break
      except ValueError:
