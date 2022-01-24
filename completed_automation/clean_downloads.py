@@ -8,16 +8,18 @@ def mail():
      """
      open ur pdf's from mail and download it in your local machine
      """
-     url ='https://mail.google.com/mail/u/1/#inbox'
+     url ='https://mail.google.com/mail/u/0/#inbox'
      webbrowser.open_new_tab(url)
      time.sleep(7)
-     pyautogui.click(r'C:\Users\Tushar\Desktop\python\pics\search_mail.png')
+     try:pyautogui.click(r'C:\Users\Tushar\Desktop\python\pics\search_mail.png')
+     except:pyautogui.click(r'C:\Users\Tushar\Desktop\python\pics\search_mail_2.png')
      pyautogui.typewrite('Payslips')
      keyboard.press('enter')
      time.sleep(4)
      pyautogui.doubleClick(r'C:\Users\Tushar\Desktop\python\pics\pdf.png')
      time.sleep(2)
-     pyautogui.click(r'C:\Users\Tushar\Desktop\python\pics\download.png')
+     try:pyautogui.moveRel(170, -59, duration=1.5),pyautogui.click(r'C:\Users\Tushar\Desktop\python\pics\download.png')
+     except TypeError: pyautogui.moveRel(170, -59, duration=1.5),pyautogui.click(r'C:\Users\Tushar\Desktop\python\pics\download_2.png')
      time.sleep(2)
      pyautogui.click(r'C:\Users\Tushar\Desktop\python\pics\save.png')     
      time.sleep(5)

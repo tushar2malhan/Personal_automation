@@ -53,13 +53,19 @@ def mark_attendance():
      time.sleep(2)
      navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\leave_Heads.png',2)         # click on Leave button in heads
      time.sleep(2)
-     navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\wfh_attendance.png',1)       
+     navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\wfh_attendance.png',1)      # MAIN DROP DOWN FOR ALL QUERIES , NEEDS TO BE CLICKED FIRST , THEN DO SUB OPERATIONS
      time.sleep(2)
-     navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\attendance_request.png',1)
-     # time.sleep(2)          # just in case u missed 2 days , uncomment it
-     # navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\add_yellow.png',1)
+     navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\attendance_request.png',1)   # we click on attendance request to mark the attendance
+                                                                                                                                                                                         # time.sleep(2)       # just in case u missed 2 days , uncomment it | and mark iT
+                                                                                                                                                                                         # navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\add_yellow.png',1)
      time.sleep(2)
      navigate_to_image(r'pics\save_blue.png',2)
+     time.sleep(2)
+     navigate_to_image(r'pics\ok_blue.png',1)
+     time.sleep(2)
+     navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\wfh_attendance.png',1)      # MAIN DROP DOWN FOR ALL QUERIES , NEEDS TO BE CLICKED FIRST , THEN DO SUB OPERATIONS
+     time.sleep(2)
+     navigate_to_image(r'pics\wfh_attendance_list.png')                                   # here we check and conform our attendance
 
 
 mark_attendance() if connect_fortclient() else print('\nLet me connect to fortclient first\t'),print('\nYour Connected to FortClient\nNow lets mark the attendance\n'),mark_attendance()

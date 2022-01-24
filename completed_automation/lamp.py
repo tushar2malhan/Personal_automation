@@ -27,6 +27,7 @@ def delete_files_directory(dir):
         except OSError:
             os.remove(path)
 
+
 def close_app():
      time.sleep(5)
      pyautogui.click(bluestack_cords)
@@ -35,6 +36,7 @@ def close_app():
      except:
           pyautogui.click(r'C:\Users\Tushar\Desktop\python\pics\crosss.png')
      pyautogui.click(r"C:\Users\Tushar\Pictures\Screenshots\close.png")
+
 
 def power_button():
      """ check and REVERSE power button ON or OFF button    | will save the NEW screenshot as well , Chcek and create new val for power button """
@@ -64,7 +66,6 @@ def power_button():
           except:
                speak('cant click the switch on button')
           
-     
 
 def lights():
 

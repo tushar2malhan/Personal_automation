@@ -62,12 +62,17 @@ while True:
 #      # if query in ('you there'):
 #           speak(' Always at your service sir ')
 #           query = takeCommand().lower()      
-#           speak('Sure    will  do the needful  ')
+"""   ur command => So  set the video capture to (0) 
+and make sure the ALGORITHM sets to predict more than 0.8 percent accuracy
+and if we have any, do play bgm to make it more realistic      """
+#           speak('Sure  \n\n\t  will  do the needful  ')
+#           speak('\n')
+#           speak('well Im counting on you sir    ')
 #           """
 #           Dont move the cursor , video will automatically pop up
           
 #           """
-#           os.startfile(r"C:\Users\Tushar\Downloads\output\output1.avi")
+#           os.startfile(r"ur video file")
 #           sleep(5) # increase the time for live video
 #           speak('Well i can clearly depict that you are in shape sir  ')
      # else:
