@@ -1,0 +1,375 @@
+Programming language like python convert code into machine code - 0's and 1's - that makes computer understand english language   
+- lower level language == the code similar to machine code 
+
+how we actually write code ?
+use IDE(integrated development environment) to write code   -- run , write , debug code 
+   (u can't just type code in text document  and expect  computer to understand the code  )
+
+ before ide - code was written in punchcard - which was a headache 
+
+Syntax = u can't simply type rubbish in IDE , convert into machine code and expect computer to understand
+ u need syntax , which is different for each language 
+eg = how to create variable , how to create functions , how to print() - is different for every coding language 
+
+HOW WE GET INFO FROM COMPUTERS 
+ main console   - which outputs text from program using code  == print statement()
+
+What can computers do ? 
+- it knows basic arithmatic operations - + * /
+
+
+
+
+
+
+! Data Structures = Each of the data structures are designed for the sole purpose of storing information and allowing the end user to access and manipulate that information 
+( like Arrays and Lists )
+but each one differs in the manner that they accomplish this. 
+
+Measure efficient data structures at different tasks - like searching , modifying , accessing 
+ - the industry standard is done by BIg o notation 
+
+Programmers developed this idea of BigO notation 
+ - to basically “score” a data structure  
+
+The ability to 
+access 
+search 
+insert
+remove an element from the data structure.
+
+We can create a report card by measuring how efficiently a data structure can do these things 
+
+EG 
+If we need to store data that is easily accessible to the end user; for example, we might choose a data structure which can access elements the quickest. 
+Vice versa, if accessing elements isn't the most important thing to us, 
+but we need a data structure which can be easily added to and deleted from, we would go for one which is most efficient in that specific functionality.
+
+The 4 criteria - accessing, searching, inserting, and deleting, are all scored using BigO notation Time Complexity equations.
+Time complexity equation = works by inserting size of data set with an integer 'n' and return number of operations that need to be conducted before computer can finish the function.
+
+
+
+
+
+! HOW SEARCHING , ADDING , DELETING WORKS IN PYTHON DATA STRUCTURES ?
+ - in the given array , each given value in the array is stored under specific name in the ram , so the amount of time inorder to perform the task on that array is TIME COMPLEXITY O(1) 
+
+
+! O(1)   > when we search value by index              >>> because no  of iterations is 0 here  
+! Q how this search works under the hood ?
+  stock_price[2] = 320      > when we need to find index 2 value
+  The memory address will add  2 * size of integers() 4 and first value is stored   at 500    >>> so 0*500 + 2 *4   =  508  [the memory location where index 2 is     stored]
+   
+
+  O(n)   > search particular value with for loop      >>> i for i in range(len(prices)) if i == 301     here we need to search every element so (n) no.of iteartions =    O(n)   > print all prices in the list , [price for price in  stock_prices] - same criteria  = need to go to every element and print the price for every stored                   location memory | when u run ur code it is run by CPU on ur laptop but is using RAM to store all variables in data = ARRAY
+
+
+
+Q insert new price at an index ?
+   when we insert  in stock_prices.insert(1,248)  >  we insert at index 1 - 248 >>> so every other element gets shifted at right place , so time complexity = O(n) 
+Q delete element at index 1 ?
+stock_prices.remove(1)   > same case , when we delete every other element will be shifted to left side of the array 
+ 
+
+! when u work with dynamic arrays - where size of array is not fixed after size is constant at 10 elements , the moment u add 11 element  the array size increases the    size capacity upto 10 capacity, this overheads of allocating new memory and copying all the elements in the new array transferred from the old array 
+  if u fix size by 30 elements , adding 31 element will add space by 30 elements 
+  now total capacity = 60 
+
+
+
+
+
+
+
+
+
+SUMMARY 
+
+We measure effciency Of DATA Structures based on:
+- accessing , searching , inserting , deleting
+
+we can now know which data structure is good at and which data structure is bad at 
+(checking these 4  operations on Arrays , lists , tuple , dict )
+
+
+
+
+
+
+! BEST DATA Structures CAN 'score' ON EACH CRITERIA  = O(1) -  no matter what the size of data set is , ur task will be completed in single transactions    
+# O(1) = Gold standard of Big O notation of time complexity equation
+
+the next fastest type of complexity =   O(log n)
+eg binary search 
+
+common complexity equation          =   O(n)
+- for every element u add to the data set  - the amount of instructions to complete that function will increase by the same time 
+- size of data set (10)  = (10) operations required  
+
+Next type of equation is           =    O(n log n )
+- not better
+
+inefficient equations 
+which should be avoided            =    O(n^2) and O(2^n)                    
+- The larger the data-set you use, the more inefficient it will become. 
+
+
+
+
+
+
+
+! ARRAYS   - list which store similar type data type 
+ - arrays size cannot be changed  , sized is fixed 
+
+we retrieve elements in arrays by - indexing []
+
+array inside array = 2d array
+here accessing element is with 2 indexes - rows and columns 
+arr[i][j]
+
+Now , we use BigO to score the data structure based on :-
+Accessing elements = O(1)    >>> arr[i]     # best standard because each element is indexed , we know how many elements to add or not 
+searching elements = O(n)    because most of time we work with unsorted lists , we need to search element - so its not fast 
+inserting elements = O(n)    inserting elements requires u to shift every other element , this traverse all other elements in the array , if u want to insert at last index , then time complexity= o(1) but we look for worst case scenerios ! so NO !! 
+deleting  elements = O(n)    we shift every element to right index inorder to delete a particular element , this increases time complexity 
+
+
+
+! ARRAYLISTS = store all data types
+- default size = 10 
+- size is Dynamic
+common functions used in every language - add() , add(arg,index) . remove() , get () ,  set(3,4) - replace  , clear () , toarray() - converts arraylist to array
+
+As DATA Structures
+Accessing elements = O(1)    >>> get()   - with get method - we find particular index 
+Searching elements = O(n)    >>> based on worst case scenerios -- we need to find all elements
+inserting elements = O(n)    >>> as we need to shift every element after the index specified This requires a number of operations equal to the size of the array, making inserting O(n).
+deleting  elements = O(n)    >>> we have to shift every element down one to save space , as we need to search 
+
+
+
+
+USAGE = arrays for smaller tasks where you might not be interacting or changing the data that often, and arrayLists for more interactive programs where you'll be modifying the data quite a bit.
+CALLED 
+RANDOM ACCESS DATA Structures - where each element is independent from each other and can be accessed []
+
+
+SEQUENTIAL ACCESS DATA Structures     - which only allow accessing through a particular order with dependent elements
+CALLED - STACKS , QUEUES , LINKED LISTS 
+
+
+
+
+
+! STACK  = whichever element we added to the Stack last, will be the first one we retrieve , vice versa
+ its like we put  stack of books, where first book which will be taken out at last 
+ functions - push , pull , peek , contains() - search
+
+Here time complexity of 
+Accessing elements = O(n) - inorder to reach certain element we need to pop every element thats above it 
+Searching elements = O(n) - same case , as we need to go through each element 
+inserting elements = O(1) - Since the data only flows in and out of a single point, inserting or removing an Object from that point can be done immediately
+deleting  elements = O(1) - For the Push method we simply add it to the top of the Stack, and for the pop method we just take it off from the top
+
+stacks USAGE 
+using undo /redo button in editor 
+going back n front on web pages in browser 
+
+
+
+
+
+
+
+! QUEUE = follows FIFO (first in first out ) here the first element added to the Queue will always be the first one to be removed.
+here we add elements to the back as ( TAIL ) and remove them from front known as ( HEAD )
+functions - add(enqueue) , remove (dequeue) , peek , contain 
+
+
+Here time complexity of 
+Accessing elements = O(n)  > we need to go from tail to head inorder to access
+Searching elements = O(n)  > we need to go from tail to head inorder to access
+inserting elements = O(1)  > in both case we enqueue and 
+deleting  elements = O(1)  > and dequeue in specific elements and indexes 
+
+Queue (FIFO) - used for job scheduling , print queueing , camera in phone 
+
+
+
+
+
+
+! LINKED LIST - is SEQUENTIAL data structure in which each element is seperate data structure called NODE which has 2 parts =  >data  &  >reference
+data - strings, integers , booleans 
+reference - pointer the next node in the linkdlist 
+HEAD NODE                           TAIL NODE 
+data reference | data  reference  | data  reference
+1    points> 2 |   2   points> 3  | 3    > NULL 
+
+adding and removing info 
+- when add node we just point to first reference / pointer of the first node  to (the head node pointer )
+- adding to the middle of linkedlist   >>> node (1.5) pointer to integer > (2)  and make node(1) pointer to new node(1.5)
+
+Head node should be pointed to  > new node  
+tail node should be pointed to  > NULL
+
+- remove node = by pointing node(tail 3) to NULL instead of node(4)  >>> will remove node 4 from the list 
+
+
+Accessing elements = O(n) - because of SEQUENTIAL data access , start from beginning to the end 
+Searching elements = O(n) - need to find and search every node via going with the pointer to the next new node , creating time complexity 
+inserting elements = O(n),O(1) - depending upon where u need to insert   
+deleting  elements = O(n),O(1) - or remove 
+
+USAGE = backing of other data structure - like stacks , Queue etc
+like spotify - where after one song is played , it points to the next song 
+
+! with double linked list = we are able to traverse both forward and backword using pointers 
+(go to previous and next node instanstly )
+here the diagram is 
+previous   | data |  Next  
+previous pointer - heads to the previous node 
+next     pointer - points to the next node 
+
+for head and tail  NODES first node's pointer (previous) and last node's (next) pointers to NULL 
+
+removing node - point both pointers to NULL
+here time complexity - is same as linkdlist
+
+
+
+
+! HASH TABLES (DICTIONARY) storing key / value pairs
+- thus we index each element by its    keys
+- no two keys can be same and can have only one value 
+
+DICTIONARY are built upon these hash tables 
+- keys in dict are stored in memory IN hash tables at indexes which are determined by hash function 
+- hash function - to take a key n map it to the index 
+
+Hash collison = IF values are places at same index 
+- closed addressing = the values are linked as linked list to chain together      at index 9 = 'steven' , 'rammy'
+
+Accessing elements =  O(1) , O(n)   
+Searching elements =  O(1) , O(n)     
+inserting elements =  O(1) , O(n)
+deleting  elements =  O(1) , O(n)
+
+O(1) > with hash function which speeds up everything           O(n) - with closed addressing 
+
+
+
+
+! Trees - an abstract data structure which have series of linked-nodes  heirarchically
+ (like a linkedlist = where each node pointed towards next and previous node )
+- Here it has an option of pointing towards multiple Nodes
+- store data heirarchically 
+ like( C:drive\folder\files )
+
+
+    50     = root node  # Top most node in the Tree
+   /  \    = EDGES 
+ 30   20   = child node # as connected to root node 50
+|  |       = EDGES 
+14 16      = child node # connected to parent 30
+
+50 = root and parent node 
+30 = parent and child node 
+20 = leaf and child node 
+14,16 = child node , has no connection with child 20 node 
+        even these are leaf node 
+CONNECTION OF NODES CALLED = EDGES 
+
+DIfferent types  - TREES BECOMES USEFUL WHEN WE SET RESTRICTIONS 
+
+! BINARY SEARCH TREE                              50
+simple variation of the standard Tree            / \
+Has 3 restrictions                              10 40
+- Node can have only 2 children 
+- left child has less value then right child
+- no 2 nodes can contain same values 
+
+Advantages - STore large quantites of data with easy and fast way to search 
+- go left   > if u want less value   or go  right for higher value 
+
+
+! TRIES 
+here nodes store Letters of alphabets in form of characters
+thus , we can quickly retrieve words in form of strings 
+- here nodes are referenced in order to make a word from the following nodes 
+  Root Node 
+      |    
+      D      
+     / \
+    A   E
+   /|\   |\
+  B D Y   W N
+we make words like - 
+DAB , DAD , DAY       DEW , DEN
+we can further create more strings like DENT , DADY , DENVER 
+
+while having Denver
+how to stop at DEN ?
+= Flagging - by making the at end of the word  
+DEN.
+
+use case 
+auto-spell check in ur oneplus 6t
+(they store entire DICTIONARY as nodes in tries ) - when we type any characters - computers make automatic suggestions
+- if u type wrong word - it checks correct root of the word - take and suggest educated guess 
+
+
+! HEAPS
+Here parent Node is compared with all the children node 
+
+! Min-Heap
+ - value of root is minimum from all children (10 - root , 14 , 21 ,44 all sub tree)
+
+! Max-Heap
+ - value of root is maximum from all children (50 - root ,[ 30-parent > 10,20=child ] , 20 10  all sub tree)
+ - here when index , value is given we compare and swap nodes wherever necessary in order to make Max Heap
+ - HeapSort = finding replacing  greatest integer  /  sorting alogrithm
+ - Priority Queue = where importance of node is taken place (like queue in hospital )
+
+
+
+! GRAPH 
+data structure containing Nodes and Edges  like Tree
+- MULTIPLE STARTING POINTS = here it has no root node or starting point 
+- MULTIPLE BRANCHES 
+
+undirected graph 
+(friendship of ur friend on fb )
+
+directed graph
+(u follow celeb on insta - they wont follow back )
+
+cyclic graph = all undirected graph
+one which contains a path from at least one node 
+
+acyclic graph = all directed graph
+one which contains no path from any one node which leads back on itself
+
+
+
+weighted graph
+associate numeric value with each edge (cost)
+
+
+
+
+
+MOST USED 
+
+.) undirected cyclic heaps with  weighted edges 
+    - compiles list of shortest path from source node to all other nodes within the graph
+
+USE CASE - GOOGLE MAPS = which give you shortest directions  to ur route 
+
+
+.) unweighted  cyclic heaps (both directed and undirected)
+   - fb , sc , insta 
+   - can represent the number of followers u have based on this graph 
+   
