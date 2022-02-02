@@ -167,7 +167,9 @@ from rest_framework.generics import ListAPIView
 
     
     auth = input('\nDo you want to secure your API ?      \t\t  ')
-    print('\nNow remember if you are securing your APIs , then make sure you are importing the rest_framework & rest_framework.authtoken in your settings.py file as well \n')
+    print('\nNow remember if you are securing your APIs ,\n\
+    then make sure you are importing \n\
+    rest_framework & rest_framework.authtoken \t in your settings.py file as well \n')
     if  auth in ['yes','yup','ok','y']:
         os.chdir(f'{main_dir}\{project_name}\{project_name}')
         with open('settings.py','a+') as f:

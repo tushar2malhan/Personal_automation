@@ -12,6 +12,7 @@
 6. CTC calculation (Base on monthly salary) -> <br />
 7. Lamp  (Automatic lamp) -> <br />
 8. python_samples ( django_automation,job_automation,python samples ) -> <br />
+9. Web Scraping (Amazon) -> <br />
 
 
 

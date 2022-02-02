@@ -12,7 +12,8 @@ from datetime import date
 import os , json , requests , pickle , datetime , time 
 import argparse ,sys
 import re 
-# if issue with PyAudio , go to https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio and search for pyaudio and download amd64.whl and run pip install  the downloaded file in the terminal (pip install PyAudio-0.2.11-cp310-cp310-win_amd64.whl)
+# if issue with PyAudio , go to https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio and search for pyaudio and download amd64.whl 
+# and run pip install  the downloaded file in the terminal (pip install PyAudio-0.2.11-cp310-cp310-win_amd64.whl)
 import webbrowser
 import os
 import smtplib

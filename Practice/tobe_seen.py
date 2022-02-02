@@ -135,179 +135,6 @@ Print a list of all the score values from all users excluding the first 10 users
 #      print("Link--", x['link'])
 
 
-########################################################################
-# CREATE CSV FILE AND APPEND  data TO IT 
-
-# import csv
-
-# csv_file = open('sample.csv', 'w')
-# csv_writer = csv.writer(csv_file)
-# csv_writer.writerow(['Headline', 'Summary', 'Video']) # headers of the file
-# for i in range(10):
-#      csv_writer.writerow([i])
-# for i in range(10,0,-1):
-#      csv_writer.writerow([i,i+1,i*2,i==i])
-# csv_file.close()
-
-################################################################################################################################################
-#   save  data in excel file
-
-# from openpyxl import Workbook
-
-# row = 1
-# wb = Workbook()
-# wb['Sheet'].title = "Report of Automation"
-# sh1 = wb.active
-# sh1['A1'].value = 'Name'
-# sh1['B1'].value = 'Status'
-# sh1['C1'].value = 'ok'
-
-# sh1['A2'].value = 'Python'
-# sh1['B2'].value = 'Avtive'
-
-# # for a in range(5):
-# #     sh1['A'+str(a+1)].value = a
-
-# wb.save("FinalReport.xlsx")
-
-
-
-######################        EXTRACT DATA FROM MULTIPLE INNER HTML'S AND SAVING FILES TO EXCEL   DYNAMICALLY      #############################
-#309
-
-# from selenium import webdriver
-# import time
-# from selenium.webdriver.common.keys import Keys
-# from bs4 import BeautifulSoup
-
-# from selenium.webdriver.common.by import By 
-# from selenium.webdriver.support.ui import WebDriverWait
-# from selenium.webdriver.support import expected_conditions as EC
-
-# from openpyxl import Workbook  
-# import time  
-
-# wb = Workbook()  
-# sheet = wb.active 
-
-"""       """                   
-
-
-# from selenium import webdriver
-# import time
-# from selenium.webdriver.common.keys import Keys
-# from bs4 import BeautifulSoup
-
-# from selenium.webdriver.common.by import By 
-# from selenium.webdriver.support.ui import WebDriverWait
-# from selenium.webdriver.support import expected_conditions as EC
-
-# from openpyxl import Workbook  
-# import time  
-
-# wb = Workbook()  
-
-# # checks on ur param
-# url="https://www.mercadona.es/"
-# postalcode='08010'
-
-# def get_values(sheet_num,sheet_name,url,postcode,class_name1,class_name2,class_name3,class_name4,class_name5,class_name6,driver):
-          
-#           sheet = wb.create_sheet(sheet_num)
-#           sheet.title = sheet_name
-          
-#           # get the Name
-#           c=1
-#           sheet[f'A{c}']="PRODUCTS"
-#           name_tag= driver.find_elements_by_class_name(class_name1)
-#           for name in name_tag:
-#                c+=1
-#                sheet[f'A{c}']=name.text
-#                print(name.text)
-          
-
-#           # get the Price
-#           c2=1
-#           sheet[f'B{c2}']="PRICES"
-#           price_tag=driver.find_elements_by_class_name(class_name2)
-#           for price in price_tag:
-#                c2+=1
-#                sheet[f'B{c2}']=price.text
-#                print(price.text)
-
-         
-#           #                Get all the images link 
-#           #                        option 1 
-#           # images = driver.find_elements_by_tag_name('img')     # get all the images                                    
-          
-#           #                        option 2
-#           images = driver.find_elements_by_xpath(class_name3)    # //div[@class='image_class_name']/img
-#           c3=1
-#           sheet[f'C{c3}']="IMAGES"
-#           for image in images:
-#                c3+=1
-#                sheet[f'C{c3}']=image.get_attribute('src')
-#                print(image.get_attribute('src'))
-#                # alt = image.get_attribute("alt") 
-#           # print(c3)
-
-#           print('\n\nDone , Data extracted and saved in your excel ')
-          
-# # final execution
-# def web_scrap_automation(url,postcode,class_name1=None,class_name2=None,class_name3=None,class_name4=None,class_name5=None,class_name6=None):
- 
-#      driver = webdriver.Chrome(executable_path=r"C:\Users\DELL\Downloads\chromedriver.exe")
-#      driver.get(url)
-#      print('\n\n')
-#      print(driver.title)
-#      print('\n\n')
-#      try:
-#           #              convert to english language
-#           l0=driver.find_element_by_xpath("/html/body/div[1]/nav/div[2]/div/i")
-#           l0.click()
-#           l1=driver.find_element_by_xpath("/html/body/div[1]/nav/div[2]/div/ul/li[6]/button")
-#           l1.click()
-          
-#           search_bar = driver.find_element_by_xpath('//*[@id="root"]/header/div/div/form/div/input')
-          
-#           #                   give the postcode
-#           search_bar.send_keys(postcode)      
-#           search_bar.send_keys(Keys.RETURN)
-#           l2=driver.find_element_by_xpath('//*[@id="root"]/header/div/div/form/input')
-#           l2.click()
-#           accept= driver.find_element_by_xpath('//*[@id="root"]/div[1]/div/div/button[2]')
-#           accept.click()
-
-#           time.sleep(10)
-#           print('\n\n')
-
-#           #                        DYNAMIC FROM HERE 
-
-#           get_values('sheet_1','LANDING_PAGE', url,postcode,class_name1,class_name2,class_name3,class_name4,class_name5,class_name6,driver=driver)
-#           print('\n\n')
-     
-#           #                      View the products from inside 
-#           product_button = driver.find_element_by_class_name('banner-item__button')
-#           product_button.click()
-#           time.sleep(10)
-
-
-#           print('\n\n')
-#           get_values('sheet_2','INNER_PAGE',url,postcode,class_name1,class_name2,class_name3,class_name4,class_name5,class_name6,driver=driver)
-
-#           time.sleep(5)
-#           # driver.close()                                                                 
-#           # wb.save(r"C:\Users\DELL\Desktop\excel\sheet2.xlsx")  
-#           wb.save(filename = fr"C:\Users\DELL\Desktop\excel\file_{postalcode}.xlsx")             # saving file to the excel 
-
-#      except:
-#           print(f'Issue in the postal code ❌{postalcode}❌, check and verify it again')
-          
-# web_scrap_automation(url,postalcode,'product-cell__description-name','product-price__unit-price',"//div[@class='product-cell__image-wrapper']/img")
-
-# web_scrap_automation("https://www.amazon.in/deal/825e22a9?showVariations=true&smid=A14CZOWI0VEHLG&pf_rd_r=J4WQV8JHJ7TXSR3DVWXP&pf_rd_p=f690369a-7bb4-48bb-9349-f68a447ef06d&pd_rd_r=c55c1e7a-619a-4698-8aab-7c79a9509c58&pd_rd_w=jsird&pd_rd_wg=CHlPw&ref_=pd_gw_unk",'08012','a-text-normal','a-price-whole')
-
-
 """ #############################################################################################################################################################################"""
 #                                 Shorter version of above code               
 #                 just provide the class name and ask driver to find element by respective type and add the functionality inside get_values()
@@ -324,7 +151,7 @@ url="https://www.mercadona.es/"
 postalcode='08013'
 
 def web_scrap_automation(url,postcode,*classnames):
-     driver = webdriver.Chrome(executable_path=r"C:\Users\DELL\Downloads\chromedriver.exe")
+     driver = webdriver.Chrome(executable_path=r"C:\Users\Tushar\Downloads\chromedriver.exe")
      driver.get(url)
      print('\t\t',driver.title)
      
@@ -420,55 +247,7 @@ def web_scrap_automation(url,postcode,*classnames):
 
 # !wsl && cd /mnt/c/Users/DELL/Desktop/PYTHON/test/RealTimeObjectDetection/Tensorflow && git clone https://github.com/tensorflow/models
 
-########################################################################
-
-# save an excel file
-# from openpyxl.workbook import Workbook
-
-# POINTS 
-# IF FILE IS OPENEED , THEN IT WILL NOT SAVE THE FILE , ERROR 
-
-
-#              Create sheets in the workbook
-
-# from openpyxl.workbook import Workbook
-# wb = Workbook()
-# ws1 = wb.create_sheet("Sheet_1")                          # if created with ws1 , dont set this as active
-# ws1.title = "Title_A>@"
-# ws1['A1'] = 'PRODUCTS'
-# ws1['B1'] = 'PRICE'
-# ws1['C1'] = 'IMAGE'
-
-
-# ws2 = wb.create_sheet("Sheet_2")
-# ws2.title = "Title_A>!"
-# ws2['A1'] = 'PRODUCTS'
-# ws2['B1'] = 'PRICE'
-# ws2['C1'] = 'IMAGE'
-
-# wb.save(filename = r"C:\Users\DELL\Desktop\excel\tem.xlsx")
-
-
-#              use an excel file to append
-
-# from openpyxl import Workbook  
-# import time  
-  
-# wb = Workbook()  
-# sheet = wb.active  
-
-
-# sheet['A1'] = 87  
-# sheet['A2'] = "Devansh"  
-# sheet['A3'] = 41.80  
-# sheet['A4'] = 10  
-  
-# now = time.strftime("%x")  
-# sheet['A5'] = now  
-  
-# wb.save("excel/sheet1.xlsx")           # create new sheet if not present
-
-########################################################################
+######################################################################################################################################################
 
      # Access variables from function
 
@@ -688,30 +467,8 @@ def web_scrap_automation(url,postcode,*classnames):
 
 
 
-################################################################## LATER  ##############################################################################
+################################################################## PROBLEMS  ##############################################################################
 
-
-# loop while 
-
-# def main():
-#      students = [['Harry', 37.21], ['Berry', 37.21], ['Tina', 37.2], ['Akriti', 41], ['Harsh', 39]]
-#      scores = ([ i[1] for i in students])
-#      for item in scores:
-#           if item > scores[0]:
-#                # scores[0] = item
-#                print(item)
-#                item = scores[0] 
-#                print(item)
-#      # print(scores[0])
-#      # print(item)
-#      # print (scores)
-
-# main()
-# def main():
-#      students = [['Harry', 37.21], ['Berry', 37.21], ['Tina', 37.2], ['Akriti', 41], ['Harsh', 39]]
-#      print(sorted(students,key=lambda x:x[1]))
-
-# main()
 
 # assign 3 iterations from letters to each number in range(2,10)
 
@@ -735,17 +492,15 @@ def web_scrap_automation(url,postcode,*classnames):
      
 
 
-
-
 ############################################################################################################################
-#     add git ignoring credentials file                                                                                                                   
-# git add -u  
+#         Add git ignoring credentials file                                                                                                                   
 
+# use gitignore to ignore the credentials file
 
 ############################################################################################################################
 
 
-# Dated  19-01-2022 
+# Dated             19-01-2022 
 #          web scrap data from social media like instal, db , linkedin and twitter
 # Get profile pic , username , followers and posts if valid Username Persists
 import time
@@ -877,6 +632,111 @@ def user_information(username):
 # user_information('egg')
 # user_information('Tusharmalhan') 
                              
-#    JUST PASS IN THE CORRECT USERNAME AND IT WILL FETCH THE INFORMATION
+#    JUST PASS IN THE CORRECT USERNAME for the socialmedia account AND IT WILL FETCH THE INFORMATION
 
 ############################################################################################################################
+#                               CSV basic operations
+# from csv import writer
+# with open('posts.csv', 'w') as csv_file:
+#     csv_writer = writer(csv_file)
+#     headers = ['Title', 'Link', 'Date']
+#     list_data=['03','Smith','Science']
+#     list_of_dicts=[
+#         {'ID':1,'NAME':'William','RANK':5532,'ARTICLE':1,'COUNTRY':'UAE'},
+#         {'ID':6,'NAME':'William','RANK':5532,'ARTICLE':1,'COUNTRY':'UAE'}
+#         ]
+    # a=([(k,v) for k,v in dict.items()])  
+          
+
+    #        - This will set the headers
+    # csv_writer.writerow(headers)   
+    #      
+    #        - This will add the data
+    # csv_writer.writerow(list_data)         
+    #      
+    #       - If you comment and use writerow
+    #       - it will Write new data to the file
+    # csv_writer.writerow(list_data[0])
+    #       
+    #       - List of tuples will be entered in each row 
+    #       - Do the loop and write the row automatically!
+    # keys = ([  keys for keys in list_of_dicts[0] ])
+    # print(keys)
+    # csv_writer.writerow(keys)
+
+    #       - ADD multiple values to the file
+    # for values in list_of_dicts:
+    #     csv_writer.writerow(values.values())
+
+
+
+    #       - OR
+    # from csv import DictWriter
+
+    #       - Field name needs to be matched
+    # field_names = ['ID','NAME','RANK','ARTICLE','COUNTRY']
+    # dict_object = DictWriter(csv_file, fieldnames=field_names)
+
+    #       - This will write the headers, no need to pass anything
+    #       - will pick it from dict_object['fieldnames']
+    # dict_object.writeheader()
+    # dict_object.writerow(dict)
+############################################################################################################################
+#                                                Excel file basic operations
+
+#######################################################################
+
+'''
+POINTS 
+ IF FILE IS OPENED , THEN IT WILL NOT SAVE THE FILE , ERROR 
+ For each specific Head , seperate for loop will run , which make sures to get data for each 
+ specific column first.
+'''
+
+#                               Save  data in excel file even if file does not exists
+
+from openpyxl import Workbook
+
+#                                Can work with multiple sheets at Once
+wb = Workbook()
+# wb['Sheet'].title = "Report of Automation"                                  # 1 way to change title of sheet
+# sh1 = wb.active                                                             # not required
+# sh1['A1'].value = 'HEAD 0'
+# sh1['B1'].value = 'HEAD 1'
+# sh1['C1'].value = 'HEAD 2'
+
+# sh1['A2'].value = 'VAL 1'
+# sh1['B2'].value = 'VAL 2'
+
+# for a in range(5):
+#     sh1['A'+str(a+1)].value = a
+
+# ws2 = wb.create_sheet()
+# ws2.title = "5>!"                       # This is the title of the sheet ,   # 2 way to change title of sheet
+# ws2['A1'] = '6'
+# ws2['B1'] = '7'
+# ws2['C1'] = '8'
+
+# ws3 = wb.create_sheet()                 # If empty then sheet name == sheet (default)
+
+# list_of_dicts=[
+#         {'ID':1,'NAME':'William','RANK':5532,'ARTICLE':1,'COUNTRY':'UAE'},
+#         {'ID':6,'NAME':'William','RANK':5532,'ARTICLE':1,'COUNTRY':'UAE'}
+#         ]
+
+# sh3 = wb.create_sheet()
+# sh3.title = "New Sheet"
+# # append keys and values in excel sheet
+ 
+# for number in range(len(list_of_dicts[0])):
+#     sh3[number] =
+#     print(number)
+
+
+###################################################################
+
+# Add and install Older version of Python 
+# Remove new vesion of python from system variables 
+# check version , old will be  placed
+############################################################################################################################
+
