@@ -2,7 +2,8 @@ import webbrowser as web
 import os
 import time
 import pyautogui
-import credentials
+from Protected import credentials
+
 
 HEADS_URL = 'https://heads.thinkpalm.info/Home.aspx'
 
