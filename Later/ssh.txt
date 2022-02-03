@@ -1,8 +1,0 @@
-ssh -i C:\Users\tusha\Downloads\linux-mumbai-KP.pem ec2-user@ec2-65-0-130-235.ap-south-1.compute.amazonaws.com
-
-ssh -i C:\Users\tusha\Downloads\linux-mumbai-KP.pem ubuntu@ec2-65-0-89-61.ap-south-1.compute.amazonaws.com
-
-
-
-
-
