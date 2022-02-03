@@ -635,7 +635,9 @@ def user_information(username):
 #    JUST PASS IN THE CORRECT USERNAME for the socialmedia account AND IT WILL FETCH THE INFORMATION
 
 ############################################################################################################################
-#                               CSV basic operations
+#                                            CSV basic operations
+
+
 # from csv import writer
 # with open('posts.csv', 'w') as csv_file:
 #     csv_writer = writer(csv_file)
@@ -684,23 +686,22 @@ def user_information(username):
 ############################################################################################################################
 #                                                Excel file basic operations
 
-#######################################################################
 
 '''
 POINTS 
- IF FILE IS OPENED , THEN IT WILL NOT SAVE THE FILE , ERROR 
- For each specific Head , seperate for loop will run , which make sures to get data for each 
+ - IF FILE IS OPENED , THEN IT WILL NOT SAVE THE FILE , ERROR 
+ - For each specific column , seperate for loop will run , which make sures to get data for each 
  specific column first.
 '''
 
 #                               Save  data in excel file even if file does not exists
 
-from openpyxl import Workbook
+# from openpyxl import Workbook
 
 #                                Can work with multiple sheets at Once
-wb = Workbook()
-# wb['Sheet'].title = "Report of Automation"                                  # 1 way to change title of sheet
-# sh1 = wb.active                                                             # not required
+# wb = Workbook()
+# wb['Sheet'].title = "Report of Automation"               # 1 way to change title of sheet
+# sh1 = wb.active                                        # active or create_sheet       # same same                 
 # sh1['A1'].value = 'HEAD 0'
 # sh1['B1'].value = 'HEAD 1'
 # sh1['C1'].value = 'HEAD 2'
@@ -717,20 +718,24 @@ wb = Workbook()
 # ws2['B1'] = '7'
 # ws2['C1'] = '8'
 
-# ws3 = wb.create_sheet()                 # If empty then sheet name == sheet (default)
+# ws3 = wb.create_sheet()                 # If empty then sheet name is sheet by (default)
 
 # list_of_dicts=[
 #         {'ID':1,'NAME':'William','RANK':5532,'ARTICLE':1,'COUNTRY':'UAE'},
-#         {'ID':6,'NAME':'William','RANK':5532,'ARTICLE':1,'COUNTRY':'UAE'}
+#         {'ID':6,'NAME':'William','RANK':5532,'ARTICLE':1,'COUNTRY':'UAE'},
+#         {'ID':2,'NAME':'William','RANK':5532,'ARTICLE':3,'COUNTRY':'UAE'}
 #         ]
 
 # sh3 = wb.create_sheet()
-# sh3.title = "New Sheet"
-# # append keys and values in excel sheet
- 
-# for number in range(len(list_of_dicts[0])):
-#     sh3[number] =
-#     print(number)
+# sh3.title = "sheet3"
+
+# append keys and values in excel file 
+# sh3.append([i for i in list_of_dicts[0].keys()])   # KEYS OF THE DICT
+# for values in list_of_dicts:
+#     sh3.append([i for i in values.values()])       # VALUES OF THE DICT
+
+# wb.save('filename.xlsx')                           # MAKE SURE YOU save the file 
+
 
 
 ###################################################################
@@ -739,4 +744,3 @@ wb = Workbook()
 # Remove new vesion of python from system variables 
 # check version , old will be  placed
 ############################################################################################################################
-
