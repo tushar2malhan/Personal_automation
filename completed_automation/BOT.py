@@ -628,6 +628,7 @@ if __name__ == "__main__":
                                 speak('couldnt find it ')
 
                         elif 'download youtube' in query:
+                            ''' remove ube from youtube link and use driver mp4 to download the video '''
                             # root = Tk()
                             # root.geometry('500x300')
                             # root.resizable(0,0)

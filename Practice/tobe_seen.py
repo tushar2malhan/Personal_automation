@@ -470,13 +470,13 @@ def web_scrap_automation(url,postcode,*classnames):
 ################################################################## PROBLEMS  ##############################################################################
 
 
-# assign 3 iterations from letters to each number in range(2,10)
+#           assign 3 iterations from letters to each number in range(2,10)
 
-# letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 
-# def assign():
-#      for i in range(len(letters)):
-#           print(letters[i] ,end='\n'if i % 3 == 0 else ' ')
+def assign():
+     for i in range(len(letters)):
+          print(letters[i] ,end='\n'if i % 3 == 0 else ' ')
           
 # assign()
 ################################################################## TRICKY ##########################################################
@@ -743,4 +743,16 @@ POINTS
 # Add and install Older version of Python 
 # Remove new vesion of python from system variables 
 # check version , old will be  placed
+############################################################################################################################
+#                                                Convert py to exe 
+# cd into dir pyinstaller (pip install pyinstaller) > pyinstaller filename.py
+# cd into dist > then run filename.exe , thus can send others ur software
+# (FIle outside dist dir , runs the file without terminal so for bussiness use)
+
+# HAVE A SINGLE FILE AS EXE , INSTEAD OF MULTIPLE DIRECTORIES FOR THE SOFTWARE
+# cd into dist > then run filename.exe , thus can send others ur software
+# DONT CONVERT IMG TO ICO file as icon for ur softw
+# pyinstaller  --onefile  --name = test_fortclient c:/Users/Tushar/Desktop/python/completed_automation/connect_fortclient.py 
+
+
 ############################################################################################################################

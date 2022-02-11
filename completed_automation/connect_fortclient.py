@@ -60,15 +60,15 @@ def mark_attendance():
                                                                                                                                                                                          # time.sleep(2)       # just in case u missed 2 days , uncomment it | and mark iT
                                                                                                                                                                                          # navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\add_yellow.png',1)
      time.sleep(2)
-     navigate_to_image(r'pics\save_blue.png',1)                                            # save the attendance
+     navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\save_blue.png',1)                                            # save the attendance
      time.sleep(2)
-     navigate_to_image(r'pics\ok_blue.png',1)
-     navigate_to_image(r'pics\ok_light_blue.png',1)
+     navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\ok_blue.png',1)
+     navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\ok_light_blue.png',1)
      # time.sleep(4)
      # navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\wfh_attendance.png',1)      # MAIN DROP DOWN FOR ALL QUERIES , NEEDS TO BE CLICKED FIRST , THEN DO SUB OPERATIONS
      # time.sleep(4)
      # navigate_to_image(r'pics\wfh_attendance_list.png',1)                                   # here we check and conform our attendance
-
+     print('\n\n Welcome to Connect fortclient \n\n')
 
 mark_attendance() if connect_fortclient() else print('\nLet me connect to fortclient first\t'),print('\nYour Connected to FortClient\nNow lets mark the attendance\n'),mark_attendance()
      

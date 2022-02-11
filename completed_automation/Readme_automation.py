@@ -13,16 +13,16 @@ f'''
 # Template 1
 # A COMPLETE {self.project_name} WITH DJANGO FRAMEWORK
 . Need to display an Image of {display[0]}
-. Should be able to {display[1]}
+. Should be able to show {display[1]}
 . Should display the {display[2]} 
 . {display[3]}
-. OPTIONAL: Should be able to {display[4]}
+. OPTIONAL: Should be able to show the {display[4]}
 
 
 # Template 2
 
 These main features have  been currently implemented.\n\
-Try to Replicate them along with their funcaionalities:
+Try to Replicate them along with their functionalities:
 Features:
     []: # {features['feature1']}
     []: # {features['feature2']}
@@ -84,17 +84,31 @@ Look at the screenshots Dir for more information.
 # 2. Project info in detail
 # 3. need to pass (args*)display as an argument     >=5   , if more show display6
 # 4. need to pass (kwargs)features as an argument   >=6   , features['feature7']
-project13 = Main('',
-'This web application creates an , where users can \n\
-    * \n\
-    * \n\
-    * ',
-'','','','','',
-feature1= ' ',
-feature2= ' ',
-feature3= ' ',
-feature4= ' ',
-feature5= ' ',
-feature6= ' '
+
+project13 = Main('Calculator & Voting application',
+
+'This web application creates an Calculator & Voting application in Django_Framework App where users can \n\
+    * Use Calculator App \n\
+    * Use Voting App\n\
+    * Tools used here are HTML, CSS, and JavaScript\n\
+    * Python , DJango, and Bootstrap  to create the Application.\n\
+    ** TWIST \n\
+    * Here you need to change DIR for both the projects respectively\
+    Eg For Calculator App\n\
+    **Change in settings.py DIRS: [os.path.join(BASE_DIR,templates/calculatorapp)]\n\
+    Open the link localhost:8000/calculatorapp\n\
+    Eg For Voting App\n\
+    **Change in settings.py DIRS: [os.path.join(BASE_DIR,templates/votingapp)]\n\
+    Open the link localhost:8000/votingapp \n\n\
+    This Way You Would be able to View both the apps constantly in one project',
+
+'Votes ','Results','counts and calculations','Both Operations in one go','Instructions of the app',
+
+feature1= 'View The Voting Results',
+feature2= 'View the Calculation Page',
+feature3= 'Submit results and view the Results pages',
+feature4= 'About pages', 
+feature5= 'Instruction pages',
+feature6= 'Footer ',
 
 )
