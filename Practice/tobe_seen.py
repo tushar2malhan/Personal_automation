@@ -496,6 +496,17 @@ def assign():
 #         Add git ignoring credentials file                                                                                                                   
 
 # use gitignore to ignore the credentials file
+# inside .gitignore > /dir/main_dir/
+# git add . 
+# git commit -m "" 
+# git push origin           >>> will ignore all  the directory or file
+
+############################################################################################################################
+# git checkout -- filename.py      [ before git add . ]     >>> undo the latest changes you just did !     ( or do . to undo all changes in all files )
+# git revert  hashcode             [ after git commit ]     >>> undo the changes and with the current changes in ur files , it will bring back old changes
+#                                                                ( like with my new updated code in fortclient it brought back old README.MD file which was deleted )
+
+
 
 ############################################################################################################################
 
