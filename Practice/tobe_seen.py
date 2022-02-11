@@ -504,9 +504,9 @@ def assign():
 ############################################################################################################################
 # git checkout -- filename.py      [ before git add . ]     >>> undo the latest changes you just did !     ( or do . to undo all changes in all files )
 # git revert  hashcode             [ after git commit ]     >>> undo the changes and with the current changes in ur files , it will bring back old changes
-#                                                                ( like with my new updated code in fortclient it brought back old README.MD file which was deleted )
-
-
+#                                                              ( like with my new updated code in fortclient it brought back old README.MD file which was deleted )
+#                     ** SENSITIVE COMMAND **
+# git reset --hard hashcode        [ after git commit ]     >>> will forceibly make your directory take back in time  with that git commit ,so all the current commits and files will be lost  permanently
 
 ############################################################################################################################
 
