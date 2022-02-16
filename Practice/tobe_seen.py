@@ -490,6 +490,9 @@ def assign():
 
 # mark_attendance() if connect_fortclient() else print('\nLet me connect to fortclient first\t'),print('\nYour Connected to FortClient\nNow lets mark the attendance\n'),mark_attendance()
      
+#                        Check if name endswith with values given in list 
+
+#  if  kingdom_name.endswith (tuple(i for i in [ 'a', 'e', 'i', 'o', 'u'] ))
 
 
 ############################################################################################################################

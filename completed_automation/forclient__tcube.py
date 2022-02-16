@@ -3,8 +3,12 @@ import os
 import time
 import pyautogui
 from Protected import credentials
+import requests
+import datetime
 
-class Main():
+
+
+class Think_palm():
     HEADS_URL = 'https://heads.thinkpalm.info/Home.aspx'
     TCUBE_URL = 'https://tcube.thinkpalm.info/user/projectlist'
             
@@ -31,11 +35,8 @@ class Main():
             pyautogui.moveTo(position, duration = .5)
             pyautogui.moveRel(off_x, off_y, duration = .2)
             pyautogui.click(clicks = clicks, interval = .1)
-    
-
-    def tst(self):
-        self.navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\cross.png',0,100)
-
+            return True
+             
 
     def connect_fortclient(self):
         """ connect to fortclient """
@@ -47,38 +48,22 @@ class Main():
         pyautogui.write(passwd)
         pyautogui.press('enter')
         try: pyautogui.click(pyautogui.locateCenterOnScreen(r'C:\Users\Tushar\DesktPassTp!@3op\python\pics\connect_fortclient.png'))
-        except:print('Connection Failed or You already pressed enter Key')
+        except:print('\nConnection Failed or You already Connected to Fortclient VPN')
         
         if pyautogui.locateCenterOnScreen(r'C:\Users\Tushar\Desktop\python\pics\disconnect_blue.png') is not None:
             return('\n\nConnected to FortClient')
         pyautogui.click(pyautogui.locateCenterOnScreen(r'C:\Users\Tushar\Desktop\python\pics\minimize_white.png'))
 
-    def tcube(self):
-        try:web.open(self.TCUBE_URL)
-        except web.Error:exit('Error: Could not open  URL')
-        time.sleep(5)
-       
-        try:pyautogui.doubleClick(r'C:\Users\Tushar\Desktop\python\pics\timesheet_blue.png')
-        except:self.navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\timesheet_blue.png',1)     # click on time sheet on both ocassions
-        time.sleep(5)
-        pyautogui.click()
-        pyautogui.scroll(-200)
-        time.sleep(3)
-        self.navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\PQ_ENV_training_black.png',0,500,-20)
-        pyautogui.click()
-        pyautogui.write('8.5')
-        time.sleep(3)
-        pyautogui.scroll(-500)
-        self.navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\save_blue_2.png',2)    # click on save button to save the attendance
-        print('Done')
-
-    
 
     def mark_attendance(self):
-        """ Mark the attendance_request at EOD"""
+        """ Mark the attendance_request at EOD """
         time.sleep(15)
-        try:web.open(self.HEADS_URL)
-        except web.Error:print('Error: Could not open  URL')
+        try:
+            response = requests.get(self.HEADS_URL)
+            print('\n\nWelcome to Heads \t')
+        except Exception:
+            exit('\nError: Could not open Heads URL\n')
+        web.open(self.HEADS_URL) if response.status_code == 200 else print('Check the URL \n')
         time.sleep(5)
         self.navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\login_fotclient.png',2)     # login to HEADS
         time.sleep(15)
@@ -104,10 +89,56 @@ class Main():
         print('\n\n Welcome to Connect fortclient \n\n')
 
 
-person1 = Main('Tushar')
+    def tcube(self):
+        """ Connect to TCube """
+        time.sleep(3)
+        print('\nOpening Timesheet in  Tcube')
+        try:
+            response = requests.get(self.TCUBE_URL)
+            print('Welcome to Tcube \n')
+            
+        except Exception:
+            exit('\nError: Could not open Tcube URL\n')
+        
+        web.open(self.TCUBE_URL) if response.status_code == 200 else print('Check the URL \n')
+        time.sleep(5)
+        self.navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\login_blue_white.png',2)
+        time.sleep(5)
+        try:pyautogui.doubleClick(r'C:\Users\Tushar\Desktop\python\pics\timesheet_blue.png')
+        except:self.navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\timesheet_blue.png',1)     # click on time sheet on both ocassions
+        time.sleep(5)
+        pyautogui.click()
+        pyautogui.scroll(-200)
+        time.sleep(3)
+        print('Weekday is ',datetime.datetime.today().weekday() + 1 )
+        self.navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\PQ_ENV_training_black.png',0,200 + ( (datetime.datetime.today().weekday()) * 70),-10  )
+        pyautogui.click()
+        pyautogui.write('8.5')
+        time.sleep(3)
+        pyautogui.scroll(-500)
+        self.navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\save_blue_2.png',2)    # click on save button to save the attendance
+        print('Done, Marked attendance in  Timesheet of Tcube as well')
 
-person1.mark_attendance() if person1.connect_fortclient() else print('\nLet me connect to fortclient first\t'),print('\nYour Connected to FortClient\nNow lets mark the attendance\n'),person1.mark_attendance()
-person1.tcube()
+
+    def main(self):
+        """ Connect to fortclient twice 
+        # If not connected at first time 
+        and tcube at the end  """
+        self.mark_attendance() if self.connect_fortclient() else print('\nIm not Sure whether Im connected to fortclient or not !\t'),
+        print('Let me Check and connect it again')
+        self.connect_fortclient(),self.mark_attendance()
+        os.startfile(r"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\FortiClient VPN\FortiClient VPN.lnk")
+        while True:
+            time.sleep(1)
+            print('Need to Disconnect from Fortclient inorder to access tcube')
+            if self.navigate_to_image(r'C:\Users\Tushar\Desktop\python\pics\disconnect_blue.png',1):
+                print('\n\nDisconnected from Fortclient')
+                break
+        time.sleep(10)
+        self.tcube() 
+
+person1 = Think_palm('Tushar')
+person1.main()
 
 
 
