@@ -1,1 +1,54 @@
 Aws info 
+
+Iam policies 
+
+group = all iam users get the policy
+consists
+    - version : "2012-10-17"
+    - id : "identifer of the policy"
+    - statement:[
+        {
+            "Sid": identifer of the statement
+            "Effect": "Allow" or "Deny"
+            "Principal": "acc/ role / user to which the policy is applied to"
+            "Action": API CALLS [s3:GetObject, s3:PutObject, ]"
+            "Resource": "arn:aws:s3:::bucketname/*" or "arn:aws:ec2:*:*:instance"
+        }
+    ]
+
+users > user1 >  add permissions > attach existing policy > search and add policy  (IAM read only access) 
+* If u add user1 in devs group , so user will contain both individual as well as Group permissions and policies
+
+
+Access Aws 
+- by management console 
+- aws cli by access keys 
+- sdk python boto3 
+
+
+iam user to create security credentials not by root user (lock it and throw it away)
+
+
+CLI 
+- CLI blank if permissions to user not provided 
+    -- aws configure [ give id and pass , nearest region    ]
+    -- aws iam list-users                  # list all users
+    -- aws iam create-user                 # create user
+
+IAM roles for aws services 
+- can be used on iam users to access iam services as well
+- used by aws services to access aws services ( one iam role + ec2 server == 1 entity )
+
+
+Security Tools
+IAM Security tools 
+    - Credentials Report > get all info about iam users passwords and their info 
+    - Click User > Access Advisor > shows the list of resources used by them and at what time
+      which is  binded by the Polcy permission
+    - One Iam user is one physical user , make groups for multiple users , enable mFa + password policy , 
+    - Create and use ROLES for giving permissions to aws services ( EC2 or S3 use IAM roles )
+    - Never share IAM users and ACCESS keys 
+    
+IAM roles define the set of permissions for making AWS service request whereas 
+IAM policies define the permissions that you will require.... 
+IAM roles are like users and policies are like permissions
