@@ -1,4 +1,5 @@
 import os,time,datetime,shutil,webbrowser,time,keyboard
+from re import M
 from time import sleep
 import pyautogui
 from os import path
@@ -6,10 +7,13 @@ from win10toast import ToastNotifier
 from BOT import send_notification
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class Mail():
+     driver = webdriver.Chrome(executable_path=r"C:\Users\Tushar\Downloads\chromedriver.exe")
 
-     def mail(self):
+     def gmail(self):
           """
           open ur pdf's from mail and download it in your local machine
           """
@@ -36,20 +40,51 @@ class Mail():
                Move pdf files from downloads to DESTINATION dir
           """
           DESTINATION = r"C:\Users\Tushar\Documents\salary_slips_thinkPalm"
+          MUSIC_DESTINATION = r"C:\Users\Tushar\Music"
           os.chdir(r'C:\Users\Tushar\Downloads')
           for each_file in (os.listdir()):
-               if each_file.startswith('Pay'):
+               if each_file.startswith(tuple(['Pay','payslips'])):
                     shutil.move(each_file,DESTINATION)
                     print('\nDone')
                     send_notification('PDF','Your Pdf for current month has been downloaded to the documents directory for ThinkPalm')
+               elif each_file.endswith('mp3'):
+                    shutil.move(each_file,MUSIC_DESTINATION)
+                    send_notification('Music File',f'{each_file} Successfully Moved')
                else:
-                    break
+                    ...
           print('\nCouldn"t Find any file related to payslips Yet, Please check your mail')
      
-     
+     def outlook(self):
+          self.driver.get('https://outlook.office.com/mail/')
+          login = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.NAME, "loginfmt")))
+          login.send_keys('tushar.m@Thinkpalm.com')
+          time.sleep(3)
+          self.driver.find_element(By.ID,'idSIButton9').click()
+          passwd = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.NAME, "passwd")))
+          passwd.send_keys('PassTp!@3')
+          time.sleep(3)
+          self.driver.find_element(By.ID,'idSIButton9').click()
+          
+          # checkbox and submit
+          self.driver.find_element(By.XPATH,'/html/body/div/form/div/div/div[2]/div[1]/div/div/div/div/div/div[3]/div/div[2]/div/div[3]/div[1]/div/label/input').click()
+          self.driver.find_element(By.ID,'idSIButton9').click()
+          time.sleep(3)
+          search_bar = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[3]/div/input')))
+          search_bar.send_keys('Monthly pay slip')
+          # search button
+          self.driver.find_element(By.XPATH,'/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/button/span/i').click() 
+          time.sleep(2)
+          # self.driver.find_element(By.XPATH('/html/body/div[3]/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div/div[1]/div[2]/div/div/div/div/div/div[2]/div/div')).
+          
+
+          # click on pay slip class = _1LpdCXJNhBFxJf0rAReTyO
+          # download id = id__404
+
+
      def main(self):
-          # self.mail()
-          self.move_pdf_files()
+          # self.gmail()
+          self.outlook()
+          # self.move_pdf_files()
           # exit()
 
 if __name__ == '__main__':

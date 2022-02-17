@@ -527,6 +527,15 @@ from selenium.webdriver.common.by import By
 # import credentials            # FOR Linkedin give credentials
 # linkedin_email = credentials.all_credentials['linked_email']
 # linkedin_password = credentials.all_credentials.get('linked_password')
+''' Suppose issue with web driver like  
+element is not attached to the page document
+  (Session info: chrome=98.0.4758.82)
+
+As browser is not able to view the page , as its not loaded up yet , so it will throw an error , so we need to wait for the page to load up
+
+submit = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'idSIButton9')))
+or use time.sleep(5)
+'''
 
 def user_information(username):
     """ Display user information from

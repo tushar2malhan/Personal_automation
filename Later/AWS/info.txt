@@ -38,6 +38,10 @@ CLI
 IAM roles for aws services 
 - can be used on iam users to access iam services as well
 - used by aws services to access aws services ( one iam role + ec2 server == 1 entity )
+-  Use Iam roles for EC2 instances > attach the role and 
+    when u access ec2 by ssh u can use the resources without aws configure  command (used by iam user to authenticate)
+    - here we directly provide iam role which consists of iam policy which is attached to ec2 instance !
+
 
 
 Security Tools
@@ -52,3 +56,81 @@ IAM Security tools
 IAM roles define the set of permissions for making AWS service request whereas 
 IAM policies define the permissions that you will require.... 
 IAM roles are like users and policies are like permissions
+
+
+
+
+EC2 -  ELASTIC COMPUTE CLOUD
+    t2micro - 1 vpcu (virtual cpu ) with 1 GIb memory , ebs storage only  with low to moderate network performance !
+
+    launching web server on ec2 
+    - choose AMI - amazon machine image   (free tier )
+    - choose instance   type, configurations, sg , user data (pre built scirpt for automation of daily tasks )
+    Sg - allow http port 80 = means from anywhere it allows clients to access the website on port 80
+    - create key pair and choose RSA and login 
+    - start stop ec2 = change in its public ipv4
+    
+    EC2 instance Types 
+        m5.2xlarge 
+        m : instance class
+        5 : generation class 
+        2xlarge : size within the instance class 
+        [ more the size more the memory , more the cpu load on ur ec2 ]
+    
+    . General purpose  = Compute optimized performance  
+            > for batch processing workloads, high performance web servers , high performance computing HPC , ML , DEDICATED game servers 
+    . Memory optimized = Process large data sets in memory
+            > High performance DBs , cache stores , in memory dbs , real time processing of big unstructured data
+    . Storage optimized = Accessing lot of data sets of Local storage 
+            > High frequency OLTP systems , relational and no sql dbs, cache , data warehouse 
+    
+Security Groups
+    - Firewalls outside of your ec2  (traffic in and out are dependent on them )
+    - By default all inbound traffic is blocked  and all outside traffic is authorized
+    - what is allowed to go in , is allowed to go out, based on rules by IP addresses 
+    - source 0.0.0.0/0 means everything is allowed
+    - single instance can have multiple security groups , locked in region /vpc > so new region new security group
+    - If application not accessibe , then try to connect to configure your ports of the security group 
+    - ec2_1 > sg_1 > ec2_2 , sg_2 >>> main_sg <<< EC2 >>>
+    - 22 = ssh (secure shell) , http & https (80, 443) access unsecured and secured websites , 21 (FTP file transfer ),3389 (rdp windows control machine )
+    
+
+ssh ,puttty , ec2 instance connect  to connect to  ec2 
+    - download putty > file > load private key and select the key (save it ) > enter putty configurations > ec2-user@ipv4 address under hostname > save it > under ssh > auth > browse and laod ssh key 
+    - ssh  -i path_to_pem_file.pem ec2-user@ipv4 address      (if issue use chomd , or check the properties of key - the owner should be you and remove other users and apply )
+   [  Any timeout (not just for SSH) is related to security groups or a firewall. Ensure your security group looks like this and correctly assigned to your EC2 instance. rules > ssh 0.0.0.0/0  ::/0  ]
+
+Pricing options are available
+    - On demand = linux per sec , windows per min , other per hour , no upfront , not long term
+    ( recommended for short term and un interruption workloads ), here u dont know the workload
+    - Reserved Instance  ( 75 % chepaer than on demand )
+                         - reserved = for long workloads 
+                         - convertible reserved  = long workloads with flexbile instances,can change ec2 type
+                         - Scheduled  reserved   = every thursay btwn 3 to 6 pm 
+                            ( for steady stage usage like databases )
+    - Spot instances = short workloads . cheapest and can lose instance , for batch jobs, image processing, any distributed workloads , NOT FOR CRITICAL JOBS or DBS
+        ( as long as max spot price is there  , we keep the instance , after that we get 2 min grace period , we can stop or terminate the instance )
+        ( SPOT BLOCK - when u block spot instance for specific time period > 1-6 hours without interruption )
+        ( spot request - one time request to book spot instance , persistent request to book spot instance for specific time period )
+        - first cancel open active or disable spot request and then terminate the spot instance
+        SPOT FLEETS = spot instances + on demand instances
+           - define launch pools , lowest price 
+           - automatically request spot instance with lowest price 
+
+    - Dedicated Instance = instances running on hardware ,no control over instance placement  
+        ( here billing is per instance )
+    - Dedicated hosts = Book an entire physical server , contorl instance placement 
+        ( physical server , renting entire server ,address compliance requirements and use your server bound software licenses )
+        ( for 3 yr period ,  more expensive , server bound license can be used )
+
+    EG 
+    on demand - staying in resort whenever we like and we pay full price , reserved = planning ahead for booking rooms at good discount
+    spot = hotels allows to bid for room , highest bidder gett the room , can get kicked out any time 
+    dedicated hosts = book entire Building of the resort 
+
+
+
+
+
+
+
