@@ -499,10 +499,13 @@ def assign():
 #         Add git ignoring credentials file                                                                                                                   
 
 # use gitignore to ignore the credentials file
-# inside .gitignore > /dir/main_dir/
+# inside .gitignore > /dir/main_dir/          
+
 # git add . 
 # git commit -m "" 
 # git push origin           >>> will ignore all  the directory or file
+
+# SO WHEN U PUT FILE IN GITIGNORE , YOU WONT SEE THE FILE IN GIT STATUS
 
 ############################################################################################################################
 # git checkout -- filename.py      [ before git add . ]     >>> undo the latest changes you just did !     ( or do . to undo all changes in all files )

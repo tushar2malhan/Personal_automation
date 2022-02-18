@@ -122,11 +122,37 @@ Pricing options are available
     - Dedicated hosts = Book an entire physical server , contorl instance placement 
         ( physical server , renting entire server ,address compliance requirements and use your server bound software licenses )
         ( for 3 yr period ,  more expensive , server bound license can be used )
+        (You would like to deploy a database technology on an EC2 instance and the vendor license bills you based on the physical cores and underlying network socket visibility.
+         it will allow EC2 Purchasing Option allows you to get visibility into them?)
 
     EG 
-    on demand - staying in resort whenever we like and we pay full price , reserved = planning ahead for booking rooms at good discount
-    spot = hotels allows to bid for room , highest bidder gett the room , can get kicked out any time 
-    dedicated hosts = book entire Building of the resort 
+        on demand - staying in resort whenever we like and we pay full price , reserved = planning ahead for booking rooms at good discount
+        spot = hotels allows to bid for room , highest bidder gett the room , can get kicked out any time 
+        dedicated hosts = book entire Building of the resort 
+
+
+IPV4 VS IPV6
+    - each octect in ipv4 ranges from 0-255
+    - each computer in private network can talk to each other , but when you have internet gateway , it can go public 
+    - Public ip means unique IP and can be identified on internet WWW
+    - Private Ip means unique too across all private network,but 2 different private networks can have same IP address
+    - machines with private ip conenct to www using NAT (network address translation)
+    - when ec2 restarted , public ipv4 changes , private ipv4 remains same , can attach elastic ip one at a time 
+    - u can only 5 elastic ip in ur account , can map failure to another ec2 
+    - RECOMMENDED = use random IP with DNS register to it
+    - By Default - EC2 comes with private ip for aws network and we cant ssh via it but for public ip  it is used for internet and can use the same for ssh 
+
+
+Placement Groups
+    - Placement group is a logical grouping of EC2 instances that you can use to ensure that your EC2 instances are always on the same physical server.
+    - 
+
+Elastic Network Interfaces ( ENI )
+    - it is a virtual private network (VPC) interface that allows you to connect to the internet from your EC2 instances.
+    - 
+
+
+
 
 
 
