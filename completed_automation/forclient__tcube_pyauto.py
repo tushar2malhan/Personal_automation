@@ -47,8 +47,8 @@ class Think_palm():
         time.sleep(2)
         pyautogui.write(passwd)
         pyautogui.press('enter')
-        try: pyautogui.click(pyautogui.locateCenterOnScreen(r'C:\Users\Tushar\DesktPassTp!@3op\python\pics\connect_fortclient.png'))
-        except:print('\nConnection Failed or You already Connected to Fortclient VPN')
+        try: pyautogui.click(pyautogui.locateCenterOnScreen(r'C:\Users\Tushar\Desktop\python\pics\connect_fortclient.png'))
+        except:print('\nThink You  are already Connected to Fortclient VPN')
         
         if pyautogui.locateCenterOnScreen(r'C:\Users\Tushar\Desktop\python\pics\disconnect_blue.png') is not None:
             return('\n\nConnected to FortClient')
@@ -136,6 +136,8 @@ class Think_palm():
                 break
         time.sleep(10)
         self.tcube() 
+
+        # self.connect_fortclient() 
 
 person1 = Think_palm('Tushar')
 person1.main()
