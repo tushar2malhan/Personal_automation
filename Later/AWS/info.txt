@@ -69,6 +69,14 @@ EC2 -  ELASTIC COMPUTE CLOUD
     Sg - allow http port 80 = means from anywhere it allows clients to access the website on port 80
     - create key pair and choose RSA and login 
     - start stop ec2 = change in its public ipv4
+    - [ EC2 when launched = Os Boots and the ec2 user data is run
+      when you restart just the OS boots up , so if application is slow it will take time to start up ]
+      EC2 HIBERNATE - when used in memory RAM is preserved and instance boot is much faster , here OS IS NOT STOPPED / RESTARTED ,
+      under the hood - ram state is writeen to encrypted EBS volume  (must be encrypted )
+      Use case - service thats takes time to initialize , save RAM state , no boot up time for application 
+       (only available for on demand and reserved instances , cannot be hibernated more than 60 days )
+       when u connec to ec2 , connect to it and use uptime command to check for how much time the instance was up for ! 
+
     
     EC2 instance Types 
         m5.2xlarge 
@@ -83,7 +91,60 @@ EC2 -  ELASTIC COMPUTE CLOUD
             > High performance DBs , cache stores , in memory dbs , real time processing of big unstructured data
     . Storage optimized = Accessing lot of data sets of Local storage 
             > High frequency OLTP systems , relational and no sql dbs, cache , data warehouse 
+
+
+
+Placement Groups
+    - Placement group is a logical grouping of EC2 instances based on placement group strategies 
+    - 3 startegies available - 
+      Cluster = in single az cluster instances in low latency group (High performance and high risk with GOOD COMMUNICATION BETWEEN THEM , 10 Gb speed network ) > if rack fails ,all instances fails at same time (For Big Data Job),
+      Spread = max 7 instances per group per AZ , spreads across underlying hardware ( Critical applications,minimize failure risk, MAXIMUM AVAILABILITY WHEN AZ FAIL  ) > if rack 1 fails , other one still stable ( For Maximize Availability )
+      Partition = spreads instances across different partitons within AZ ,max 7 Partitions per az in same region , scales 100s EC2's , The instances in partition does not share same racks with other partition instances (For Big Data app , HDFS)
+
+
+
+Elastic Network Interfaces ( ENI )
+    - its gives ec2 access to the network , they are virtual network card(logical component ) in VPC
+    - have 1 primary IPv4 or more secondary Ipv4 (public ipv4 , 1elastic ipv4 , mac address , one or more SG ), 
+    - can be independently attach to ec2s, bound to PARTICULAR AZ, CANT BE ATTACHED TO ANOTHER AZ's EC2 
+    (   Use case - 2 ec2s running an application and when you can  access that ec2 with the private ip - thanks to ENI (secondary virtual network card ) 
+    we could easily do it without failover within 2 instances )
+
+
+EC2 Advance concepts ( Nitro , vcpu , capacity reservations )
+    nitro = better performance , ipv6 , enhance networking , 
+            high speed EBS upto 64,000 IOPS
+
+    [   IOPS = input/output operations per second 
+        Performance for EBS is primarily measured in input/output operations per second (IOPS).
+        In the EBS case, IOPS refer to operations on blocks that are up to 16 KB in size.1  Standard volumes deliver 100 IOPS on average.
+        This is roughly to number of IOPS that a single desktop-class 7200 rpm SATA hard drive can deliver. 
+        In comparison, a similar desktop-class SSD drive can deliver anywhere between 5,000 and 100,000 IOPS. 
+        Server-class SSD drives can go much higher.
+    ]
+
+    OPTIMIZE CPU OPTIONS 
+         - EC2 comes with combination of RAM and MEMORY 
+         - in some case , u would want to change vcpu options , so if any license charges u on the cores 
+           you can reomove these cores and utltize effeciently  > so that could be possible by vcpu options in AWS 
+         - Can be done on aws launch only 
+        
+        vCPU - when launching instances , we are launching vpcus only 
+            - multiple threads can run on 1 CPU (  Multithreading ), each thread is like a vcpu 
+
+    CAPACITY RESERVATIONS 
+        - You wish to reserve instances in particular AZ without 1 yr - 3 yr commitment 
+        - it ensures u have enough ec2 capacity when needed for a specific time timeframe 
+
     
+
+
+
+EC2 Instance Storage
+
+
+
+
 Security Groups
     - Firewalls outside of your ec2  (traffic in and out are dependent on them )
     - By default all inbound traffic is blocked  and all outside traffic is authorized
@@ -141,22 +202,5 @@ IPV4 VS IPV6
     - u can only 5 elastic ip in ur account , can map failure to another ec2 
     - RECOMMENDED = use random IP with DNS register to it
     - By Default - EC2 comes with private ip for aws network and we cant ssh via it but for public ip  it is used for internet and can use the same for ssh 
-
-
-Placement Groups
-    - Placement group is a logical grouping of EC2 instances that you can use to ensure that your EC2 instances are always on the same physical server.
-    - 
-
-Elastic Network Interfaces ( ENI )
-    - it is a virtual private network (VPC) interface that allows you to connect to the internet from your EC2 instances.
-    - 
-
-
-
-
-
-
-
-
 
 
