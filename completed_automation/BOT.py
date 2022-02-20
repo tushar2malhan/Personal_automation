@@ -481,12 +481,21 @@ if __name__ == "__main__":
                             os.startfile(r'D:\Users\tusha\Desktop\trace\Traceart.TXT')
                         
                         elif 'type' in query:
+                            ''' keep typing until i say done or stop '''
                             os.chdir(os.getcwd())
-                            speak('what should i type it ')
-                            content = takeCommand().lower()
-                            with open('completed_automation\reminders.txt','a+')as f:
-                                f.write(f'\nMessage By {real_idenity} ~ \t {content} \n'  )
-                            speak(f' Done {real_idenity} . you can check your content in sample file ')
+                            while True:
+                                print('Speak Now \n')
+                                speak(' ')
+                                content = takeCommand().lower()
+                                with open(r'C:\Users\Tushar\Desktop\python\completed_automation\Protected\reminders.txt','a+')as f:
+                                        if content in ('ok','type now'):
+                                            print(' Say something \n')
+                                            content2 = takeCommand().lower()
+                                            f.write(f'\t Message By {real_idenity} ~ \t {content2} \n'  )
+                                            speak(f'Done {real_idenity} , your message has been saved ')
+                                       
+                                        elif content in ('done','dant','stop'):
+                                            break
                         
                         elif 'news' in query:
                             speak('Highlighting the top headlines for today ! ')

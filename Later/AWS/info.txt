@@ -137,10 +137,65 @@ EC2 Advance concepts ( Nitro , vcpu , capacity reservations )
         - it ensures u have enough ec2 capacity when needed for a specific time timeframe 
 
     
+EC2 EBS 
+    - EBS volume is a network drive that you attach to a particular instance and the data will still persist after its termination and 
+      it can be only mounted to one instance at a time and it is bound to a specific availability zone only just like EC2 
+    - can attach multiple ebs volumes on single ec2 
+    - in order to move it across the availability zone you need to take the snapshot of it it has a high provision capacity 
+    - basically it is  backup of ebs volumes only and there is no necessary to detach the volume to do the snapshot 
+      but it is a good practice so you create the snapshots to copy data from across the region
+
+    - Volume  in 6 types 
+     gp2/gp3 and io1 io2 can be used as boot volumes   
+     General purpose SSD - cost effective , low latency , for  system boot bolumes ,gp3 increase upto 16000 IOPS , small gp2 upto 3000 IOPS 
+    
+    - Provisioned IOPS SSD 
+    ( for critical applications that sustain IOPS more than 16000 ), good for db workloads
+
+    - HDD . cannot be  boot volumes , with through put  optimized HDD , max IOPS 500 
+          . COLD HDD - for data that is infrequently accessed  ( IOPS 250 )
+    
+    - EBS MULTI ATTACH 
+      attach ebs volume to multiple ec2 instances in same ax , each az has full read and write  permisison to volume 
+      ( for cuncurrent write operations  and HIGH availability )
+    
+    - EBS ENCRYPTION 
+      WHEN U ENCRYPT 
+        data at rest , on fly , snapshot , volumes created from it are envrypted 
+      . Leverage keys from KMS AES 256 
+    
+
+ELASTIC FILE SYSTEM  EFS 
+    - here it can be mounted to multiple ec2s in multi az ( not like ebs which is locked in single az  and here data cant be shared )
+    - 3 times cost of gp2 
+    - all ec2 access the same files 
+    ( web serving , data sharing , multi az )
+    - uses sg to control access to EFS 
+    - COMPATIBLE ONLY WITH LINUX AMI   - not windows 
+    - it automatically scales with pay per use model 
+    - FOr latency sensitive - GENERAL PURPOSE (webserver cms ) , FOr Big data Use MAX I/O (higher latency  ,through put )
+    - Through put mode - bursting 1 TB = 50 mib , set your throughput regrdless of storage size 
+    - STORGE Tiers - move files after N days , for standard and infrequent access (cost to retrieve files and to store files  if files not accessed lately )
+
+EBS vs EFS 
+    can be attached to single ec2 , locked in single AZ , IO increases if disk size increases , 
+    to migrate ebs volume across az > take snapshot > here root vol gets terminated with ec2 by default 
+whereas 
+    efs mounts 100s of instances across AZ , only for linux , more expensive , use EFS-IA for cost savings 
+Instance store helps to maximum IO 
 
 
+
+AMI
+    - is a customisation of ec2 instance and if you create your own it gives your faster boot time and they are  built for a specific region only 
+      But by default you use the public AMI but you can build your own as well 
+    - we can build the AMI from the EBS snapshots that we  created and we can launch EC2 from it 
+
+EC2 > EBS SNAPSHOT > AMI > EC2 ( new AZ  )
 
 EC2 Instance Storage
+    - if u need high performance hardware disk , better i/o , for cache temporary data 
+
 
 
 
