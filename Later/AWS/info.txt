@@ -163,6 +163,7 @@ EC2 EBS
       WHEN U ENCRYPT 
         data at rest , on fly , snapshot , volumes created from it are envrypted 
       . Leverage keys from KMS AES 256 
+      . By default, the Root volume type will be deleted as its "Delete On Termination" attribute checked by default. Any other EBS volume types will not be deleted as its "Delete On Termination" attribute disabled by default.
     
 
 ELASTIC FILE SYSTEM  EFS 
@@ -182,7 +183,8 @@ EBS vs EFS
     to migrate ebs volume across az > take snapshot > here root vol gets terminated with ec2 by default 
 whereas 
     efs mounts 100s of instances across AZ , only for linux , more expensive , use EFS-IA for cost savings 
-Instance store helps to maximum IO 
+
+Instance store helps to maximum IO , EC2 Instance Store provides the best disk I/O performance.
 
 
 
@@ -190,11 +192,20 @@ AMI
     - is a customisation of ec2 instance and if you create your own it gives your faster boot time and they are  built for a specific region only 
       But by default you use the public AMI but you can build your own as well 
     - we can build the AMI from the EBS snapshots that we  created and we can launch EC2 from it 
+    AMIs are built for a specific AWS Region, they're unique for each AWS Region. You can't launch an EC2 instance using an AMI in another AWS Region, but you can copy the AMI to the target AWS Region and then use it to create your EC2 instances.
 
 EC2 > EBS SNAPSHOT > AMI > EC2 ( new AZ  )
 
+
+
 EC2 Instance Storage
     - if u need high performance hardware disk , better i/o , for cache temporary data 
+    
+    - You can run a database on an EC2 instance that uses an Instance Store, but you'll have a problem that the data will be lost if the EC2 instance is stopped (it can be restarted without problems). 
+      One solution is that you can set up a replication mechanism on another EC2 instance with an Instance Store to have a standby copy. 
+      Another solution is to set up backup mechanisms for your data. It's all up to you how you want to set up your architecture to validate your requirements. 
+      In this use case, it's around IOPS, so we have to choose an EC2 Instance Store.
+
 
 
 
