@@ -5,7 +5,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-from completed_automation.Protected import credentials
+from Protected import credentials
+from selenium.common.exceptions import WebDriverException
 
 HEADS_URL = 'https://heads.thinkpalm.info/Home.aspx'
 TCUBE_URL = 'https://tcube.thinkpalm.info/user/projectlist'
@@ -18,7 +19,11 @@ class Think_palm():
     def tcube(self):
         ''' Operations in tcube '''
         print('Tcube Started')
-        driver.get(TCUBE_URL)
+        if "errorPageContainer" in [ elem.get_attribute("id") for elem in driver.find_elements(By.CSS_SELECTOR,"body > div") ]:
+            raise Exception( "this page is an error" )
+        else:
+            driver.get( TCUBE_URL )
+        # driver.get(TCUBE_URL).status_code()
         # driver.maximize_window()
         driver.find_element(By.ID,'username').send_keys(credentials.all_credentials.get('think_palm_username'))
         driver.find_element(By.ID,'password').send_keys(credentials.all_credentials.get('fortclient_password'))
@@ -27,36 +32,40 @@ class Think_palm():
         driver.find_element(By.XPATH,'/html/body/div[3]/div[1]/div/div/table/tbody/tr/td[5]/a').click() # timesheet 
         print('\nWaiting for Timesheet to Load ')
         time.sleep(7)
-     
-        print(" Now going for attendance\n")
+        
+        print("Now going for attendance")
         table_id = driver.find_element(By.XPATH, '/html/body/div[3]/div[2]/div[2]/div[2]/div/form/table/tbody/tr[7]' )
         rows = table_id.find_elements(By.TAG_NAME, "td") # get all of the rows in the table
-
+        # print('rows\n',rows)
+        
         ''' Iterate through the rows , find element of input by name and sent keys'''     
-        for row in rows: 
-            element = row.find_element(By.NAME,'row5[]')
-            element.send_keys('8.5')
+        try:
+            for row in rows: 
+                element = row.find_element(By.NAME,'row5[]')
+                element.click()
+                element.send_keys('8.5') 
+        except WebDriverException: print("Other Elements are not clickable yet")
+            
 
         driver.find_element(By.ID,'save_timesheet').click()     # SAVE TIMESHEET 
 
-        print('\t\tTcube Attendance Marked \n\n\n\n')
-        time.sleep(5)
+        print('\n\tTcube Attendance Marked \n')
 
     def heads(self):
         ''' Operations in heads '''
-        print('Heads Started')
+        print('Heads Started\n')
         driver.get(HEADS_URL)
+        time.sleep(5)
         driver.find_element(By.ID,'txtUserName').send_keys(credentials.all_credentials.get('think_palm_username'))
         driver.find_element(By.ID,'txtPassword').send_keys(credentials.all_credentials.get('fortclient_password'))
         driver.find_element(By.ID,'btnLogin').click()
       
         # xpath of wfh attendance 
         try:    
-            driver.find_element(By.ID,'ContentPlaceHolder1_Module2_DataListModule_ImgBtnModule_2').click() 
-            driver.find_element(By.XPATH,'/html/body/form/div[3]/div[2]/div/div[2]/section/span/span[13]/div/input').click() 
+            driver.find_element(By.XPATH,'/html/body/form/div[3]/div[2]/div/div[2]/section/span/span[13]/div').click() 
         except: 
-            # driver.find_element(By.NAME,'ctl00$ContentPlaceHolder1$Module2$DataListModule$ctl02$ImgBtnModule').click()
-            ...
+            print("Since Fortclient not connected, xpath changed, just wait i'll check it ")
+            driver.find_element(By.XPATH,'/html/body/form/div[3]/div[2]/div/div[2]/section/span/span[2]/div').click() 
 
         # First click on wfh attendance
         time.sleep(5)
@@ -72,7 +81,9 @@ class Think_palm():
             
         
         # wfh attendance request
-        driver.get(links[0]) 
+        
+        driver.get(links[0])
+        # print(links)
         time.sleep(3)
         driver.find_element(By.XPATH,'/html/body/form/div[3]/div[2]/div/div/section/div/div[2]/input[1]').click()   # save button
         time.sleep(1)
@@ -80,13 +91,16 @@ class Think_palm():
         # wfh attendance list , confirm the attendance
         driver.get(links[1])     
     
-        print('\t\tHeads Done, Marked attendance ')
+        print('\tHeads Done, Marked attendance ')
+        driver.quit()
         ...
 
     def main(self):
         ''' Run the operations HEADS AND TCUBE  '''
-        self.tcube()
-        self.heads()
+        try:self.tcube()
+        except: print('\n\tTCUBE FAILED')
+        try:self.heads()
+        except: print('\n\tHEADS FAILED')
 
 tushar = Think_palm()
 tushar.main()
