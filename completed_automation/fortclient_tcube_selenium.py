@@ -43,6 +43,7 @@ class Think_palm():
             for row in rows: 
                 element = row.find_element(By.NAME,'row5[]')
                 element.click()
+                element.clear()
                 element.send_keys('8.5') 
         except WebDriverException: print("Other Elements are not clickable yet")
             
@@ -97,10 +98,11 @@ class Think_palm():
 
     def main(self):
         ''' Run the operations HEADS AND TCUBE  '''
-        try:self.tcube()
-        except: print('\n\tTCUBE FAILED')
-        try:self.heads()
-        except: print('\n\tHEADS FAILED')
+        # try:self.tcube()
+        # except: print('\n\tTCUBE FAILED')
+        # try:self.heads()
+        # except: print('\n\tHEADS FAILED')
+        self.tcube()
 
 tushar = Think_palm()
 tushar.main()
