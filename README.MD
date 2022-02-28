@@ -11,11 +11,8 @@
 2. Bot (Alexa type) -> <br />
 3. clean downloads (Download manager) -> <br />
 4. Connect Forclient (Notification)-> <br />
-5. Web Scraping (Amazon) -> <br />
-6. CTC calculation (Base on monthly salary) -> <br />
-7. Lamp  (Automatic lamp) -> <br />
-8. python_samples ( django_automation,job_automation,python samples ) -> <br />
-9. Web Scraping (Amazon) -> <br />
+5. Python_samples ( django_automation,job_automation,python samples ) -> <br />
+6. Web Scraping (Amazon) -> <br />
 
 
 
