@@ -1,4 +1,4 @@
-### <p style="text-align:center;">Personal AUTOMATION PROJECTSfree</p> ### 
+### <h3 style="text-align:center;">Personal AUTOMATION PROJECTS </h3> ### 
 
 <img src="https://media4.giphy.com/media/qgQUggAC3Pfv687qPC/giphy.gif?cid=790b7611ae3790088bb82e121695a5d3ae201169a976c69a&rid=giphy.gif&ct=g" alt="Coding" style="width:50%; height:20% ">
 
