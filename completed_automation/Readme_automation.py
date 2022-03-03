@@ -3,7 +3,7 @@ class Main():
         self.project_name = project_name
         self.project_info = project_info
 
-        with open('Readme.md','w') as f:
+        with open(r'C:\Users\Tushar\Desktop\freelancers_django\Readme.md','w') as f:
             f.write(
 f'''
 # {self.project_name}

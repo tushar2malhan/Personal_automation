@@ -1,82 +1,42 @@
+### <h3 style="text-align:center;">Personal AUTOMATION PROJECTS </h3> ### 
 
-# Todo
-
-* This web application creates TODO application in Django_Framework App where users can 
-    * add tasks 
-    * delete,update,modify tasks
-    * Tools used here are HTML, CSS, and JavaScript
-    * Python , DJango, and Bootstrap  to create the Application.
+<img src="https://media4.giphy.com/media/qgQUggAC3Pfv687qPC/giphy.gif?cid=790b7611ae3790088bb82e121695a5d3ae201169a976c69a&rid=giphy.gif&ct=g" alt="Coding" style="width:50%; height:20% ">
 
 
-# Template 1
-# A COMPLETE Todo WITH DJANGO FRAMEWORK
-. Need to display an Image of Add Tasks
-
-. Should be able to show Delete Tasks
- 
-. Should display the Update 
- 
-. Login page
-
-. OPTIONAL: Should be able to show the Instructions of the app
+##### This DIRECTORY will cover: Python Models, and Connect Forclient & OpenCv projects
 
 
-# Template 2
-
-These main features have  been currently implemented.
-Try to Replicate them along with their functionalities:
-Features:
-    []: # View The tasks
-    []: # Add the Tasks
-    []: # Submit results and view the Results pages
-    []: # Modify Tasks
-    []: # Instruction pages
-    []: # Footer 
-
-# MAKE SURE YOU HAVE DJANGO INSTALLED
-# INSTALL DJANGO
-    
-
-# Create a new project
-    
-    []: # python manage.py startproject project_name
-
-# Create a new App
-        
-    []: # python manage.py startapp app_name
-
-# Run the server
-
-    []: # Language: python,bash
-    []: # Path: cd /project_name/app
-    []: # python manage.py runserver
-
-# Template 3
-# You need to create a superuser to add the Main User to the database
-# Create a superuser
-    
-    []: # python manage.py createsuperuser
-    []: # http://127.0.0.1:8000/admin - Sign in with the username and password you created
-    []: # Click on login to check the Models and User created.
-    []: # Click on the User and check the User created.
+**Completed Automation****<br />
+1. Alarm (Set your alarm) -> <br />
+2. Bot (Alexa type) -> <br />
+3. clean downloads (Download manager) -> <br />
+4. Connect Forclient (Notification)-> <br />
+5. Python_samples ( django_automation,job_automation,python samples ) -> <br />
+6. Web Scraping (Amazon) -> <br />
 
 
-Its upon Your imagination How you wanna design it!
 
-## Dependencies
-#### Python, Django
+**Open Cv Projects**<br />
+1. face detection (using face.xml) -> <br />
+2. Basics (opencv )  -> <br />
 
-## run 
 
-```
-pip install -r requirements.txt
-python manage.py test # Run the standard tests. These should all pass.
-python manage.py makemigrations
-python manage.py migrate
-python manage.py runserver
-```
-* Open `http://127.0.0.1:8000` to see the main site.
-* [ Hint :] If Facing issue Check your project url and app url and make sure they are correct.
 
-Look at the screenshots Dir for more information.
+**To Be Seen** <br />
+1. Major projects and Topic covered with examples  -> <br />
+2. Each part of python is covered        -> <br />
 
+
+**Data Structures & Algorithms** <br /> 
+1. Information  -> <br />
+2. Practice        -> <br />
+
+
+**Later** <br /> 
+1. AWS  -> <br />
+2. OS         -> <br />
+3. Networking         -> <br />
+
+<br />
+
+#### Rest each project is being specific to Personal project ####
