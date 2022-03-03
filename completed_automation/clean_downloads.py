@@ -9,6 +9,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from Protected import credentials
+username = credentials.all_credentials['think_palm_username']
+password = credentials.all_credentials['fortclient_password']
 
 class Mail():
      driver = webdriver.Chrome(executable_path=r"C:\Users\Tushar\Downloads\chromedriver.exe")
@@ -57,11 +60,11 @@ class Mail():
      def outlook(self):
           self.driver.get('https://outlook.office.com/mail/')
           login = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.NAME, "loginfmt")))
-          login.send_keys('tushar.m@Thinkpalm.com')
+          login.send_keys(username)
           time.sleep(3)
           self.driver.find_element(By.ID,'idSIButton9').click()
           passwd = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.NAME, "passwd")))
-          passwd.send_keys('PassTp!@3')
+          passwd.send_keys(password)
           time.sleep(3)
           self.driver.find_element(By.ID,'idSIButton9').click()
           

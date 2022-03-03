@@ -270,3 +270,55 @@ IPV4 VS IPV6
     - By Default - EC2 comes with private ip for aws network and we cant ssh via it but for public ip  it is used for internet and can use the same for ssh 
 
 
+
+
+SCALABILITY 
+    - means application can handle greater loads of Scalability 
+    - vertical ( increasing size of instance ,use case for database ) & horiztonal (increasing number of instances, ,use case for  web application )
+    - High availability - running application in at least 2 data centers (2 AZs) , like to survive a data center loss 
+    - Load Balancing    - servers that forward traffic to multiple servers 
+    -                    ( Expose a single point DNS to your application , spread load , do regular health checkups , provide SSL termination HTTPS )
+    - ELB is a managed load balancer which  aws gurantees it will work , will take care of upgrades , maintenance , High availability and Health checks of instances
+    - Types of load balancers 
+        > Classic Load balancer CLB (Legacy )
+        > application load balancer  ( Http , Https , websocket )
+        > Network Load Balancer ( TCP , TLS )
+    - Can be private and Public , accessed by security group 
+    - Overall it is recommenned to use newer generation 
+
+
+CLASSIC Load Balancer 
+    - Support TCP layer 4 and HTTPS Layer 7 of TCP/IP model 
+    - health checks based on tcp andh http based , where hostname is fixed 
+    ( we can allow all traffic from load balancers to EC2 via security group - allowing inbound rule -> will distribute traffic equally among all instances )
+
+APPLICATION Load Balancer 
+    - Layer 7 HTTP 
+    - Load Balancing to multiple Http applications across machines (target groupS )
+    - support redirect from http to https 
+    - Route traffic based on path in url ( eg /posts & /home )
+    - Route traffic based on hostname in URL (eg one.ex.com  & other.ex.com )
+    - Routing based on Query string headers ( /users?id=123 )
+    (    Great fit for micro services and docker based container sized applications 
+         beacuse they have port mapping feature to redirect to any dynamic port in ECS  )
+    ( HERE TARGET GROUPS can be EC2 , ECS tasks , lambda functions , IP addresses 
+        Thus it can route to multiple target groups and health checks can be done at target group level ) 
+    - ALB cant see IP of the client directly , THE TRUE IP OF THE CLIENT IS INSERTED IN THE HEADER 
+    X-Forwarded-For 
+    [ when your load balancer talks to your EC2 instance,
+    it's going to use the load balancer IP,
+    which is a private IP into your EC2 instance.
+    And so for the EC2 instance to know the client IP,
+    it will have to look at these extra headers
+    in your HTTP request, which are called X-Forwarded-Port and Proto.]
+
+NETWORK  Load Balancer 
+
+    
+
+
+
+
+
+
+

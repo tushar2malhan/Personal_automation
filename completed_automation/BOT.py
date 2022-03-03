@@ -86,6 +86,7 @@ def takeCommand():
     #It takes microphone input from the user and returns string output
     r = sr.Recognizer()
     with sr.Microphone() as source:
+        r.adjust_for_ambient_noise(source) 
         print("Listening...")
         r.pause_threshold = 1
         audio = r.listen(source)
@@ -484,17 +485,17 @@ if __name__ == "__main__":
                             ''' keep typing until i say done or stop '''
                             os.chdir(os.getcwd())
                             while True:
-                                print('Speak Now \n')
+                                print('\nSpeak Now \n')
                                 speak(' ')
                                 content = takeCommand().lower()
                                 with open(r'C:\Users\Tushar\Desktop\python\completed_automation\Protected\reminders.txt','a+')as f:
-                                        if content in ('ok','type now'):
-                                            print(' Say something \n')
+                                        if content in ('ok','type now','type','now'):
+                                            speak(' Say something \n')
                                             content2 = takeCommand().lower()
                                             f.write(f'\t Message By {real_idenity} ~ \t {content2} \n'  )
                                             speak(f'Done {real_idenity} , your message has been saved ')
                                        
-                                        elif content in ('done','dant','stop'):
+                                        elif content in ('done','dant','stop','done'):
                                             break
                         
                         elif 'news' in query:

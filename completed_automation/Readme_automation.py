@@ -85,30 +85,23 @@ Look at the screenshots Dir for more information.
 # 3. need to pass (args*)display as an argument     >=5   , if more show display6
 # 4. need to pass (kwargs)features as an argument   >=6   , features['feature7']
 
-project13 = Main('Calculator & Voting application',
-
-'This web application creates an Calculator & Voting application in Django_Framework App where users can \n\
-    * Use Calculator App \n\
-    * Use Voting App\n\
+project13 = Main('Todo',
+'This web application creates TODO application in Django_Framework App where users can \n\
+    * add tasks \n\
+    * delete,update,modify tasks\n\
     * Tools used here are HTML, CSS, and JavaScript\n\
-    * Python , DJango, and Bootstrap  to create the Application.\n\
-    ** TWIST \n\
-    * Here you need to change DIR for both the projects respectively\
-    Eg For Calculator App\n\
-    **Change in settings.py DIRS: [os.path.join(BASE_DIR,templates/calculatorapp)]\n\
-    Open the link localhost:8000/calculatorapp\n\
-    Eg For Voting App\n\
-    **Change in settings.py DIRS: [os.path.join(BASE_DIR,templates/votingapp)]\n\
-    Open the link localhost:8000/votingapp \n\n\
-    This Way You Would be able to View both the apps constantly in one project',
+    * Python , DJango, and Bootstrap  to create the Application.\n',
 
-'Votes ','Results','counts and calculations','Both Operations in one go','Instructions of the app',
-
-feature1= 'View The Voting Results',
-feature2= 'View the Calculation Page',
+# Display
+'Add Tasks\n','Delete Tasks\n ','Update \n','Login page\n','Instructions of the app',
+# Features
+feature1= 'View The tasks',
+feature2= 'Add the Tasks',
 feature3= 'Submit results and view the Results pages',
-feature4= 'About pages', 
+feature4= 'Modify Tasks', 
 feature5= 'Instruction pages',
 feature6= 'Footer ',
 
 )
+
+

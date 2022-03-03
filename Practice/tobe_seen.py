@@ -496,6 +496,8 @@ def assign():
 
 
 ############################################################################################################################
+#                                                   GIT   HELP
+
 #         Add git ignoring credentials file                                                                                                                   
 
 # use gitignore to ignore the credentials file
@@ -505,7 +507,8 @@ def assign():
 # git commit -m "" 
 # git push origin           >>> will ignore all  the directory or file
 
-# SO WHEN U PUT FILE IN GITIGNORE , YOU WONT SEE THE FILE IN GIT STATUS
+# SO WHEN U PUT FILE IN GITIGNORE , YOU WONT SEE THE FILE IN GIT STATUS   {  no relative path allowed , only absolute path }
+# git rm --cached <foldername>   incase folder dosent show up in repository
 
 ############################################################################################################################
 # git checkout -- filename.py      [ before git add . ]     >>> undo the latest changes you just did !     ( or do . to undo all changes in all files )
