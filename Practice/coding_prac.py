@@ -401,3 +401,58 @@ numbers = [3,5,2,9]
 # print(array) 
         
      
+'''                 Code
+# Your code here
+def main ():
+	word = input()
+	print("Gravity" if word == 'Apple' else 'Space')
+# main()
+
+
+#                       Take inputs according to the range of l in one line
+#                   words = [word for word in input().split(" ", l-1) ]   
+
+def main():
+    l = int(input())
+    d = {}
+
+    #                  Take inputs in one line
+    #           words = [word for word in input() ]   
+    
+    for i in words:
+        if i not in d:
+            d[i] = 1
+        else:
+            d[i] += 1
+    print('Nutan' if max(d, key=d.get) == 'N' else 'Tusla')
+
+# main()
+
+
+
+
+'''
+
+# strs = ["eat","tea","tan","ate","nat","bat",'anana']
+
+# for i in range(len(strs)-1):
+#     if strs[i] == strs[i+1][::-1]:
+#         print(str[i])
+#     else:
+#         print(strs[i],strs[i+1])
+
+# check duplicate number in nums 
+nums = [1,2,2]
+
+
+# output = []
+# for i in range(len(nums)):
+#     print(i+1,nums[i])
+#     if i+1 != nums[i]:
+#         output.append(i+1)
+#     if nums[i] in nums[i+1:]:
+#         output.append(nums[i])
+
+# print(output)
+        
+    

@@ -55,7 +55,7 @@ class Think_palm():
                 "4":"Friday"  }
        
         # This represents leave taken for the week, just type down the number , the attendance will be missed for that day
-        leave = [ 1 ]   
+        leave = [  ]   
         # Since 1 == monday and it was maha shivratri on that day , attendance is set to be missed !
         ''' Iterate through the rows , find element of input by name and sent keys'''     
         try:
@@ -76,6 +76,7 @@ class Think_palm():
         driver.refresh()
 
         print('\n\tTcube Attendance Marked \n')
+
 
     def heads(self):
         ''' Operations in heads '''
@@ -118,8 +119,10 @@ class Think_palm():
         driver.get(links[1])     
     
         print('\tHeads Done, Marked attendance ')
+        time.sleep(7)
         driver.quit()
         ...
+
 
     def main(self):
         ''' Run the operations HEADS AND TCUBE  '''
@@ -127,6 +130,7 @@ class Think_palm():
         except: print('\n\tTCUBE FAILED')
         try:self.heads()
         except: print('\n\tHEADS FAILED')
+
 
 tushar = Think_palm()
 tushar.main()

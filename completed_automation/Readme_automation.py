@@ -3,7 +3,7 @@ class Main():
         self.project_name = project_name
         self.project_info = project_info
 
-        with open(r'C:\Users\Tushar\Desktop\freelancers_django\Readme.md','w') as f:
+        with open(r'C:\Users\Tushar\Desktop\freelancers_django\README.md','w') as f:
             f.write(
 f'''
 # {self.project_name}
@@ -80,27 +80,34 @@ Look at the screenshots Dir for more information.
 
 '''
         )
+
 # 1. need to pass project_name as an argument
 # 2. Project info in detail
 # 3. need to pass (args*)display as an argument     >=5   , if more show display6
 # 4. need to pass (kwargs)features as an argument   >=6   , features['feature7']
 
-project13 = Main('Todo',
-'This web application creates TODO application in Django_Framework App where users can \n\
-    * add tasks \n\
-    * delete,update,modify tasks\n\
+project13 = Main(
+# 1 Project_name
+'  ',
+
+# 2 Project_info
+'This web application is a basic application which reverts your IP address and Location,  created using django. Using sqllite as database By default \
+Here each user will get 4 options to change their theme and get the result. So functionalities include \n\
+    * Login \n\
+    * View Ip Address\n\
+    * Check and Update 4 themes\
     * Tools used here are HTML, CSS, and JavaScript\n\
     * Python , DJango, and Bootstrap  to create the Application.\n',
 
-# Display
-'Add Tasks\n','Delete Tasks\n ','Update \n','Login page\n','Instructions of the app',
-# Features
-feature1= 'View The tasks',
-feature2= 'Add the Tasks',
-feature3= 'Submit results and view the Results pages',
-feature4= 'Modify Tasks', 
-feature5= 'Instruction pages',
-feature6= 'Footer ',
+# 3  Display
+'Homepage - IP Address Page \n','Login Page \n ','4 Themes View Page \n','Personalization Page \n','Instructions of the app and images tutorial ',
+# 4 Features
+feature1= 'Login functionality',
+feature2= 'View all the themes in the background',
+feature3= 'Check and confirm Ip address',
+feature4= 'Verify the Location', 
+feature5= 'Registration functionality',
+feature6= 'Footer Or contact Page ',
 
 )
 

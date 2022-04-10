@@ -2,7 +2,6 @@
 import os
 from gtts import gTTS
 import speech_recognition as sr
-from math import remainder
 
 
 para = '''
@@ -27,18 +26,21 @@ Print a list of all the score values from all users excluding the first 10 users
 
 # L=[1,2,4,5,0,6,0]
 # def solve(L):
+#      ''' Move all 0s to RHS '''
 #      if len(L) == 0:
 #           return L
 #      k=0
-#      for i in range(
-#
-# len(L)):
+#      for i in range(len(L)):
 #           if L[i] !=0:
 #                L[k] = L[i]
 #                k+=1
-#      for o in range(k,len(L)):
-#           L[o] =0
-#           return L
+#                print(L[i])
+#      while k < len(L):
+#             L[k] = 0
+#             k+=1
+    #  for o in range(k,len(L)):
+    #       L[o] =0
+#      return L 
 # print(solve(L))
 
 
@@ -328,6 +330,9 @@ def web_scrap_automation(url,postcode,*classnames):
 
 
 ########################################################################
+#                   Pass List Iterables in startswith ()
+#       print( 1 if     ask.startswith( ('7','8','9') )     else 0 )
+########################################################################
 #                   flatten_dict
 
 
@@ -523,42 +528,124 @@ def assign():
 # Dated             19-01-2022 
 #          web scrap data from social media like instal, db , linkedin and twitter
 # Get profile pic , username , followers and posts if valid Username Persists
+
+#                   18-03-2022
 import time
 import sys 
-import json
 import pyautogui
 from selenium import webdriver
-from selenium.webdriver.common.by import By
+# from completed_automation.Protected import credentials 
 
-# import credentials            # FOR Linkedin give credentials
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+
+option = Options()
+
+option.add_argument("--disable-infobars")
+option.add_argument("start-maximized")
+option.add_argument("--disable-extensions")
+
+# REMOVE POP UP NOTIFICATIONS 
+option.add_experimental_option("prefs", { 
+    "profile.default_content_setting_values.notifications": 1 
+})
+
+
 # linkedin_email = credentials.all_credentials['linked_email']
 # linkedin_password = credentials.all_credentials.get('linked_password')
-''' Suppose issue with web driver like  
-element is not attached to the page document
-  (Session info: chrome=98.0.4758.82)
 
-As browser is not able to view the page , as its not loaded up yet , so it will throw an error , so we need to wait for the page to load up
-
-submit = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'idSIButton9')))
-or use time.sleep(5)
-'''
 
 def user_information(username):
+    u_input = input("Which Social Media account  would you require information for ?: \n\n\
+    \t Instagram \t Facebook \t Twitter \t Linkedin \n").lower().strip()
+
+    
     """ Display user information from
     their social media accounts """
-    u_input = input("\n\t\n\tWhich Social Media account  would you require information for ?: \n\n\
-    \t Instagram \t Facebook \t Twitter \t Linkedin \n\n").lower().strip()
+   
+    driver = webdriver.Chrome(
+    chrome_options=option,executable_path=r"C:\Users\Tushar\Downloads\chromedriver.exe")
+    
+    def block_page():
+            ' WANNA Block any FB page ?  '
+            
+            #               3 button Option
+            ''' Since element is not interactable, we use driver.execute_script() to click the button '''
+            print()
+            print(1)
+            try:
+                print('Clicked 3 button Options')
+                driver.execute_script("arguments[0].click();", WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[3]/div/div/div/div[2]/div/div/div[3]/div/div/div[1]"))))
+            except Exception as e:
+                print(e)
+                ...
+                print('1 not respond')
+            time.sleep(2)
+
+          
+            #                  Report Page     :->     As page will be not be clickable sometimes , we start with 1 step from except Block !
+            print(2)
+            try:
+                driver.execute_script("arguments[0].click();", WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[2]/div/div/div[1]/div[1]/div/div/div[1]/div/div/div/div[1]/div/div[6]/div[2]/div/div/span"))))
+                print('Report Page')
+            except Exception as e:
+                print('try to click  2 button again with 1 button ')
+                WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[3]/div/div/div/div[2]/div/div/div[3]/div/div/div[1]'))).click()
+                WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[2]/div/div/div[1]/div[1]/div/div/div[1]/div/div/div/div[1]/div/div[6]/div[2]/div/div/span'))).click()
+                print('\n\n ',e)
+            time.sleep(2)
+          
+          
+            #                  Fake Page
+            print(3)
+            try:
+                # driver.find_element(By.XPATH,'/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div[3]/div/div[2]/div/div/div[4]/div/div/div/div[1]/div/div[1]/div/div/div/div/span').click()
+                driver.execute_script("arguments[0].click();", WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div[3]/div/div[2]/div/div/div[4]/div/div/div/div[1]/div/div[1]/div/div/div/div/span"))))
+                print('Fake Page')
+            except:driver.find_element(By.XPATH,'/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div[3]/div/div[2]/div/div/div[6]/div/div/div/div[1]/div').click()
+            time.sleep(2)
+           
+           
+            #               Something Suspecious          
+            try:
+                print('Called Suspecious Button ')
+                # driver.find_element(By.XPATH,'/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div[4]/div/div[2]/div/div/div[2]/div/div/div/div[1]/div/div[1]/div/div/div/div/span').click()
+                driver.execute_script("arguments[0].click();", WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div[4]/div/div[2]/div/div/div[2]/div/div/div/div[1]/div/div[1]/div/div/div/div/span"))))
+            except: driver.find_element(By.XPATH,'/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div[4]/div/div[2]/div/div/div[4]/div/div/div/div[1]/div/div[1]/div/div/div/div/span').click()
+            time.sleep(2)
+           
+           
+            #               Submit
+            print(4)
+            try:
+                print('Submitted')
+                # driver.find_element(By.XPATH,'/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div[4]/div[2]/div/div/div/div/div[1]/div/span/span').click()
+                driver.execute_script("arguments[0].click();", WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div[4]/div[2]/div/div/div/div/div[1]/div/span/span"))))
+            except:driver.find_element(By.XPATH,'/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div[4]/div[2]/div/div/div/div/div[1]/div/span').click()
+            time.sleep(2)
+            
+            
+            #               Done
+            print(5)
+            try:
+                print('DONE ')
+                # driver.find_element(By.XPATH,'/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div[4]/div[2]/div/div/div/div/div[1]/div/span/span').click()
+                driver.execute_script("arguments[0].click();", WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div[4]/div[2]/div/div/div/div/div[1]/div/span/span"))))
+            except: driver.find_element(By.XPATH,'/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div[4]/div[2]/div/div/div/div').click()
+            time.sleep(2)
+       
 
     try:
-        driver = webdriver.Chrome(executable_path=r"C:\Users\Tushar\Downloads\chromedriver.exe")
         if u_input.startswith('i'):
             print('Instagram\n')
             url = f"https://www.instagram.com/{username}/"
             driver.get(url)
             name = driver.title
             try:
-                # here u copy the classname of the element and then search it by driver
-                # remember u want text or get_attribute('src') == image
                 name = driver.find_element(By.CLASS_NAME,'XBGH5').text
             except:
                 name = driver.find_element(By.XPATH ,'//*[@id="react-root"]/section/main/div/header/section/div[1]/h2').text
@@ -575,34 +662,109 @@ def user_information(username):
                 followers = driver.find_element(By.CLASS_NAME, "_81NM2").text
             except:
                 followers = driver.find_element(By.XPATH, '//*[@id="react-root"]/section/main/div/header/section/ul/li[2]/a').text
+            # data[f'total_posts_of_{username}'] = total_posts
+            # data[f'followers_of_{username}'] = followers
             
             # print(f'Profile pic URL is \t',profile_pic,end='\n\n')
             print(f'Total posts are \t',total_posts,end='\n\n')
-            print(f'Followers are \t\t',followers,end='\n\n')
+           
         
         elif u_input.startswith('f'):
             print('Facebook\n')
-            url = f"https://www.facebook.com/{username}/"
+        
+            url = f"https://www.facebook.com/"
             driver.get(url)
             
-            try:# here we try to find element by class name by looking at page source and we get attribute
-                # we make some time with sleep so that it doesn't break the code'
-                # xlink:href  is the attribute of the image we want from FB 
-                # IF U DONT FIND UR USERNAME HERE , TRY USING name.sername
-                name = driver.title
-            except:
-                print('Couldnt fetch the username from Facebook')
+            """ here we try to find element by class name by looking at page source and we get attribute
+                 we make some time with sleep so that it doesn't break the code'
+                 xlink:href  is the attribute of the image we want from FB 
+                 IF U DONT FIND UR USERNAME HERE , TRY USING name.sername
+                 name = driver.title """
+           
+            """ LOGGED IN FIRST """
+            # login button
             time.sleep(5)
-            profile_pic = [i.get_attribute('xlink:href') for i in driver.find_elements(By.TAG_NAME,"image")]
-            if profile_pic == []:
-                profile_pic = driver.find_element(By.CLASS_NAME,'_2dgj').get_attribute('href') 
-            # else:
-            #     profile_pic = driver.find_element(By.CLASS_NAME,'_6tb5').get_attribute('src') 
+            try:driver.find_element(By.XPATH,('/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div[1]/div/a/div/div[1]')).click()
+            except: ...
+            driver.find_element(By.ID,'email').send_keys(credentials.all_credentials['fb_email'])
+            driver.find_element(By.ID,'pass').send_keys(credentials.all_credentials['fb_password']+Keys.ENTER)
+            
+            try:driver.find_element(By.CLASS_NAME,'_6ltg').click()
+            except:print(' logged in ')
 
+            
+            
+            ''' SEATCH BOX FOR USERNAMES '''
+            # time.sleep(10)
+            # search_box = driver.find_element(By.XPATH,'/html/body/div[1]/div/div[1]/div/div[2]/div[2]/div/div/div[1]/div/div/label/input')
+            # search_box.click()
+            # search_box.send_keys(username)
+            # search_box.send_keys(Keys.RETURN)
+            
+
+            # NOW LOGEGD IN WITH USERNAME SUCCESSFULLY
+            url = f"https://www.facebook.com/{username}"
+            driver.get(url)
+
+            ''' Blocking the page '''
+            driver.minimize_window()
+            def recursive_attack_on_a_page():
+                try:
+                    while 1:
+                        try:block_page() if u_input.startswith('f') else 'break'
+                        except:block_page() 
+                except:
+                    while 1:
+                        try:block_page() if u_input.startswith('f') else 'break'
+                        except:block_page() 
+           
+            try:recursive_attack_on_a_page()
+            except:recursive_attack_on_a_page()
+   
+
+
+            name = driver.title         # .split('Facebook')[0].split('|')[0]
+            time.sleep(10)
+
+            profile_pic = [i.get_attribute('xlink:href') for i in driver.find_elements(By.TAG_NAME,"image")]
+            time.sleep(2)
+            if profile_pic == []:
+                profile_pic = driver.find_element(By.CLASS_NAME,'_2dgj').get_attribute('href')
+               
+            try:
+                # this for a PAGE in fb, u get number of followers from the page
+                followers_of_page =[i.text for i in driver.find_elements_by_css_selector('.'+'.'.join('d2edcug0 hpfvmrgz qv66sw1b c1et5uql lr9zc1uh jq4qci2q a3bd9o3v b1v8xokw oo9gr5id'.split(' '))) if i.text.endswith('like this')]
+                if followers_of_page :
+                    print('Total followers of page are ',''.join(   followers_of_page     ))
+                    followers = followers_of_page[0].split(' ')[0]
+                else:
+                    # this for a General User whose profile is not locked in fb, u get number of followers from the page
+                    print('\n Not a Page')
+                    followers =  driver.find_element(By.CSS_SELECTOR,'.'+'.'.join('d2edcug0 hpfvmrgz qv66sw1b c1et5uql lr9zc1uh e9vueds3 j5wam9gi b1v8xokw m9osqain'.split(' ')) ).text                                     
+                    if followers.isdigit():
+                        int(followers)
+                        print("General User\n")
+                    else:
+                        raise Exception
+            except:
+                # this for a CELEBS PAGE, u get number of followers from the page
+                followers = driver.find_element(By.CSS_SELECTOR,'.'+'.'.join('oajrlxb2 g5ia77u1 qu0x051f esr5mh6w e9989ue4 r7d6kgcz rq0escxv nhd2j8a9 nc684nl6 p7hjln8o kvgmc6g5 cxmmr5t8 oygrvhab hcukyx3x jb3vyjys rz4wbd8a qt6c0cv9 a8nywdso i1ao9s8h esuyzwwr f1sip0of lzcic4wl gpro0wi8 oo9gr5id lrazzd5p'.split(' '))).text
+                if followers.split(' ')[0].split('M')[0].isdigit():
+                    print("\n\t But Its a Celebs Page \n ")
+                else:
+                    # profile hidden , cant do anything
+                    followers = 'Hidden'
+                    print('Profile is locked\nCant show friends as profile is Locked OR Profile is Public ,\n You need to make them friend first')
+
+          
         elif u_input.startswith('t'):
-            """ followers classname refers to multiple classes referring 
-            to a single element, here we used CSS selector or can use xpath
-            where we need to join classes with . DOT . but not for XPATH"""
+            """
+            SO u wanna get element having multiple classes ? 
+                - Followers classname refers to the element having multiple classes.which refers
+            to a single element, hence we used CSS selector or can use xpath
+            where we need to join classes with . DOT .  
+            but not for XPATH - was not working properly
+            """
             print('Twitter\n')
             url = f"https://www.twitter.com/{username}/"
             driver.get(url)
@@ -617,7 +779,7 @@ def user_information(username):
                 print('\nCan fetch the name\n')
             time.sleep(5)
             profile_pic = driver.find_element(By.CLASS_NAME,'css-9pa8cd').get_attribute('src')
-            print(f'\nTotal \t',followers,end='\n\n')
+            # data[f'followers_of_{username}'] = followers
 
         elif u_input.startswith('l'):
             """ here we have to signin first and
@@ -628,38 +790,57 @@ def user_information(username):
             driver.get(url)
             time.sleep(5)
             driver.find_element(By.CSS_SELECTOR,'.authwall-join-form__form-toggle--bottom.form-toggle').click()
+            
             time.sleep(3)
-          #   driver.find_element(By.ID,'session_key').send_keys(linkedin_email)
-          #   driver.find_element(By.ID,'session_password').send_keys(linkedin_password)
+            driver.find_element(By.ID,'session_key').send_keys(linkedin_email)
+            driver.find_element(By.ID,'session_password').send_keys(linkedin_password)
             driver.find_element(By.CLASS_NAME,'sign-in-form__submit-button').click()
             time.sleep(10)
-            pyautogui.click(pyautogui.locateOnScreen(r'pics\linkedin_in_url_white.png',confidence = .8))
+            pyautogui.click(pyautogui.locateOnScreen(r'C:\Users\Tushar\Desktop\cloud_next\images\linkedin_in_url_white.png',confidence = .8))
             pyautogui.write(url)
             pyautogui.press('enter')
             time.sleep(15)
             followers = driver.find_element(By.CLASS_NAME,'t-bold').text
-            print(f'Total Followers = \t {followers}',end='\n\n')
             name = driver.find_element(By.CLASS_NAME,'pv-text-details__left-panel').text
             profile_pic = driver.find_element(By.ID,'ember33').get_attribute('src')
+            # data[f'followers_of_{username}'] = followers
             time.sleep(50)
         
         else:sys.exit("Invalid input")
         try:
             print(f'Username is \t\t',name,end='\n\n')
             print(f'Profile pic URL is \t',profile_pic,end='\n\n')
+            print(f'Total Followers are \t\t',followers,end='\n\n')
+         
         except:
             print('\tCant return name and profile URL')
-    
+      
         driver.close()
         return name
     
     except :
-        driver.close()
-        print('\tCheck The Username Again ')
-        return(f'\n\nIssue with User named -> {username} for getting the information for {u_input}')
+        print(f'{username}\t Check The Username Again\n ')
+        return(f'\n\n Issue with User named -> {username} for getting the information for {u_input}')
 
-# user_information('egg')
-# user_information('Tusharmalhan') 
+
+names = [ 
+        # 'tusharmalhan',
+        # 'vindiesel',
+        # 'rahul.vij.127',
+        ]
+# [user_information(name) for name in names]
+
+
+
+
+
+
+
+
+
+
+
+
                              
 #    JUST PASS IN THE CORRECT USERNAME for the socialmedia account AND IT WILL FETCH THE INFORMATION
 

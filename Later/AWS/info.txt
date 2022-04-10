@@ -294,7 +294,7 @@ CLASSIC Load Balancer
 
 APPLICATION Load Balancer 
     - Layer 7 HTTP 
-    - Load Balancing to multiple Http applications across machines (target groupS )
+    - Load Balancing to multiple Http applications across machines (target groups )
     - support redirect from http to https 
     - Route traffic based on path in url ( eg /posts & /home )
     - Route traffic based on hostname in URL (eg one.ex.com  & other.ex.com )
@@ -312,12 +312,35 @@ APPLICATION Load Balancer
     it will have to look at these extra headers
     in your HTTP request, which are called X-Forwarded-Port and Proto.]
 
+    - LOAD goes from USERS > TO ALB > TO TARGET GROUP > TO EC2
+
 NETWORK  Load Balancer 
 
-    
+    - when you need ultra-high performance, TLS offloading at scale, centralized certificate deployment,
+      support for UDP, 
+    - static IP addresses for your applications. 
+    - Operating at the connection level ( LAYER 4 ), 
+    - Network Load Balancers are capable of handling millions of requests per second 
+      securely while maintaining ultra-low latencies.
+    - protocol TCP & UDP  (no http , no https , no websocket )
+    (   If status of instances are unhealthy , make sure you check the security groups of the instances 
+       so that it allows HTTP traffic from anywhere )
 
 
+GATEWAY Load Balancer   ( GLB )
+    - Layer 3 Network Layer 
+    - Deploy , scale and manage a  fleet of 3 party network virtual appliances in AWS 
+    - LOAD goes from Users > route table > GLB > target group > GLB > EC2 
+    ( single entry exit for all traffic = Transparent Network Gateway )
+    - Uses The GENEVE Protocl on port 6081 
+  
 
+Sticky Sessions ( Session Affinity )
+
+    - We can set the cookie to be sticky , so that the same user will be served the same instance
+    - works for ALB and CLB only 
+    - Use case - so that user dosen't loose session data  but may imabalance the load to single ec2 
+    - Cookies Names > Application based > 
 
 
 
