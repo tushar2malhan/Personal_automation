@@ -470,6 +470,86 @@ def web_scrap_automation(url,postcode,*classnames):
 # class initilization (__init__) = multiple variables with different arguments  (multple children having different names or abilities)
 
 
+'''                     DUNDER METHODS IN DETAIL       27-04-2022     '''
+
+class check():
+    '''These magic dunder methods are made for the object's funcationality only 
+    suppose __getitem__ => a[0] 
+            __len__     => len(a) 
+            __call__    => a() '''
+    def __init__(self,item) -> None:
+        self.a = 123456789
+        self.b = 2
+        self.c = 3
+        self.item = item
+        # print(self.item)
+    
+    def __getitem__(self, index):
+        ''' suppose  a is the object of class check and
+        we want to get the value of a[0] 
+        we can use this method to get the value of a[0]
+        else it cant subscribe to the object of class  check and throw error
+        print(a[0])'''
+        return self.item[index]
+
+
+    def __len__(self):
+        ''' when u call object with len() method it will return the length of the object
+        called from here 
+        print(len(a))'''
+        return len(['1',2,3])
+
+
+    def __call__(self):
+        ''' a()   like a function '''
+        print(self.a)
+        print(self.b)
+        print(self.c)
+    
+
+    def __str__(self):
+        ''' preference given first when object is printed as compared to __repr__
+        print(a)'''
+        return 'this is a string'
+
+
+    def __repr__(self):
+        '''print(a)'''
+        return 'this is a repr'
+    
+
+    def __del__(self):
+        ''' when object is deleted 
+        if not   del a   >>>  print(a) >> will give __str__ + __del__  print() function'''
+        # print('object deleted')
+
+
+    def __add__(self, other):
+        '''  
+        where 2 objects a and b item and other gets added  
+        print(a+b)  
+        '''
+        return self.item + other.item
+    
+
+    def __mul__(self,other):
+        return self.item * 2 + other.item *2
+
+
+# a = check('item')
+# difference between __call__ and __str__
+# __call__ is used to call the object
+# __str__ is used to print the object
+
+# a()                        # this will call the __call__ method
+# print(len(a))              # this will call the __len__ method 
+# print(a)                   # if __str__ then this will call the __str__ method else repr
+# del a                      # call __del__ method when object is deleted
+
+# b = check('2 item')          # b object created to add a(item) and b(2 item)
+# print(a+b)                   # this is how it will add 2 objects values together
+# print(a*b)                    # same case to multiply 2 objects values together
+
 
 
 ################################################################## PROBLEMS  ##############################################################################
@@ -481,7 +561,7 @@ letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','
 
 def assign():
      for i in range(len(letters)):
-          print(letters[i] ,end='\n'if i % 3 == 0 else ' ')
+          print(letters[i],end='\n'if i % 3 == 0 and i !=0  else '  ')
           
 # assign()
 ################################################################## TRICKY ##########################################################
@@ -824,13 +904,11 @@ def user_information(username):
 
 
 names = [ 
-        # 'tusharmalhan',
+        'tusharmalhan',
         # 'vindiesel',
         # 'rahul.vij.127',
         ]
 # [user_information(name) for name in names]
-
-
 
 
 

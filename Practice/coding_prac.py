@@ -455,4 +455,50 @@ nums = [1,2,2]
 
 # print(output)
         
-    
+
+
+# bubble sort 
+class algo:
+    l = [3,5,2,9]
+    def bubble(self,l = l):
+        for i in range(len(l)-1):
+        
+        #     if l[i] > l[i+1]:
+        #         l[i],l[i+1] = l[i+1],l[i]
+        # print(l)
+
+            for each_iteration in range(len(l)-1):
+                # print('L > ',l)
+                if l[each_iteration] > l[each_iteration+1]:
+                    l[each_iteration],l[each_iteration+1] = l[each_iteration+1],l[each_iteration]
+        print(l) 
+
+    def insertion(self,l = l):
+        for i in range(len(l)):
+            for j in range(len(l)):
+                print('  ',l[i],l[j])
+                if l[i] < l[j]:
+                    l[i],l[j] = l[j],l[i]
+        print(l)
+
+   
+    def insta_question(self):
+        # s = {'the','quick','brown','fox','quick','word'}
+        s = "geeks for geeks contribute practice".split(' ')
+        word1 = 'geeks'
+        word2 = 'contribute'
+        
+        print(s)
+        index1,index2 = 0,0
+        for index,val in enumerate(s):
+            if word1 == val :
+                index1 = index
+            if word2 in val:
+                index2 = index
+        print(index1,index2)
+        print(index2-index1)
+       
+obj = algo()
+# obj.bubble()
+# obj.insertion()
+# obj.insta_question()

@@ -1,11 +1,10 @@
+''' A complete automation Bot for your daily needs '''
 import  sys 
 sys.path.append(r'D:\Users\DELL\Downloads\env\Lib\site-packages')
-# from functools import lru_cache, reduce
+
 
 #   pip install openpyxl  selenium wikipedia pyjokes pywhatkit pygame pyautogui opencv-python numpy playsound translate  SpeechRecognition pyttsx3 pytube PyPDF2 pywikihow win10toast  translate paramiko  keyboard PyDictionary pytesseract
 
-
-from math import perm
 from datetime import date
 # from  pygame import mixer
 # from win32com.client import Dispatch
@@ -61,26 +60,11 @@ from selenium import webdriver
 cancel = ['stop','leave','stop','quit','exit']
 
 
-
 def speak(audio):
     print('  ')
     engine.say(audio)
     engine.runAndWait()
 
-def wish():
-    hour = int(datetime.datetime.now().hour)
-    if hour >=6 and hour <=12: 
-        engine.say('Good morning') 
-    elif hour >=12 and hour <=18 :
-        engine.say('Good afternoon')
-
-    elif hour >=23 and hour >=5 :
-        engine.say('Sir , its quite late , kindly postpone your current tasks and take rest \t If not then ') 
-        time.sleep(2)
-    else:
-        speak('good evening')
-    engine.runAndWait()
-    # speak(' How can i help you ? ')
 
 def takeCommand():
     #It takes microphone input from the user and returns string output
@@ -100,6 +84,23 @@ def takeCommand():
         return "None" #None string will be returned
     return query # or QUERY.lower()
 
+
+def wish():
+    hour = int(datetime.datetime.now().hour)
+    if hour >=6 and hour <=12: 
+        engine.say('Good morning') 
+    elif hour >=12 and hour <=18 :
+        engine.say('Good afternoon')
+
+    elif hour >=23 and hour >=5 :
+        engine.say('Sir , its quite late , kindly postpone your current tasks and take rest \t If not then ') 
+        time.sleep(2)
+    else:
+        speak('good evening')
+    engine.runAndWait()
+    # speak(' How can i help you ? ')
+
+
 def search(word):
     try:
         # driver_path = r"D:\Users\tusha\Downloads\chromedriver_win32\chromedriver.exe"
@@ -111,6 +112,7 @@ def search(word):
         webbrowser.open_new_tab(url)
     except:
         speak('cant find it on on the web ')
+
 
 def translator():
     speak('Tell me the word ? ')
@@ -127,6 +129,7 @@ def translator():
         time.sleep(1)
         speak(f'in german {alpha} is called \n {word} ')
         print(word)
+
 
 def whatsapp_func(number):
     speak('sure , whats the message')
@@ -269,65 +272,57 @@ reply = ['hello ','Hey',' im here only','listening you ','speak fast','i got it 
 
 
 if __name__ == "__main__":
-    # wish()
 
-    
-    
     def test():
-               
-                real_idenity='Tushar'
-                administrator ='tushar'
-                administrator.lower().strip()
-        # password = 'open'
-        # speak('Kindly provide credentials ! whats the password ? ')
-        # for i in range(3,0,-1):
-        #     query = takeCommand().lower().strip() 
-        #     if password in query :
-        #         names ={'samridhi':'sumdraa' , 'tushar':'tushii' ,"rohit":'Mr rohit pathak',None:'Anonymous','kishore':'tushar','':'anonymous'}
+        wish()
 
-        #         speak('Great , You are successfully authenticated to use this bot  \t ')
-        #         speak(f' may i know \n whoo  are you  \n')
-        #         real_idenity = takeCommand().lower().strip() 
+        real_idenity='Tushar'
+        administrator ='tushar'
+        administrator.lower().strip()
+        password = 'open'
+        speak('Kindly provide credentials ! whats the password ? ')
+        for i in range(3,0,-1):
+            query = takeCommand().lower().strip() 
+            if password in query :
+                names ={'samridhi':'sumdraa' , 'tushar':'tushii' ,"rohit":'Mr rohit pathak',None:'Anonymous','kishore':'tushar','':'anonymous'}
+
+                speak('Great , You are successfully authenticated to use this bot  \t ')
+                speak(f' may i know \n whoo  are you  \n')
+                real_idenity = takeCommand().lower().strip() 
                 
-        #         if real_idenity not in names.keys():
-        #             speak(f' Hi {real_idenity} , Unfortunately You are not authorize to use this bot . Kindly ask  {administrator} to authorize you and give the respective permissions . SOoo  ')
-        #             break
+                if real_idenity not in names.keys():
+                    speak(f' Hi {real_idenity} , Unfortunately You are not authorize to use this bot . Kindly ask  {administrator} to authorize you and give the respective permissions . goodbye  ')
+                    break
 
-        #         elif real_idenity in 'samridhi'  :            # DIFFERENCE BTWN ELIF AND  IF   , if used here and point 4 , both conditions true so both conditions printed out 
-        #             time.sleep(1.5)
-        #             speak(f'Hi sumooooo ' )
-        #             time.sleep(0.5)
-        #             speak(f'You are fortunate enough to be {administrator} elder sister  Now go and thank him for being your younger brother ')
-        #             time.sleep(0.5)
-        #             speak(' did you thank him or not , dont lie \t\n\n | yes or no  ')
-        #             answer = takeCommand().lower()
-        #             if answer in [ 'yes','i did','done','ok',True]:
-        #                 speak(f'Yes tell now {real_idenity} , what can i do for you ? ')
-        #             else:
-        #                 speak('i wont allow you use me  ')
-        #                 break
+                elif real_idenity in 'samridhi'  :            # DIFFERENCE BTWN ELIF AND  IF   , if used here and point 4 , both conditions true so both conditions printed out 
+                    time.sleep(1.5)
+                    speak(f'Hi sumooooo ' )
+                    time.sleep(0.5)
+                    speak(f'You are fortunate enough to be {administrator} elder sister  Now go and thank him for being your younger brother ')
+                    time.sleep(0.5)
+                    speak(' did you thank him or not , dont lie \t\n\n | yes or no  ')
+                    answer = takeCommand().lower()
+                    if answer in [ 'yes','i did','done','ok',True]:
+                        speak(f'Yes tell now {real_idenity} , what can i do for you ? ')
+                    else:
+                        speak('i wont allow you use me  ')
+                        break
 
-        #         elif real_idenity in administrator:             
-        #             speak(f'Hi {administrator} sir . \t ')
-        #             time.sleep(0.5)
-        #             speak(f'Im fortunate enough to be ur bot , ill be glad to help you')
-        #             speak(' What can i do for you sir ? ')
-        #             time.sleep(0.5)
+                elif real_idenity in administrator:             
+                    speak(f'Hi {administrator} sir . \t ')
+                    time.sleep(0.5)
+                    speak(f' it will be glad to help you') #Im fortunate enough to be ur bot ,
+                    speak(' What can i do for you sir ? ')
+                    time.sleep(0.5)
 
-        #         elif real_idenity in names.keys():
-                    # speak(f' Welcome {real_idenity}')
-                    # time.sleep(0.5)
-                    # speak(f'Yes tell me  {real_idenity} , what can i do for you ? ')
-                    # time.sleep(0.5)
+                elif real_idenity in names.keys():
+                    speak(f' Welcome {real_idenity}')
+                    time.sleep(0.5)
+                    speak(f'Yes tell me  {real_idenity} , what can i do for you ? ')
+                    time.sleep(0.5)
 
                 while True:
-                        # alarm_hour =0
-                        # alarm_minute =0
-                        # title=''
-                        # message=''
-                        # cur_hour = datetime.datetime.now().hour
-                        # cur_minutes=datetime.datetime.now().minute
-
+    
                         time.sleep(1.5)
                         query = takeCommand().lower() 
                         if 'wikipedia' in query:
@@ -497,7 +492,28 @@ if __name__ == "__main__":
                                        
                                         elif content in ('done','dant','stop','done'):
                                             break
-                        
+                       
+                        elif 'instagram' in query:
+                            ''' open instagram on google and type msg for ur friend'''
+                            webbrowser.open_new('https://www.instagram.com/direct/t/340282366841710300949128399636759531997')
+                            pyautogui.press('enter')
+                            time.sleep(10)
+                            pyautogui.click( pyautogui.locateCenterOnScreen(r'C:\Users\Tushar\Desktop\python\pics\friend_1.png')   )
+                            pyautogui.press('enter')
+                            speak('Speak the Message you want to send to the user !')
+                            sent_msg = ['yes','send','ok','send it','sent','ok send it']
+                            while 1:
+                                msg = takeCommand()
+                                print(msg)
+                                if msg != 'None':
+                                    speak('Are you sure you want to send this message?')
+                                    confirmation = takeCommand().lower().strip()
+                                    if confirmation in sent_msg:  pyautogui.typewrite(msg) ,speak('message sent') 
+                                    else: speak('message not sent')
+                                elif msg in cancel:
+                                    break 
+
+
                         elif 'news' in query:
                             speak('Highlighting the top headlines for today ! ')
                             url='https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=582ac9b80816460b872a1c9e48ebbabe'
@@ -669,6 +685,8 @@ if __name__ == "__main__":
                             print(video.title) 
                             video.download(r'D:\Users\tusha\Desktop\PYTHON\youtube_downloaded_videosBY_bot')
                             speak('your video has been  downloaded')
+                            # or use this url to download video 
+                            # https://loader.to/en102/1080p-video-downloader.html
 
                         elif 'wait' in query:
                             speak('ok')
@@ -723,17 +741,13 @@ if __name__ == "__main__":
                             
                                                   
 
-            # speak(f' {i-1} times left  ')
-            # if i == 2:
-            #     speak(f' its the last chance  ')
-            # elif i ==1:
+            speak(f' {i-1} times left  ')
+            if i == 2:
+                speak(f' its the last chance  ')
+            elif i == 1:
                 speak(f' well i dont think you know  {administrator}') 
                 time.sleep(0.5)
-                speak('sooooo take guidance from him before getting ur hands on me ')
+                speak('soo take guidance from him before getting ur hands on me ')
                 speak('Goodbye , i only follow my masters commands and this proves thats not you ')
                 exit()
-    # speak('seeya ')
     test()
-
-
-# D:/Users/tusha/env/Scripts/python.exe d:/Users/tusha/Desktop/PYTHON/play_at_bg.py
