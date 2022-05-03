@@ -35,11 +35,15 @@ def takeCommand():
 while True:
         wake_up = takeCommand().lower().strip()
         ''' 
-        SPEAK THIS PASSWORD TO PROCEED 
+       
+        SPEAK THIS TERMS TO PROCEED 
+        
         ok start     ->     to start the Bot 
         you there    ->     to start the model detection
         bye          ->     to stop the Bot
+        
         '''
+       
         if "start" in wake_up:
             engine.setProperty('voice',voices[1].id)  # set the male voice 
             engine.setProperty('rate',200)

@@ -1,5 +1,7 @@
 ''' A complete automation Bot for your daily needs '''
-import  sys 
+import  sys
+
+from click import confirm 
 sys.path.append(r'D:\Users\DELL\Downloads\env\Lib\site-packages')
 
 
@@ -284,42 +286,14 @@ if __name__ == "__main__":
         for i in range(3,0,-1):
             query = takeCommand().lower().strip() 
             if password in query :
-                names ={'samridhi':'sumdraa' , 'tushar':'tushii' ,"rohit":'Mr rohit pathak',None:'Anonymous','kishore':'tushar','':'anonymous'}
+                # names ={'samridhi':'sumdraa' , 'tushar':'tushii' ,"rohit":'Mr rohit pathak',None:'Anonymous','kishore':'tushar','':'anonymous','none':"tushar"}
 
                 speak('Great , You are successfully authenticated to use this bot  \t ')
-                speak(f' may i know \n whoo  are you  \n')
-                real_idenity = takeCommand().lower().strip() 
-                
-                if real_idenity not in names.keys():
-                    speak(f' Hi {real_idenity} , Unfortunately You are not authorize to use this bot . Kindly ask  {administrator} to authorize you and give the respective permissions . goodbye  ')
-                    break
-
-                elif real_idenity in 'samridhi'  :            # DIFFERENCE BTWN ELIF AND  IF   , if used here and point 4 , both conditions true so both conditions printed out 
-                    time.sleep(1.5)
-                    speak(f'Hi sumooooo ' )
-                    time.sleep(0.5)
-                    speak(f'You are fortunate enough to be {administrator} elder sister  Now go and thank him for being your younger brother ')
-                    time.sleep(0.5)
-                    speak(' did you thank him or not , dont lie \t\n\n | yes or no  ')
-                    answer = takeCommand().lower()
-                    if answer in [ 'yes','i did','done','ok',True]:
-                        speak(f'Yes tell now {real_idenity} , what can i do for you ? ')
-                    else:
-                        speak('i wont allow you use me  ')
-                        break
-
-                elif real_idenity in administrator:             
-                    speak(f'Hi {administrator} sir . \t ')
-                    time.sleep(0.5)
-                    speak(f' it will be glad to help you') #Im fortunate enough to be ur bot ,
-                    speak(' What can i do for you sir ? ')
-                    time.sleep(0.5)
-
-                elif real_idenity in names.keys():
-                    speak(f' Welcome {real_idenity}')
-                    time.sleep(0.5)
-                    speak(f'Yes tell me  {real_idenity} , what can i do for you ? ')
-                    time.sleep(0.5)
+                real_idenity = 'Tushar'  
+                speak(f' Welcome {real_idenity}')
+                time.sleep(0.5)
+                speak(f'Yes tell me  {real_idenity} , what can i do for you ? ')
+                time.sleep(0.5)
 
                 while True:
     
@@ -498,16 +472,20 @@ if __name__ == "__main__":
                             webbrowser.open_new('https://www.instagram.com/direct/t/340282366841710300949128399636759531997')
                             pyautogui.press('enter')
                             time.sleep(10)
-                            pyautogui.click( pyautogui.locateCenterOnScreen(r'C:\Users\Tushar\Desktop\python\pics\friend_1.png')   )
+                            if pyautogui.locateCenterOnScreen(r'C:\Users\Tushar\Desktop\python\pics\friend_1.png')   : 
+                                pyautogui.click( pyautogui.locateCenterOnScreen(r'C:\Users\Tushar\Desktop\python\pics\friend_1.png')   )
+                            else:
+                                pyautogui.click( pyautogui.locateCenterOnScreen(r'C:\Users\Tushar\Desktop\python\pics\friend_2.png')   )
                             pyautogui.press('enter')
                             speak('Speak the Message you want to send to the user !')
-                            sent_msg = ['yes','send','ok','send it','sent','ok send it']
+                            sent_msg = ['yes','send','ok','send it','sent','ok send it','yes send it']
                             while 1:
                                 msg = takeCommand()
                                 print(msg)
                                 if msg != 'None':
-                                    speak('Are you sure you want to send this message?')
+                                    speak(' Are you sure you want to send this message ? ')
                                     confirmation = takeCommand().lower().strip()
+                                    speak (" \t Your message \t "+ msg  )
                                     if confirmation in sent_msg:  pyautogui.typewrite(msg) ,speak('message sent') 
                                     else: speak('message not sent')
                                 elif msg in cancel:
