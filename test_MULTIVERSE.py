@@ -7,17 +7,20 @@ from datetime import datetime,timedelta
 
 
 
-def multiple_clicks():
-    # webbrowser.open('https://tinder.com/app/recs')
-    sleep(10)
-    c = 0
-    while c <= 100:
-        pt.click(pt.position())
-        c += 1
-        # print(c)
-    # pt.hotkey('f5')
-    # print('****************************')
-    # sleep(7)
+# webbrowser.open('https://tinder.com/app/recs')
+# sleep(10)
+# def multiple_clicks():
+#     c = 0
+#     while c <= 300:
+#         pt.click(pt.position())
+#         c += 1
+#         print(c)
+#     pt.hotkey('f5')
+#     print('****************************')
+#     sleep(7)
 
 # while 1:
 #     multiple_clicks()
+
+j =8
+print(25j)

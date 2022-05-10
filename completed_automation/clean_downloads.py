@@ -1,20 +1,39 @@
 import os,time,datetime,shutil,webbrowser,time,keyboard
-from re import M
 from time import sleep
 import pyautogui
-from os import path
-from win10toast import ToastNotifier
-from BOT import send_notification
+
+import time
+import sys 
+import pyautogui
 from selenium import webdriver
+
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+
 from Protected import credentials
 username = credentials.all_credentials['think_palm_username']
 password = credentials.all_credentials['fortclient_password']
 
+
+option = Options()
+
+option.add_argument("--disable-infobars")
+option.add_argument("start-maximized")
+option.add_argument("--disable-extensions")
+
+# REMOVE POP UP NOTIFICATIONS 
+option.add_experimental_option("prefs", { 
+    "profile.default_content_setting_values.notifications": 1 
+})
+path_to_chromedriver = r"C:\Users\Tushar\Downloads\chromedriver.exe"
 class Mail():
-     driver = webdriver.Chrome(executable_path=r"C:\Users\Tushar\Downloads\chromedriver.exe")
+     
+     driver = webdriver.Chrome( chrome_options=option,executable_path=f"{path_to_chromedriver}"  )
+    
 
      def gmail(self):
           """
