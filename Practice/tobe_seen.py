@@ -258,7 +258,7 @@ def web_scrap_automation(url,postcode,*classnames):
 
 # global a : print(a)      
 # create global variable  , use the same variable for the function , to call the global variable 
-# inisde func => func.a =1  , when func called , print(func.a)
+# when creating a function  => set this a inside function => func.a =1  => when func called func() , print(func.a)
 
 # use it to create global and local variables inisde function
 # globals()             # will return all global variables 

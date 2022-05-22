@@ -5,8 +5,6 @@ import webbrowser
 from time import time, sleep
 from datetime import datetime,timedelta
 
-
-
 # webbrowser.open('https://tinder.com/app/recs')
 # sleep(10)
 # def multiple_clicks():
@@ -22,5 +20,3 @@ from datetime import datetime,timedelta
 # while 1:
 #     multiple_clicks()
 
-j =8
-print(25j)
