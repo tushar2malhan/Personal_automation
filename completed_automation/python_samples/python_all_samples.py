@@ -202,6 +202,7 @@ dec(give_me_output)
 #         print('y=',self.y  if self.x > self.y  else self.y)
 #         print('both ',self.x,self.y)
 #         print('args ',*self.args)
+
 # class child(parent):
 #     def __init__(self, x, y ):
 #         super().__init__(x,y )
@@ -213,7 +214,7 @@ dec(give_me_output)
 #         print(self.x , self.y , self.args )
 
 # a1 = parent(2,10)
-# print()
+# a1.print()
 # b1 = child(1,2)
 # b1.print()
 
@@ -239,26 +240,26 @@ dec(give_me_output)
 #                                                       so LOOK ONLY INIT OF PARENT , CHILD VALUES WILL BE PASSED IN SAME INIT ORDERR LIKE PARENT INIT 
 # super().__init__ ()                 #  when u pass the arguments IN child init order of parent init parameters will be same as child arguments  
    
-# class animal:   # LOOK thIS EXAMPLE
-#         def __init__(self,n,a,*h):   # if args brought from parent 
-#             self.n =n
-#             self.a=a
-#             self.h =h
+class animal:   # LOOK thIS EXAMPLE
+        def __init__(self,n,a,*h):   # if args brought from parent 
+            self.n =n
+            self.a=a
+            self.h =h
 
-#         def print(self):
-#             print(self.n,self.a,self.h)
-# # a = animal('n','a','h')
+        def print(self):
+            print(self.n,self.a,self.h)
+a = animal('n','a','h')
 
-# class Lion(animal):
-#         a1='Lion'
-#         def __init__(self,a,n,h,l=(),*k,**kw):
-#             super().__init__(a,n,h)
-#             self.k =k
-#             self.kw=kw
-#             self.l =l
-#         def printt(self):
-#             print(self.l,self.a,self.n,self.h,self.k,self.kw)
-#             # l ='L', a='N' , n='A', h='H'                        # data type comes first
+class Lion(animal):
+        a1='Lion'
+        def __init__(self,a1,n1,h1,l=(),*k,**kw):
+            super().__init__(a1,n1,h1)
+            self.k =k
+            self.kw=kw
+            self.l =l
+        def printt(self):
+            print(self.a,self.n,self.h,self.l,self.k,self.kw)
+            # l ='L', a='N' , n='A', h='H'                        # data type comes first
 # # ''' if parents super init is called , then params will be passed accordingly , would ignore params value in child class'''
 
 # b = Lion('A' ,'N' ,'H', 'L', 'K','O',Tushar='name')   
@@ -424,36 +425,37 @@ dec(give_me_output)
 # CLASS METHODS     - change class attribute like a function - decorator,   - only used to change class attribute
 
 
-class server:
-    engine ='apache'
-    def __init__(self,name,typee,price):
-        self.type=typee
-        self.price=price
-        self.name=name
-    def __str__(self):
-        return f'{self.type , self.price, self.name}'
+# class server:
+#     engine ='apache'
+#     def __init__(self,name,typee,price):
+#         self.type=typee
+#         self.price=price
+#         self.name=name
+#     def __str__(self):
+#         return f'{self.type , self.price, self.name}'
     
-    @classmethod                 # make changes only for class
-    def changengine(cls,val):
-        cls.engine=val
+    # @classmethod                 # make changes only for class
+    # def changengine(cls,val):
+    #     cls.engine=val
     
-    @classmethod
-    def from_str(cls,str): # from str create instance of class 
+    # @classmethod
+    # def from_str(cls,str): # from str create instance of class 
         # params = str.split('-')
         # return cls(params[0],params[1],params[2])    
-        return cls(*str.split('-'))
+        # return cls(*str.split('-'))
 # ''' this list of params -values will be taken by cls which is server([0],[1],[2]) or classname '''
 
 # a1=server('apache-ubuntu','opensource','APC')
 # b1=server.from_str('LINUX-PAID-VPC')                 # new instance with class method         
 # print(b1)
 
-# # print(a1)
+# print(a1)
 # print(a1.engine)
 # server.engine='APACHE 2'                            # this way u can hardcode it  , USING CLASSNAME 
 # print(a1.engine)
 # a1.changengine('APACHE 3 ')                        # THIS OVERCOMES HARDCODED , AS FUNC USED IT 
 # print(a1.engine)
+# print(server.engine)
 
 
 
@@ -863,44 +865,44 @@ tushar.age =20            print(tushar.age)
 
 '''  examples  '''
 
-# class A:
-#     def __init__(self,name,lname):
-#         self.name=name
-#         self.lname=lname
+class A:
+    def __init__(self,name,lname):
+        self.name=name
+        self.lname=lname
 
-#     def explain(self):
-#         print(f'employee is {self.name ,self.lname}')
+    def explain(self):
+        print(f'employee is {self.name ,self.lname}')
     
-#     @property
-#     def email(self):
-#         if self.name==None or self.lname ==None:
-#             return f'email not set.kindly set with setter  '
+    @property
+    def email(self):
+        if self.name==None or self.lname ==None:
+            return f'email not set.kindly set with setter  '
             
-#         return(f'{self.name}.{self.lname}@gmail.com')
+        return(f'{self.name}.{self.lname}@gmail.com')
     
-#     @email.setter       # whenever someone changes email 
-# #or use this func email = self.fname , self.lname will also be updated 
-#     def email(self,string):
-#         print('seting now ...')
-#         name =string.split('@')[0]
-#         self.name = name.split('.')[0]
-#         self.lname = name.split('.')[1]
-#     @email.deleter                        # call this func by  =    del tushar.email
-#     def email(self):
-#         print('deleting now ! ')
-#         self.name =None
-#         self.lname =None
+    @email.setter       # whenever someone changes email 
+#or use this func email = self.fname , self.lname will also be updated 
+    def email(self,string):
+        print('seting now ...')
+        name =string.split('@')[0]
+        self.name = name.split('.')[0]
+        self.lname = name.split('.')[1]
+    @email.deleter                        # call this func by  =    del tushar.email
+    def email(self):
+        print('deleting now ! ')
+        self.name =None
+        self.lname =None
 
 
 # rohit = A('rohit','pathak')
-# tushar =A('tushar','malhan')
+tushar = A('tushar','malhan')
 
 # print(rohit.email)
-# print(tushar.email)
-# tushar.email='tushar.malhan@gmail.com'               # setter called 
-# print(tushar.name)
-# print(tushar.lname)                                  # new self.name and self.lname called 
-# print(tushar.email)
+print(tushar.email)
+tushar.email='tushar.malhan@gmail.com'               # setter called 
+print(tushar.name)
+print(tushar.lname)                                  # new self.name and self.lname called 
+print(tushar.email)
 
 # del tushar.email
 # print(tushar.name)
@@ -1013,13 +1015,14 @@ stop the file by finding the pid from task manager and do    = taskkill /F /PID 
 
 ''' run vscdoe on github by  using  .   on ur repo '''
 
-# di = [
-# {'name':'Sahil','age':25},
-# {'name':'Vicky','age':10},
-# {'name':'Abhi','age':24},
-# {'name':'Rahul','age':36}]
+di = [
+{'name':'Sahil','age':25},
+{'name':'Vicky','age':10},
+{'name':'Abhi','age':24},
+{'name':'Rahul','age':36}]
 
-# # print(  [(k,v) for each_dic in di for (k,v) in each_dic.items() ])
+
+# print(  [(k,v) for each_dic in di for (k,v) in each_dic.items() ])
 # d = sorted ([ (k['age'],k) for k in di ])
 # print(d)
 # [print(v,de['age']) for (v,de) in d]
@@ -1029,19 +1032,26 @@ stop the file by finding the pid from task manager and do    = taskkill /F /PID 
 
 
 
+a=9
+def func1(a1,b,c,var):
+    global a 
+    a = 100
+    return var
 
-# def func1(a,b,c,var):
-#      return var
+def func2(a2,b,c,func):
+    global a 
+    a = 200
+    func()
+    print(5) 
+    print('a\t = ',a)
+    return 'func2 printed out'
 
+def called_func():
+     print('this is the func being called everywhere')
+
+# print(func2(1,2,3,called_func))
 # print(func1(1,2,3,'ok'))
-
-# def func1(a,b,c,func):
-#      print(5) 
-
-# def called_func():
-#      print('this is the func being called everywhere')
-
-# print(func1(1,2,3,called_func()))
+# print(a)
 
 #                          print is executed first 
 #          wherever func is called it will be executed then return value gets printed

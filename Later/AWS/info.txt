@@ -345,3 +345,28 @@ Sticky Sessions ( Session Affinity )
 
 
 
+
+S3      vs   Aurora RDS     vs      Dynomo Db       vs    Redshift  
+
+    Structured Data is in fixed format , has fields in table                         -> Aurora RDS (engines including Mysql,PostgreSql)
+    Unstructured data is in free format , has no schema or fields                    -> Dynomo DB (engines including MongoDB)
+    Data Warehouse exist on top on several databases and create layer of abstraction -> Redshift  (combination of all Databases )
+    Data Lake is a central repo for Structured and unstructured data storage         -> S3 ( like your local hardrive )
+
+    S3          - a simple storage service to protect any data, extremly durable 
+                - create a bucket (Container), upload data in it 
+
+    Aurora RDS  - fully managed SQL Relational Database where engines available are MySql, PostgreSql with continous backup to s3 
+    
+    Redshift    - Redshift cluster  = collection of nodes , each node has its own storage , each node has its own database
+                - fastest cloud Data Warehouse for business analytics , use and collect data from other databases
+                - launch a cluster , here in vanilla Redshift, we need to move data from s3 to Redshift to run sql queries 
+                - Redshift Spectrum - Direcly allows to  runs  sql queries on s3   and get data quicksight [ visualizations ]
+
+    Dynomo Db   - fully managed NoSQL database with high availability , high performance , high scalability
+
+
+
+AWS GLUE 
+    Extract -> Tranform -> Load             
+    - is data integration tool  Load data from source to destination   (  csv file uploaded to ->  S3 ->  Glue  ->  Redshift      )

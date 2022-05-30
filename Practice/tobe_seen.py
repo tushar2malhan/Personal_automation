@@ -1,6 +1,6 @@
 
 import os
-from gtts import gTTS
+# from gtts import gTTS
 import speech_recognition as sr
 
 
@@ -13,6 +13,8 @@ Change the score value of all users in a single query to 100 (one hundred)      
 Find all the users which don't have score 10 or 20                                # Student.objects.exclude(age__in=[10,20,31])
 Print a list of all the score values from all users excluding the first 10 users. # Student.objects.exclude(id__in=[i for i in range(10)]).values('age')
 '''
+
+#                                               Questions
 # d={}
 # words=para.split()
 # for i in words:
@@ -42,6 +44,13 @@ Print a list of all the score values from all users excluding the first 10 users
     #       L[o] =0
 #      return L 
 # print(solve(L))
+
+
+
+
+# a = "abc12333abc3456abc7891"
+# b = ([i.strip() for i in ''.join([i if i.isdigit() else ' ' for i in a ]).split(' ') if i])
+# print(b)
 
 
 # print(    sorted(d.items() , key = lambda kv:(kv[1],kv[0])) )
@@ -147,98 +156,98 @@ same like func()   , we can pass any variable too in the sub functoin of the dec
 # no big functions , one main function  |  inside class 
 # no comments for prod 
 
-from selenium import webdriver
-import time
-from selenium.webdriver.common.keys import Keys
-from openpyxl import Workbook  ,load_workbook
-wb = Workbook()  
-url="https://www.mercadona.es/"
-postalcode='08013'
+# from selenium import webdriver
+# import time
+# from selenium.webdriver.common.keys import Keys
+# from openpyxl import Workbook  ,load_workbook
+# wb = Workbook()  
+# url="https://www.mercadona.es/"
+# postalcode='08013'
 
-def web_scrap_automation(url,postcode,*classnames):
-     driver = webdriver.Chrome(executable_path=r"C:\Users\Tushar\Downloads\chromedriver.exe")
-     driver.get(url)
-     print('\t\t',driver.title)
+# def web_scrap_automation(url,postcode,*classnames):
+#      driver = webdriver.Chrome(executable_path=r"C:\Users\Tushar\Downloads\chromedriver.exe")
+#      driver.get(url)
+#      print('\t\t',driver.title)
      
-     def get_values(sheet_num,sheet_name,driver,*innerclasses):     # here innerclasses refers to each element we sent when outer func is called 
-               sheet = wb.create_sheet(sheet_num)
-               sheet.title = sheet_name 
+#      def get_values(sheet_num,sheet_name,driver,*innerclasses):     # here innerclasses refers to each element we sent when outer func is called 
+#                sheet = wb.create_sheet(sheet_num)
+#                sheet.title = sheet_name 
                
-               #   get the Name
-               sheet[f'A{1}']="PRODUCTS"
-               name_tag= driver.find_elements_by_class_name(innerclasses[0])
-               for name in range(len(name_tag)):
-                    sheet[f'A{name+2}']=name_tag[name].text
-                    print(name_tag[name].text)
+#                #   get the Name
+#                sheet[f'A{1}']="PRODUCTS"
+#                name_tag= driver.find_elements_by_class_name(innerclasses[0])
+#                for name in range(len(name_tag)):
+#                     sheet[f'A{name+2}']=name_tag[name].text
+#                     print(name_tag[name].text)
 
                
-               #   get the Price
-               sheet[f'B{1}']="PRICES"
-               price_tag=driver.find_elements_by_class_name(innerclasses[1])
-               for price in range(len(price_tag)):
-                    sheet[f'B{price+2}']= price_tag[price].text
-                    print(price_tag[price].text)
+#                #   get the Price
+#                sheet[f'B{1}']="PRICES"
+#                price_tag=driver.find_elements_by_class_name(innerclasses[1])
+#                for price in range(len(price_tag)):
+#                     sheet[f'B{price+2}']= price_tag[price].text
+#                     print(price_tag[price].text)
 
-               #  getting the image link
-               images = driver.find_elements_by_xpath(innerclasses[2]) 
-               sheet[f'C{1}']="IMAGES"
-               for image in range(len(images)):
-                    sheet[f'C{image+2}']=images[image].get_attribute('src')
-                    print(images[image].get_attribute('src'))
+#                #  getting the image link
+#                images = driver.find_elements_by_xpath(innerclasses[2]) 
+#                sheet[f'C{1}']="IMAGES"
+#                for image in range(len(images)):
+#                     sheet[f'C{image+2}']=images[image].get_attribute('src')
+#                     print(images[image].get_attribute('src'))
 
-               # get the weight
-               weights =driver.find_elements_by_class_name(innerclasses[3]) 
-               sheet[f'D{1}']="WEIGHT"
-               for weight in range(len(weights)):
-                    sheet[f'D{weight+2}'] = weights[weight].text
-                    print(weights[weight].text)
-               print()
+#                # get the weight
+#                weights =driver.find_elements_by_class_name(innerclasses[3]) 
+#                sheet[f'D{1}']="WEIGHT"
+#                for weight in range(len(weights)):
+#                     sheet[f'D{weight+2}'] = weights[weight].text
+#                     print(weights[weight].text)
+#                print()
                     
-               print(f'\n\nDone , Data extracted and saved in your excel for the {sheet_name}')
+#                print(f'\n\nDone , Data extracted and saved in your excel for the {sheet_name}')
 
-     try:
-          #              convert to english language
-          l0=driver.find_element_by_xpath("/html/body/div[1]/nav/div[2]/div/i")
-          l0.click()
-          l1=driver.find_element_by_xpath("/html/body/div[1]/nav/div[2]/div/ul/li[6]/button")
-          l1.click()
+#      try:
+#           #              convert to english language
+#           l0=driver.find_element_by_xpath("/html/body/div[1]/nav/div[2]/div/i")
+#           l0.click()
+#           l1=driver.find_element_by_xpath("/html/body/div[1]/nav/div[2]/div/ul/li[6]/button")
+#           l1.click()
           
-          search_bar = driver.find_element_by_xpath('//*[@id="root"]/header/div/div/form/div/input')
+#           search_bar = driver.find_element_by_xpath('//*[@id="root"]/header/div/div/form/div/input')
           
-          #                   give the postcode
-          try:
-               search_bar.send_keys(postcode)      
-               search_bar.send_keys(Keys.RETURN)
-               l2=driver.find_element_by_xpath('//*[@id="root"]/header/div/div/form/input')
-               l2.click()
-               accept= driver.find_element_by_xpath('//*[@id="root"]/div[1]/div/div/button[2]')
-               accept.click()
-          except:
-               print('No way to pass postal code on the webpage')
+#           #                   give the postcode
+#           try:
+#                search_bar.send_keys(postcode)      
+#                search_bar.send_keys(Keys.RETURN)
+#                l2=driver.find_element_by_xpath('//*[@id="root"]/header/div/div/form/input')
+#                l2.click()
+#                accept= driver.find_element_by_xpath('//*[@id="root"]/div[1]/div/div/button[2]')
+#                accept.click()
+#           except:
+#                print('No way to pass postal code on the webpage')
 
-          time.sleep(10)
-          #                        DYNAMIC FROM HERE 
+#           time.sleep(10)
+#           #                        DYNAMIC FROM HERE 
 
-          get_values('sheet_1','LANDING_PAGE',driver,*classnames)
-          print('\n\n')
+#           get_values('sheet_1','LANDING_PAGE',driver,*classnames)
+#           print('\n\n')
      
-          # #                      View the products from inside 
-          product_button = driver.find_element_by_class_name('banner-item__button')
-          product_button.click()
-          time.sleep(10)
+#           # #                      View the products from inside 
+#           product_button = driver.find_element_by_class_name('banner-item__button')
+#           product_button.click()
+#           time.sleep(10)
 
-          get_values('sheet_2','INNER_PAGE',driver,*classnames)
-          print('\n\n')
+#           get_values('sheet_2','INNER_PAGE',driver,*classnames)
+#           print('\n\n')
 
-          driver.close()      
-          filename = fr"C:\Users\DELL\Desktop\excel\file_{postalcode}.xlsx"                                                           
-          wb.save(filename)                                                          # saving file to the excel 
-          wb.remove(wb['Sheet'])
-          wb.save(filename)  
+#           driver.close()      
+#           filename = fr"C:\Users\DELL\Desktop\excel\file_{postalcode}.xlsx"                                                           
+#           wb.save(filename)                                                          # saving file to the excel 
+#           wb.remove(wb['Sheet'])
+#           wb.save(filename)  
 
-     except Exception as e:
-          print(f'Issue in the postal code ❌{postalcode}❌, check and verify it again')
-          print(e)
+#      except Exception as e:
+#           print(f'Issue in the postal code ❌{postalcode}❌, check and verify it again')
+#           print(e)
 
 # web_scrap_automation(url,postalcode,'product-cell__description-name','product-price__unit-price',"//div[@class='product-cell__image-wrapper']/img","product-price__extra-price",None)
 
@@ -469,60 +478,174 @@ def web_scrap_automation(url,postcode,*classnames):
 ##################################################################################
 
 #                   Review of classes 
-# class variables                = shared by all instances 
+# class variables                = shared by all instances  without using super().__init__()
 # class initilization (__init__) = multiple variables with different arguments  (multple children having different names or abilities)
 
 
-'''                     DUNDER METHODS IN DETAIL       27-04-2022    | 07-05-2022 '''
 
-class check():
-    '''These magic dunder methods are made for the object's funcationality only 
-    suppose __getitem__ => a[0] 
-            __len__     => len(a) 
-            __call__    => a() '''
+class Parent1():
+
+    Parent1 = "parent 1 "
+
+    def __init__(self, name_1 ,*args,**kwargs) -> None:
+        self.n = name_1 
+        self.personality = 'patient' 
+        self.args = args
+        self.kwargs = kwargs
+        # print('\t By default name_ is taken as ',name_1,'\n')
+
+    def __str__(self) -> str:
+        return f"\
+         name is {self.n}\n\
+         args is { self.args} \n\
+         kwargs are { self.kwargs}\n\
+         Personality is { self.personality}\
+         "
+    @staticmethod
+    def static_method():
+        print('\t this is a static method of parent 1')
+         
+
+# obj = Parent1('imaginary','i am ','arg of parent',name ='Gldy',age = 52)
+
+
+class Parent2:
+    ''' parent 2  '''
+
+    def __init__(self,personality) -> None:
+        self.personality = personality
     
+    @staticmethod
+    def static_method():
+        print('\t this is a static method of parent 2')
+
+    def __call__(self):
+        print(f'\t used this to call for parent 2 parent which is {self.personality}')
+    
+        
+
+class Child(Parent1,Parent2):
+
+    child1 = 'child 1 '
+
+    def __init__(self, name_1, *arg, **kwarg) -> None:
+        self.name_2_bychild = name_1
+
+        #    Copy Parent init with params  # mandatory 
+        super().__init__(name_1, *arg, **kwarg)    
+        #  - super() is used to access the parent class variable and methods  
+        #    here init of parent class is overriden, so object will access this init variables 
+
+        # self.personality = 'Aggresive'                    # override  # optional 
+   
+    @staticmethod
+    def static_method():
+        print('\t this is a static method of Child ')
+    
+    @classmethod
+    def change_cls_variable(cls,value):
+        print('\n\t Old value of Child class variable is ->',cls.child1,)
+        print('\t Child class new variable given by child is ->',value)
+        cls.child1 = value
+
+    # @classmethod     >>>          # this class method only works for this class,not parents class 
+    # so make sure if your changing parent class variable , dont use this class method on this func
+    def change_parent_cls_variable(cls,value):
+        print('\n\t Old value of Parent1 class variable is ->', Parent1.Parent1 )
+        Parent1.Parent1 = value
+        print('\t Parent1 class new variable given by child is ->',value)
+        print('\t Look i confirmed it > ',Parent1.Parent1)
+    
+    def change_name_2(self,new_name):
+        self.name_2_bychild = new_name
+        print(f'\t name is changed to {new_name}')
+
+    
+
+
+# obj2 = Child('tusharmalhan','i am ','arg of child',name ='Tushar',age = 23)
+# print(obj2) 
+# obj2()
+# obj2.static_method()
+
+''' ways to call super class () '''
+# A(self)                 # called A ( parent class ) directly in B ( child class )
+# A.__init__(self)        # here we dont need to inherit it explicitly , thats y we can call it directly  ie -> just class B
+# A().__init__(self)      # no need to inherit class B(A)    #  init called twice
+# super().__init__()      # only called when B class inherit in A   ie -> B(A)
+
+
+''' child class can change both theirs class variable and parent class variable -(only by   Parent_class_name.class_variable = 'new cls var'  ) '''
+# obj2.change_cls_variable('child_1 class variable  ')
+# obj2.change_parent_cls_variable('parent_1 class variable  ')
+
+
+'''   OVER-RIDING   '''   
+# Object looks First for instance variables  if not, then own class variable and then  search for inherited class variable
+#  So if u want to access the parent class variable and methods , thats where we use super().__init__()
+
+#  - if again variables name same "var2" , it will check position of super().__init__(), if called first then => B class instance Variable will over ride it
+#    else if called after assigning "var2" value in child class  = it  will take variable from super ( PARENT ) class instance Variable
+#           
+#           # implicit call will call the parent class again and again [ in diamond shape class inheritance ] ,making it useless 
+#           impilict call  ->  ClassName.__init__(self)
+#           explicit call  ->  super().__init__()        or  super(ClassName,self).__init__()   == same 
+
+'''   Heirarchy in inheritance ''' 
+# from instance variable of class   > if not called super() or parent class in end, it will take child class same attribute's Value
+# to class variable of class        > if u dont have init in child class else it will look for init in parent class
+# from inherited instance variable  > 
+# to inherited class variable 
+
+
+'''      @property @getter @setter   and operator modulo  
+-        make sure variable name and function name are not same  '''
+
+TRAP_ARTIST = [
+
+    'future',
+    'drake',
+    'eminem',
+    'ricky ross '
+]
+
+class TrapArtist():
+
     # private variable of class
     __private_class_variable = 'private class variable'
     # protected variable of class
     _protected_class_variable = 'protected class variable'
 
-    def __init__(self,item) -> str:
-        self.a = 123456789
-        self.b = 2
-        self.c = 3
-        self.item = item                    # Public variables      # print(self.item)   [can be accessed inside the class and outside the class]
-        
-        # protected variable of instance               [  ]
-        self._protected = 'Protected variable'   
-        
-        # private variable   of instance               [ cant called by instance directly ( invisible to object , so cant be called outside the class ) = need to create a function inside the class ]
-        self.__private = 'Private variable'            # call    >>>>   print(a._check__private  )    
+    __hits = ['1','2',3,4]
 
+    def __init__(self,name) :
+        self._name = name
+        # print(self.__name)
 
-    def call_private_instance(self):
-        ''' private variables of instances can be called by  
-        methods directly  =   a.call_private_instance()   '''
-        print(self.__private +' called by   public METHOD of the instance')
+    @property
+    def name_(self):
+        return self._name
+
+    @name_.setter
+    def set_name(self,new_name):
+        ''' name needs to be in the list '''
+        print('\t old name is ',self._name)
+        if new_name in TRAP_ARTIST:
+            print('\t Changing name to ',new_name)
+            self._name = new_name
+            print('\t new name is ',self._name)
+        else:
+            print(f'\n\t {self._name} this artist is not in the list')
+        return self._name
     
-
-    def __call_private_method(self):
-        ''' private methods of instances can be called by  
-        classname    =  a._check__call_private_method()  '''
-        print(self.__private + ' called by  private METHOD of the instance')
-    
-
-    def __call_cls_private_var(self):
-        '''print(a._check__private_class_variable)'''
-        print(self.__private_class_variable)
-
-
     def __getitem__(self, index):
         ''' suppose  a is the object of class check and
         we want to get the value of a[0] as its a sequencial data type 
         we can use this method to get the value of a[0]
         else it cant subscribe to the object of class  check and throw error
         print(a[0])'''
-        return self.item[index]
+        print('\n\t This will access your dict or string by the index ')
+        return self._name[index]
 
 
     def __len__(self):
@@ -534,92 +657,75 @@ class check():
 
     def __call__(self):
         ''' a() is  like a function '''
-        print(self.a)
-        print(self.b)
-        print(self.c)
+        print(self._name)
+
     
-
-    def __str__(self):
-        ''' preference given first when object is printed as compared to __repr__
-        print(a)'''
-        return '\nThis class is for Practice , called by __str__ method'
-
-
-    def __repr__(self):
-        '''print(a)'''
-        return 'this is a repr'
-    
-
-    def __del__(self):
-        ''' when object is deleted 
-        if not   del a   >>>  print(a) >> will give __str__ + __del__  print() function'''
-        ...
-
-
     def __add__(self, other):
         '''  
         where 2 objects a and b item and other gets added  
-        print(a+b)  
+        print(a+b)     #   
+        - This item will be taken from the constructor of the class
         '''
-        return self.item + other.item
+        return self._name + other._name
     
-
+    
     def __mul__(self,other):
-        return self.item * 2 + other.item *2
+        return self._name +'\t'+ other._name * 2
+    
+    
+    def __str__(self):
+        ''' preference given first when object is printed as compared to __repr__
+        print(object), print(self) to initate this '''
+        return '\nThis class is for Practice , called by __str__ method'
+
+   
+    def __del__(self):
+        ''' del object  to initate this method '''
+        return ('Destructor called, Object deleted.')
+
+print()
+r = TrapArtist('Tushar Malhan')
+# s = TrapArtist('Jimmy Malhan')
+
+# print(r.name_)                # @property 
+# r.set_name = 'Tushar Malhan'  # @name_.setter  is called here
+# print(r[0])                   # __getitem__()
+# r()                           # __call__()
+# print(len(r))                 # __len__()
+# print(r+s)                    # __add__()
+# print(s)                      # __str__()
+# print(r*s)                    # __mul__()
+# print(r.__del__())            # __del__()
+
+# print(r._protected_class_variable)                     # WE CAN CALL both PROTECTED variable of both class and instance >   DIRECTLY         
+# print(r._TrapArtist__private_class_variable)           # for private , we need        object._classname__attribute  or getter method
+# print(r.__dict__)                                      # call constructors params in dict format
 
 
-a = check('item')
-# print(a._check__private  )                          # Error if called direcly a.__private then called by             >   CLASSNAME    
-# a.call_private_instance()                           # We assign private variable in public method so called          >   DIRECTLY
-# a._check__call_private_method()                     # Error if called it directly a.__call_private_method() so used  >   CLASSNAME
-
-# print(a._check__private_class_variable)             # Called  class private variable with the                        >   CLASSNAME
-# a._check__call_cls_private_var()                    # - even if we put it in method we need classname to call it 
-
-# print(a._protected_class_variable)                  # WE CAN CALL both PROTECTED variable of both class and instance >   DIRECTLY         
 ''' 
-PRIVATE == means if variable or method is private >>> we need CLASSNAME in between to call it  
+PRIVATE ==       Even if variable or method is private >>>  we need 
+|                obj._classname__attribute  =     S CLASSNAME in between to call it  
 |                else put private variable in public method and call it     DIRECTLY 
+
+So Access private only by  :=   
+|                        obj._classname__attribute   
+|                        getter methods
+|                        creating functions or private ones too
 
 PROTECTED == means we can call both class and instance protected variable   DIRECTLY 
 '''
 
-
-
-# use @property - to call the funcion as attribute of instance
-# - wd property = u can set new values with param and arg  @name.setter (even if its private )
-# - @staticmethod = common func for every instance 
-# - @classmethod  = commmon func for all instances but here it refers to the class ( u can call these variables of class methods directly with class name )
-# 			- here u dont need to define instance to call class variables or class methods  print( class.hits())
-# 			- any instance cant change variables and methods of class directly   = ( rr.__class__.hits = [1,2,3] ) # this way you change class methods
-
-
-
-
-# a()                           # this will call the __call__ method
-# print(len(a))                 # this will call the __len__ method 
-# print(a)                      # if __str__ then this will call the __str__ method else repr
-# del a                         # call __del__ method when object is deleted
-
-# b = check('2 item')           # b object created to add a(item) and b(2 item)
-# print(a+b)                    # this is how it will add 2 objects values together
-# print(a*b)                    # same case to multiply 2 objects values together
-
-
-# difference between __call__ and __str__
-# __call__ is used to call the object
-# __str__ is used to print the object
 
 ################################################################## PROBLEMS  ##############################################################################
 
 
 #           assign 3 iterations from letters to each number in range(2,10)
 
-letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+# letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 
-def assign():
-     for i in range(len(letters)):
-          print(letters[i],end='\n'if i % 3 == 0 and i !=0  else '  ')
+# def assign():
+#      for i in range(len(letters)):
+#           print(letters[i],end='\n'if i % 3 == 0 and i !=0  else '  ')
           
 # assign()
 ################################################################## TRICKY ##########################################################
@@ -783,3 +889,17 @@ POINTS
 
 
 ############################################################################################################################
+
+#                                        Selenium easy ways  
+# find element by text     =>  driver.find_element_by_xpath("//*[contains(text(), 'Call +XX XXXXXXXX72‎')]")
+# find all links in table  =>  elements = driver.find_elements(By.XPATH,"//table[@class = 'table']//td/a")
+
+############################################################################################################################
+
+#                                           DEBUGGER TOOLS 
+
+# import pdb;pdb.set_trace()
+# pip install ipdb     |   python -m ipdb module.py         |  s > next step ,  c > continue   , q > quit 
+
+############################################################################################################################
+
