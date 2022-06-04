@@ -477,10 +477,20 @@ same like func()   , we can pass any variable too in the sub functoin of the dec
 
 ##################################################################################
 
-#                   Review of classes 
+#                             Review of classes 
+
+
+'''                        multiple classes inheritance               '''
+
+
 # class variables                = shared by all instances  without using super().__init__()
 # class initilization (__init__) = multiple variables with different arguments  (multple children having different names or abilities)
 
+''' ways to call super class () '''
+# A(self)  or A()         # called A ( parent class ) directly in B ( child class )
+# A.__init__(self)        # here we dont need to inherit it explicitly , thats y we can call it directly  ie -> just class B
+# A().__init__(self)      # no need to inherit class B(A)    #  init called twice
+# super().__init__()      # only called when B class inherit in A   ie -> B(A)
 
 
 class Parent1():
@@ -543,6 +553,12 @@ class Child(Parent1,Parent2):
         print('\t this is a static method of Child ')
     
     @classmethod
+    def add_new__object(cls,string,string1):
+        ''' Create new class variable & new obj from class method  '''
+        cls.new_var = string1
+        return cls(string)
+    
+    @classmethod
     def change_cls_variable(cls,value):
         print('\n\t Old value of Child class variable is ->',cls.child1,)
         print('\t Child class new variable given by child is ->',value)
@@ -560,19 +576,17 @@ class Child(Parent1,Parent2):
         self.name_2_bychild = new_name
         print(f'\t name is changed to {new_name}')
 
-    
 
+obj2 = Child('tusharmalhan','i am ','arg of child',name ='Tushar',age = 23)
 
-# obj2 = Child('tusharmalhan','i am ','arg of child',name ='Tushar',age = 23)
-# print(obj2) 
+# obj3 = obj2.add_new__object('Obj_3','new_cls_var_2')
+# print(obj3)
+# print(obj3.new_var)
+# print(Child.new_var)
+# print(obj3.n)
+
 # obj2()
 # obj2.static_method()
-
-''' ways to call super class () '''
-# A(self)                 # called A ( parent class ) directly in B ( child class )
-# A.__init__(self)        # here we dont need to inherit it explicitly , thats y we can call it directly  ie -> just class B
-# A().__init__(self)      # no need to inherit class B(A)    #  init called twice
-# super().__init__()      # only called when B class inherit in A   ie -> B(A)
 
 
 ''' child class can change both theirs class variable and parent class variable -(only by   Parent_class_name.class_variable = 'new cls var'  ) '''
@@ -580,7 +594,7 @@ class Child(Parent1,Parent2):
 # obj2.change_parent_cls_variable('parent_1 class variable  ')
 
 
-'''   OVER-RIDING   '''   
+'''                                 OVER-RIDING                           '''   
 # Object looks First for instance variables  if not, then own class variable and then  search for inherited class variable
 #  So if u want to access the parent class variable and methods , thats where we use super().__init__()
 
@@ -591,52 +605,39 @@ class Child(Parent1,Parent2):
 #           impilict call  ->  ClassName.__init__(self)
 #           explicit call  ->  super().__init__()        or  super(ClassName,self).__init__()   == same 
 
-'''   Heirarchy in inheritance ''' 
-# from instance variable of class   > if not called super() or parent class in end, it will take child class same attribute's Value
-# to class variable of class        > if u dont have init in child class else it will look for init in parent class
-# from inherited instance variable  > 
-# to inherited class variable 
-
 
 '''      @property @getter @setter   and operator modulo  
--        make sure variable name and function name are not same  '''
+        - we use [ property, getter, setter] > so that initilization attributes also change with the function
+        - make sure variable name and function name are not same 
+'''
 
-TRAP_ARTIST = [
 
-    'future',
-    'drake',
-    'eminem',
-    'ricky ross '
-]
-
-class TrapArtist():
+class Trap():
 
     # private variable of class
     __private_class_variable = 'private class variable'
     # protected variable of class
     _protected_class_variable = 'protected class variable'
 
-    __hits = ['1','2',3,4]
+ 
 
     def __init__(self,name) :
-        self._name = name
-        # print(self.__name)
+        self.name = name
 
     @property
-    def name_(self):
-        return self._name
+    def email(self):
+        ''' so whenever getter called we know about it '''
+        print(f'Calling your email -> {self.name}@gmail.com')
+        return f'{self.name}@gmail.com'
 
-    @name_.setter
-    def set_name(self,new_name):
-        ''' name needs to be in the list '''
-        print('\t old name is ',self._name)
-        if new_name in TRAP_ARTIST:
-            print('\t Changing name to ',new_name)
-            self._name = new_name
-            print('\t new name is ',self._name)
-        else:
-            print(f'\n\t {self._name} this artist is not in the list')
-        return self._name
+
+    @email.setter
+    def email(self,new_email):
+        ''' with setter we can change  other attributes too'''
+        print('\nSetting your new  email ...')
+        self.name = new_email
+        print('Your new email is -> ',self.email)
+  
     
     def __getitem__(self, index):
         ''' suppose  a is the object of class check and
@@ -645,7 +646,7 @@ class TrapArtist():
         else it cant subscribe to the object of class  check and throw error
         print(a[0])'''
         print('\n\t This will access your dict or string by the index ')
-        return self._name[index]
+        return self.name[index]
 
 
     def __len__(self):
@@ -657,7 +658,7 @@ class TrapArtist():
 
     def __call__(self):
         ''' a() is  like a function '''
-        print(self._name)
+        print(self.name)
 
     
     def __add__(self, other):
@@ -666,11 +667,11 @@ class TrapArtist():
         print(a+b)     #   
         - This item will be taken from the constructor of the class
         '''
-        return self._name + other._name
+        return self.name + other.name
     
     
     def __mul__(self,other):
-        return self._name +'\t'+ other._name * 2
+        return self.name +'\t'+ other.name * 2
     
     
     def __str__(self):
@@ -684,14 +685,18 @@ class TrapArtist():
         return ('Destructor called, Object deleted.')
 
 print()
-r = TrapArtist('Tushar Malhan')
-# s = TrapArtist('Jimmy Malhan')
+r = Trap('TusharMalhan')
+# print(r.email)                # getter called here 
+# r.email = 'malhan2'           # setter called here 
 
-# print(r.name_)                # @property 
-# r.set_name = 'Tushar Malhan'  # @name_.setter  is called here
+# print(r.email())              # getter called here 
+# print(r.email_('malhan3'))    # setter called here 
+# print(r.name)                 # without getter setter too , we can change attributes 
+
 # print(r[0])                   # __getitem__()
 # r()                           # __call__()
 # print(len(r))                 # __len__()
+# s = TrapArtist('Jimmy Malhan')
 # print(r+s)                    # __add__()
 # print(s)                      # __str__()
 # print(r*s)                    # __mul__()
@@ -703,17 +708,73 @@ r = TrapArtist('Tushar Malhan')
 
 
 ''' 
-PRIVATE ==       Even if variable or method is private >>>  we need 
-|                obj._classname__attribute  =     S CLASSNAME in between to call it  
+
+PROTECTED == means we can call both class and instance protected variable   DIRECTLY   [ can call these attribute & methods  outside the class ]
+
+PRIVATE ==       Even if variable or method is private or even if we access prvt attribute from parent class >>> 
+|                we need  =  obj._classname__attribute  ==     CLASSNAME in between to call it  
 |                else put private variable in public method and call it     DIRECTLY 
 
 So Access private only by  :=   
 |                        obj._classname__attribute   
 |                        getter methods
-|                        creating functions or private ones too
-
-PROTECTED == means we can call both class and instance protected variable   DIRECTLY 
+|                        creating functions or private ones too                     [ we cannot call these attribute & methods  outside the class ]
 '''
+
+#                       Diamiond Shape Inheritance
+
+class Class1:
+    def m(self):
+        print("In Class1")  
+     
+class Class2(Class1):
+    def m(self):
+        print("In Class2")
+        # Class1.m(self)
+        super().m()
+ 
+class Class3(Class1):
+    def m(self):
+        print("In Class3")
+        super().m()         
+        # Class1.m(self)  
+      
+class Class4(Class2, Class3):
+    '''  given attribute is first searched in the current class 
+    if it’s not found then its searched in the parent classes.
+    The order that is followed is known as a linearization 
+    of the class Derived and this order is found out using 
+    a set of rules called Method Resolution Order (MRO).'''
+    def m(self):
+        print("In Class4")  
+        super().m()                 # explicit call which will do the mro and make the parent class call once 
+        # Class2.m(self)
+        # Class3.m(self)            # implicit call which will make the class 1 twice
+      
+# obj = Class4()
+# obj.m()
+
+from abc import ABCMeta,abstractmethod
+
+class A(metaclass = ABCMeta):
+    @abstractmethod
+    def hello(self):
+        print('\
+            -This is an abstract method which ensures that\
+             all the child classes must create a method name hello()\
+             or else it will throw an error\
+            - This works only with direct class inheritance not with sub class inheritance \
+            - Thus no object cant be created for this class where abstract class method is set')
+
+class child1(A):
+    def hello(self):
+        print('Hello from child 1 class')
+    ...
+
+
+# a = child1()
+# a.hello()
+    
 
 
 ################################################################## PROBLEMS  ##############################################################################
@@ -902,4 +963,3 @@ POINTS
 # pip install ipdb     |   python -m ipdb module.py         |  s > next step ,  c > continue   , q > quit 
 
 ############################################################################################################################
-

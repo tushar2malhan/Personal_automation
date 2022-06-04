@@ -1,8 +1,30 @@
 
+# def f(n,a=22,**kwargs):
+#     print(n,a)
+#     print(kwargs)
+
+# f('tushar',23) 		   # postional aruments - acc to function 
+# f(a = 23,n ='tushar',)   # keyword arguments - in case u forget the sequence 
+# f('tushar')		       # default - if not given 2 arg , default value taken 
 
 
+#  	                     HEIRARCHY
+#                normal arg > default > args > kwargs
+ 
+# def f(a,default = 10,*args,**kwar):
+#     print()
+#     print(a)
+#     args = ('called args', 'so that ','we can see args','and give default value')
+#     print(default)
+#     # kwar = {'called kwar':'so that we can see kwar'}
+#     print(args)         # args - where num of arguments are not fixed # here args are taken as tuple by default 
+#     print(kwar)     
+#     print()
 
+# f(1,)       	        # dont pass default value or args and kwargs  ,
+#                       if u wanna give default value with args kwargs >>> pass args and kwargs inside function
 
+#   Q   initializing the init to the  decorator
 
 
 #                   print([ i if i!= 3 else '3 three' for i in range(6) if i>1 ])
@@ -21,8 +43,6 @@
 # use it to create global and local variables inisde function
 # globals()             # will return all global variables 
 # x = globals()['a']    # will return specific global variable outside the function which is a
-
-
 # print(globals()['x'])
 
 # a = 5
@@ -46,10 +66,8 @@
 # print(get_var_from_func.func_var)
 
 
-#                                               nonlocal vs global  
 
 from abc import abstractmethod
-from operator import ne
 
 
 def scope_test():
@@ -153,7 +171,6 @@ def create_adder(x):
 
 
 def printall(func,val=1):
-
     '''
     This is a decorator function
     taking func a parameter
@@ -210,7 +227,8 @@ def decorator(func):
     # def e():
         print(1,"Gfg decorator called before function")
         # called hello decorator  == func()
-        return func ()
+        a = func() + '**'
+        return a
     # return e
 
 # @decorator
@@ -218,16 +236,16 @@ def hello_decorator():
 
     print(2)
     print(3,"Gfg")
+    return 'Tushar '
     
-    def wrapper():
-        print(4)
-        print(5,"Hello")
-        return 'hello'
-    return wrapper
+    # def wrapper():
+    #     print(4)
+    #     print(5,"Hello")
+    #     return 'hello'
+    # return wrapper
 
-# print(hello_decorator()()())
+# print(hello_decorator)
 # print(decorator(hello_decorator)())  # since func is already called , will throw error if tried to call 
-
 
 
 
@@ -239,6 +257,13 @@ def hello_decorator():
 
 # class variables                = shared by all instances  without using super().__init__()
 # class initilization (__init__) = multiple variables with different arguments  (multple children having different names or abilities)
+
+
+''' ways to call super class () '''
+# A(self)  or A()         # called A ( parent class ) directly in B ( child class )
+# A.__init__(self)        # here we dont need to inherit it explicitly , thats y we can call it directly  ie -> just class B
+# A().__init__(self)      # no need to inherit class B(A)    #  init called twice
+# super().__init__()      # only called when B class inherit in A   ie -> B(A)
 
 
 class Parent1():
@@ -264,8 +289,8 @@ class Parent1():
         print('\t this is a static method of parent 1')
          
 
-# obj = Parent1('imaginary','i am ','arg of parent',name ='Gldy',age = 52)
-
+obj = Parent1('imaginary','i am ','arg of parent',name ='Gldy',age = 52)
+# print(obj)
 
 class Parent2:
     ''' parent 2  '''
@@ -280,8 +305,7 @@ class Parent2:
     def __call__(self):
         print(f'\t used this to call for parent 2 parent which is {self.personality}')
     
-        
-
+    
 class Child(Parent1,Parent2):
 
     child1 = 'child 1 '
@@ -430,8 +454,8 @@ class Trap():
         ''' del object  to initate this method '''
         return ('Destructor called, Object deleted.')
 
-print()
-r = Trap('TusharMalhan')
+# print()
+# r = Trap('TusharMalhan')
 # print(r.email)                # getter called here 
 # r.email = 'malhan2'           # setter called here 
 
@@ -575,9 +599,12 @@ class child1(A):
 
 
 # Question :
-markdict=[
+markdict = [
     {"Tom":67, "Tina": 54, "Akbar": 87, "Kane": 43, "Divya":73},
     {"Tom2":672, "Tina2": 254, "Akbar2": 287, "Kane2": 243, "Divya2":273}
-    ]
+]
+
+
+
 
 
