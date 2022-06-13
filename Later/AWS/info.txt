@@ -370,3 +370,13 @@ S3      vs   Aurora RDS     vs      Dynomo Db       vs    Redshift
 AWS GLUE 
     Extract -> Tranform -> Load             
     - is data integration tool  Load data from source to destination   (  csv file uploaded to ->  S3 ->  Glue  ->  Redshift      )
+
+
+
+Serverless 
+    - Function as A service, dosent mean no servers, means you need to manage or provision servers 
+
+AWS LAMBDA 
+    - Virtual functions , no servers to manage , run on demand  , where Scaling is Automated
+    - Increasing RAM in LAMBDA will improve CPU and Network 
+    

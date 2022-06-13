@@ -1,4 +1,4 @@
-
+#                                   FUNCTIONS
 # def f(n,a=22,**kwargs):
 #     print(n,a)
 #     print(kwargs)
@@ -68,7 +68,6 @@
 
 
 from abc import abstractmethod
-
 
 def scope_test():
     def do_local():
@@ -254,6 +253,9 @@ def hello_decorator():
 
 '''                        multiple classes inheritance               '''
 
+# class c:       IN A  CLASS > u can restrict number of attributes 
+#     # slots makes sure that we don't create new attributes until we specify here 
+#     __slots__ = ('one','two') 
 
 # class variables                = shared by all instances  without using super().__init__()
 # class initilization (__init__) = multiple variables with different arguments  (multple children having different names or abilities)
@@ -382,7 +384,7 @@ obj2 = Child('tusharmalhan','i am ','arg of child',name ='Tushar',age = 23)
 -        make sure variable name and function name are not same  '''
 
 
-class Trap():
+class Employee():
 
     # private variable of class
     __private_class_variable = 'private class variable'
@@ -394,19 +396,24 @@ class Trap():
     def __init__(self,name) :
         self.name = name
 
+
     @property
     def email(self):
-        ''' so whenever getter called we know about it '''
-        print(f'Calling your email -> {self.name}@gmail.com')
-        return f'{self.name}@gmail.com'
-
-
+        '''
+        with property you can change init attribute values 
+        and assign new attribute  >>> like   ( obj.email )
+        we get this email from self.name , so it will change too
+        when setter is called 
+        '''
+        return self.name + '@gmail.com'
+    
     @email.setter
-    def email(self,new_email):
-        ''' with setter we can change  other attributes too'''
-        print('\nSetting your new  email ...')
-        self.name = new_email
-        print('Your new email is -> ',self.email)
+    def change_name(self,new_name):
+        ''' not only it will change the name but also email 
+        because both become attributes of object '''
+        print('name before',self.name)
+        self.name = new_name +'@gmail.com'
+        print('new email with new name',self.name)
   
     
     def __getitem__(self, index):
@@ -455,12 +462,11 @@ class Trap():
         return ('Destructor called, Object deleted.')
 
 # print()
-# r = Trap('TusharMalhan')
-# print(r.email)                # getter called here 
-# r.email = 'malhan2'           # setter called here 
+# r = Employee('TusharMalhan')
+# print(r.email)                  # getter called here 
+# r.change_name = 'malhan2'       # setter called here 
 
-# print(r.email())              # getter called here 
-# print(r.email_('malhan3'))    # setter called here 
+# print(r.email)                  # getter called here  with new attribute 
 # print(r.name)                 # without getter setter too , we can change attributes 
 
 # print(r[0])                   # __getitem__()
@@ -490,6 +496,28 @@ So Access private only by  :=
 PROTECTED == means we can call both class and instance protected variable   DIRECTLY 
 '''
 
+
+class Parent(object):
+    def _protected(self):
+        print('protected of parent')
+
+    def __private(self):
+        print("Is it really private?")
+
+
+class Child(Parent):
+    def foo(self):
+        self._protected()
+
+    def bar(self):
+        self.__private()
+
+c = Child()
+# c.bar()
+# c.foo()
+# c._Parent__private()
+        
+
 #                       Diamiond Shape Inheritance
 
 class Class1:
@@ -506,14 +534,24 @@ class Class3(Class1):
     def m(self):
         print("In Class3")
         super().m()         
-        # Class1.m(self)  
-      
+        # Class1.m(self)        
 class Class4(Class2, Class3):
     '''  given attribute is first searched in the current class 
     if it’s not found then its searched in the parent classes.
     The order that is followed is known as a linearization 
     of the class Derived and this order is found out using 
-    a set of rules called Method Resolution Order (MRO).'''
+    a set of rules called Method Resolution Order (MRO).
+
+            
+    super().f()     # MRO - 
+    # super == means next in line 
+    # in single heritance > it will print uptil parent 
+    # in multiple inheritance > it will print both from the inherited parent first (A,B),
+    # then from the parent of the inherited parent   (ROOT)
+    # - Thus super() must be called in every parent inorde to reach the ROOT 
+    
+    
+    '''
     def m(self):
         print("In Class4")  
         super().m()                 # explicit call which will do the mro and make the parent class call once 
@@ -555,55 +593,144 @@ class child1(A):
 #     print(x)
 #     normal_d.pop(x)
 
-# both are iterators - generators are called infinite iterators
-# yield is used to convert a regular Python function into a generator.  = inorder to save ram > so that u dont waste ur server RAM 
-# generate values on the fly by  __next__() = printing one by one 
 
-    # iter_list = iter(['tushar', 'For', 'Malhan'])
-    # print(next(iter_list))
-    # print(next(iter_list))
-    # print(next(iter_list))
+# both are iterators - generators generate the values on the fly
 
-#        Generators =>      CALL IT AS MANY TIMES AS YOU WANT
-#  It is another way of creating iterators in a simple way 
-#  where it uses the keyword “yield” instead of returning 
-#  it in a defined function. 
-#  Generators are implemented using a function. 
+#           Iterators      =>   iter() and next()
+# iter_list = iter(['tushar', 'For', 'Malhan'])
+# print([i for i in iter_list])
+# print(next(iter_list))
+# print(next(iter_list))
+# print(next(iter_list))
+# print(next(iter_list))         # error 
 
 
-    # def a():
-    #     for i in markdict:
-    #         yield i 
-    # print(next(a()))
-    # print(next(a()))
+#        Generators        =>    yield   in func()
+# another way of creating iterators by "yield" in function. 
+# Use  to save ram 
+# MUCH BETTER than iterators as it fast 
+# Generator is inherited from Iterator only 
+
+def sq_numbers(n):
+    for i in range(n):
+        yield i
+# print([i for i in sq_numbers(3) ])    # sq_numbers == generator object 
+# a = sq_numbers(3)                     # For next() to work , we need to convert it to iterable object
+# print(next(a))
+# print(next(a))
+# print(next(a))          # by using generator too, we can iterate it one by one 
+ 
+
+#  Input output to generators yield using send 
+def searcher():
+    # import time 
+    # time.sleep(4)
+    book="Tushar malhan this is a book"
+    while True:
+        text=(yield)
+        print("Text is in the book") if text in book else print(" No Text Found")
+        
+# search = searcher()
+# next(search)    
+# search.send('Tushar')         # yield == text == search.send()
+# search.send('aaaa')
+# search.close()
 
 
-    # def ok(n):
-    #     for i in range(n):
-    #         yield 'yield called'
-    #         yield 1
-    #         return 'ok'
-    # o=ok(2)
-    # print(o.__next__()) # or   next(o) 
 
 
 
-#                   log vs   log2
+'''     Async vs  Sync  '''
+# Synchronous functions  waits for the result of a function to be finished
+# def hi(name):
+#     print('hi'+name)
+# def hello():
+#     print('hello')
+# hi('TM');hello();print(1)
 
-#               importing from log directory 
+
+
+# Asynchronous functions  do not wait for function to complete  and works paralelly
+
+
+import asyncio
+# 1. async makes function couroutine       > # print(main('1'))
+# 2. Use asyncio to execute the coroutine  > # asyncio.run(main('tushar'))
+async def main(name):         
+    print('hi '+name)
+    task = asyncio.create_task(foo())
+    await asyncio.sleep(2)
+    print('finished')
+
+# 3. Use await to execute the coroutine    >  await asyncio.sleep(1)
+# 4. await needs to be used in async function only
+# 5. We create task using asyncio.create_task(),so that
+#   we can print('finished') first and then sleep
+# 6. await task to use foo coroutine
+async def foo():
+    print('From second couroutine function')
+    await asyncio.sleep(1)
+
+# asyncio.run(main('tushar'))
+
+
+
+''' __new__ vs __init__'''
+
+# __new__ is responsible for returning the objects
+# -     Doing validations on the instance before initializing is performed in __new__ 
+''' 
+Expensive Calls == suppose in init we need to read the results or read the database 
+which is time consuming , thus we check the validations before __init__ 
+before doing any modifications ( Eg decrypting a file in __new__)
+ '''
+# __init__ is for giving attributes to the instance, cant return anything
+
+
+class Shape():
+    def __new__(self,*args,**kwargs):
+        if args[0] == 4:
+            return rectangle(*args,**kwargs)
+        elif args[0] == 3:
+            return triangle(*args,**kwargs)
+        else:
+            return circle(*args,**kwargs)
+
+class rectangle():
+    def __init__(self,*args,**kwargs):
+        self.s = args[0]
+        print('Rectangle')
+    def area(self):
+        print('area of rectangle ')
+
+class triangle():
+    def __init__(self,*args,**kwargs):
+        self.s = args[0]
+        print('Triangle')
+    def area(self):
+        print('area of Triangle ')
+
+class circle():
+    def __init__(self,*args,**kwargs):
+        self.s = args[0]
+        print("Circle")
+    def area(self):
+        print('area of Circle ')
+
+# a = Shape(0)
+# print(a.s)
+# a.area()
+
+
+
+
+#                   log   vs   log2    
+#             [* log2 *] --> from log import * 
+
+#               importing from sub directory
 # import os,sys
 # sys.path.append(os.getcwd())
 # from log.old import * 
-
-
-
-
-# Question :
-markdict = [
-    {"Tom":67, "Tina": 54, "Akbar": 87, "Kane": 43, "Divya":73},
-    {"Tom2":672, "Tina2": 254, "Akbar2": 287, "Kane2": 243, "Divya2":273}
-]
-
 
 
 

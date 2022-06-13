@@ -7,6 +7,7 @@ import json
     # >>> nltk.download()
     # choose and install all or some corpora
     # TERMNIAL > import nltk ; nltk.download('punkt')
+
 import torch
 import torch.nn as nn
 

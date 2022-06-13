@@ -1,3 +1,15 @@
+''' 
+    Create a README.md file for the Your PROJECTS 
+
+# 1. need to pass project_name as an argument
+# 2. Project info in detail
+# 3. need to pass (args*)display as an argument     >=5   , if more show display6
+# 4. need to pass (kwargs)features as an argument   >=6   , features['feature7']
+
+Pass These Parmas: IN MAIN CLASS object
+    
+'''
+
 class Main():
     def __init__(self,project_name,project_info,*display,**features):
         self.project_name = project_name
@@ -81,10 +93,6 @@ Look at the screenshots Dir for more information.
 '''
         )
 
-# 1. need to pass project_name as an argument
-# 2. Project info in detail
-# 3. need to pass (args*)display as an argument     >=5   , if more show display6
-# 4. need to pass (kwargs)features as an argument   >=6   , features['feature7']
 
 project13 = Main(
 # 1 Project_name

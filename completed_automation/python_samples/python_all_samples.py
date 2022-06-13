@@ -922,11 +922,10 @@ print(tushar.email)
 #  - same attributes & methods called by son > will be overwrited and printed , if same_name methods not printed >>> son use parents methods
 #  - once u overwrite methods or attributes of parents , they will be forgone  >>> so  use super().__init__()   = to use both attributes and methods of parents and son
 
+
+
+
 ''' super method allows to access your parents methods and attributes , is placed under a function()'''
-
-
-
-
 
 
 # from abc import ABC,abstractmethod
@@ -947,7 +946,6 @@ print(tushar.email)
 # a = rectangle()
 # print(a.printarea())
 
-    
 
 
 # iterative functions = using loops 

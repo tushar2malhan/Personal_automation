@@ -1,5 +1,5 @@
-
 #!/bin/bash
+
 
 echo -e "\n\tThis is bash scripting practice\n \t $date "
 echo -e "\nSpell Your name"
@@ -29,3 +29,5 @@ val = $1
 
 echo -e " so val is postional arg where when script runs ir ./getrich.sh  tushar\n"
 echo -e "your val like this is printed out $val"
+
+echo "hello"

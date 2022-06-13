@@ -13,6 +13,8 @@
 4. Connect Forclient (Notification)-> <br />
 5. Python_samples ( django_automation,job_automation,python samples ) -> <br />
 6. Web Scraping (Amazon) -> <br />
+7. Readme Automation (Readme.md) -> <br />
+8. Python Samples (Directory) -> Python from Scratch <br />
 
 
 
@@ -22,9 +24,10 @@
 
 
 
-**To Be Seen** <br />
-1. Major projects and Topic covered with examples  -> <br />
-2. Each part of python is covered        -> <br />
+**Practice** <br />
+1. Python_Advance > Major projects and Topic covered with examples  -> <br />
+2. TobeSeen       > Each part of python is Explored        -> <br />
+3. Coding Prac    > DSA Covered       -> <br />
 
 
 **Data Structures & Algorithms** <br /> 
@@ -36,6 +39,11 @@
 1. AWS  -> <br />
 2. OS         -> <br />
 3. Networking         -> <br />
+
+**NLP**<br />
+1. Training modeling -> <br />
+2. Testing modeling -> <br />
+3. Prediction modeling -> <br />
 
 <br />
 

@@ -26,6 +26,7 @@ Print a list of all the score values from all users excluding the first 10 users
 # # print(d)
 
 
+# shift all 0s to right hand side in [490,2,1,0,4,0,2,30,1,0]
 # L=[1,2,4,5,0,6,0]
 # def solve(L):
 #      ''' Move all 0s to RHS '''
@@ -45,15 +46,96 @@ Print a list of all the score values from all users excluding the first 10 users
 #      return L 
 # print(solve(L))
 
+# using while loop and iter , pop items in marketdict
+# markdict = [
+#     {"Tom":67, "Tina": 54, "Akbar": 87, "Kane": 43, "Divya":73},
+#     {"Tom2":672, "Tina2": 254, "Akbar2": 287, "Kane2": 243, "Divya2":273}     ]
 
 
 
+# find groupings of number in string
+# s='903jf90dj03jd'
 # a = "abc12333abc3456abc7891"
 # b = ([i.strip() for i in ''.join([i if i.isdigit() else ' ' for i in a ]).split(' ') if i])
 # print(b)
 
 
 # print(    sorted(d.items() , key = lambda kv:(kv[1],kv[0])) )
+
+
+
+# d = {'a':0,'b':1,'c':0}
+
+# if d['a'] >0:
+#         print('a')
+# elif d['b'] >0:
+#         print('b')
+# elif d['c'] >0:
+#         print('c')
+# elif d['d'] >0:
+#         print('c')
+# else:
+#         print('not ok')
+
+
+def check_if_else():
+    ''' which are valid if else statements'''
+    ...
+
+    x,y=3,5
+    if x<y : print('1') if x>y else print (0)
+
+    if 4==1:print(0)
+    elif 4==5:print(1)
+    else:print(1)
+
+    # Not Valid
+    # if x<y : if x>y : print (0)
+    # if x<y :  print (0) else:print(1)
+
+
+
+
+
+# max value of an integer that can be set is infinite  |
+#    in python 2 there was an internal limit but it was removed in python 3
+
+# express hexadecimal value a5 as base-16 integer constant   >>> 0xA5
+# print(int('0xA5',16))
+
+# Express constant floating point value 3.2*10^-12  >>>  print(3.2e-12)
+# print(3.2e12)                                     >>> 3200000000000.0
+
+
+# Valid string literal                              >>> """foo'bar""" | "foo'bar" | 'foo\'bar'
+
+# String literal for hexadecimal value 7E           >>> "x7E" 
+
+# print(r'foo\\bar\nbaz') == foo\\bar\nbaz  >>>  because r'' ignores escape sequence
+
+
+# a = [1,2,4,6]
+# b = [1,2,3,4]
+
+# for i in range(len(a)):
+#     if a[i] not in b or b[i] not in a:
+#         print(a[i])
+
+
+# find second largest number in list
+# ar = [3,21,4,5,2,1]
+# min = ar[0]
+# second_min = ar[0]
+
+# for i in ar :
+#     if i < min:
+#         # second_max = max
+#         # print(i)
+#         min = i
+#         print(min)
+
+# print(min,second_max)
+##################################################################################################################################################
 
 ''' Decorator is closuers for python 
 where in the decorator > we call the function inside the sub function that needs to be run ( which is the decorated function )
@@ -82,6 +164,37 @@ same like func()   , we can pass any variable too in the sub functoin of the dec
 #           else:
 #                return 'Please enter your name'
 #      return wrapper
+
+
+
+''' decorator   good example '''
+
+# def fu(func):
+#     print('\nhello')
+#     return func
+
+# @fu
+# def  shell(funx):
+#     def inner(a,c):
+#         print('a')
+#         if a==1:
+#             return funx(12)
+#         else:
+#             return funx(c)
+#     return inner
+
+# @shell
+# def f(z):
+#     print('b')
+#     return z+1
+
+# print(f(4,12))
+
+# f1 = shell(f)
+# f1(1,12)
+
+
+########################################################################################################################
 
 # @input_name
 # def say(name):
@@ -150,111 +263,156 @@ same like func()   , we can pass any variable too in the sub functoin of the dec
 
 
 """ #############################################################################################################################################################################"""
-#                                 Shorter version of above code               
-#                 just provide the class name and ask driver to find element by respective type and add the functionality inside get_values()
+#                                           AUTOMATION OF THE WEBPAGE
 
-# no big functions , one main function  |  inside class 
-# no comments for prod 
 
-# from selenium import webdriver
-# import time
-# from selenium.webdriver.common.keys import Keys
-# from openpyxl import Workbook  ,load_workbook
-# wb = Workbook()  
-# url="https://www.mercadona.es/"
-# postalcode='08013'
+''' 
+    Requests automation 
+    with beautifulsoup  
+'''
 
-# def web_scrap_automation(url,postcode,*classnames):
-#      driver = webdriver.Chrome(executable_path=r"C:\Users\Tushar\Downloads\chromedriver.exe")
-#      driver.get(url)
-#      print('\t\t',driver.title)
+def requests_beautiful():
+    
+    ''' 
+    get all TEXT , LINKS, IMAGES , TITLE  
+    of the webpage
+    from The base_url  '''
+    import requests
+    from bs4 import BeautifulSoup
+    
+    base_url = 'http://www.nytimes.com'
+    r = requests.get(base_url)
+    # print(r)
+
+
+    # GET All the Text from the Page 
+    # print(r.text)
+    soup = BeautifulSoup(r.text,'html.parser')
+
+    # GET title of the Page 
+    print(soup.title.text)
+
+
+    # GET all images from the page
+    img_tags = soup.find_all('img')
+    print( [img.get('src') for img in img_tags ])
+
+
+    # GET all anchor tags from the page
+    links = (soup.find_all('a'))                       
+    [print(link.get('href')) for link in links ]       # GET href link
+        
+
+   # GET text from the class_ 
+    for story_heading in soup.find_all(class_="indicate-hover css-vip0cf"): 
+        print(story_heading.text)                     
+
+        if story_heading.a: 
+            print(story_heading.a.text.replace("\n", " ").strip())
+        else: 
+            print(story_heading.contents[0].strip())
+
+# requests_beautiful()
+
+''' selenium automation'''
+
+from selenium import webdriver
+import time
+from selenium.webdriver.common.keys import Keys
+from openpyxl import Workbook  ,load_workbook
+wb = Workbook()  
+url="https://www.mercadona.es/"
+postalcode='08013'
+
+def web_scrap_automation(url,postcode,*classnames):
+     driver = webdriver.Chrome(executable_path=r"C:\Users\Tushar\Downloads\chromedriver.exe")
+     driver.get(url)
+     print('\t\t',driver.title)
      
-#      def get_values(sheet_num,sheet_name,driver,*innerclasses):     # here innerclasses refers to each element we sent when outer func is called 
-#                sheet = wb.create_sheet(sheet_num)
-#                sheet.title = sheet_name 
+     def get_values(sheet_num,sheet_name,driver,*innerclasses):     # here innerclasses refers to each element we sent when outer func is called 
+               sheet = wb.create_sheet(sheet_num)
+               sheet.title = sheet_name 
                
-#                #   get the Name
-#                sheet[f'A{1}']="PRODUCTS"
-#                name_tag= driver.find_elements_by_class_name(innerclasses[0])
-#                for name in range(len(name_tag)):
-#                     sheet[f'A{name+2}']=name_tag[name].text
-#                     print(name_tag[name].text)
+               #   get the Name
+               sheet[f'A{1}']="PRODUCTS"
+               name_tag= driver.find_elements_by_class_name(innerclasses[0])
+               for name in range(len(name_tag)):
+                    sheet[f'A{name+2}']=name_tag[name].text
+                    print(name_tag[name].text)
 
                
-#                #   get the Price
-#                sheet[f'B{1}']="PRICES"
-#                price_tag=driver.find_elements_by_class_name(innerclasses[1])
-#                for price in range(len(price_tag)):
-#                     sheet[f'B{price+2}']= price_tag[price].text
-#                     print(price_tag[price].text)
+               #   get the Price
+               sheet[f'B{1}']="PRICES"
+               price_tag=driver.find_elements_by_class_name(innerclasses[1])
+               for price in range(len(price_tag)):
+                    sheet[f'B{price+2}']= price_tag[price].text
+                    print(price_tag[price].text)
 
-#                #  getting the image link
-#                images = driver.find_elements_by_xpath(innerclasses[2]) 
-#                sheet[f'C{1}']="IMAGES"
-#                for image in range(len(images)):
-#                     sheet[f'C{image+2}']=images[image].get_attribute('src')
-#                     print(images[image].get_attribute('src'))
+               #  getting the image link
+               images = driver.find_elements_by_xpath(innerclasses[2]) 
+               sheet[f'C{1}']="IMAGES"
+               for image in range(len(images)):
+                    sheet[f'C{image+2}']=images[image].get_attribute('src')
+                    print(images[image].get_attribute('src'))
 
-#                # get the weight
-#                weights =driver.find_elements_by_class_name(innerclasses[3]) 
-#                sheet[f'D{1}']="WEIGHT"
-#                for weight in range(len(weights)):
-#                     sheet[f'D{weight+2}'] = weights[weight].text
-#                     print(weights[weight].text)
-#                print()
+               # get the weight
+               weights =driver.find_elements_by_class_name(innerclasses[3]) 
+               sheet[f'D{1}']="WEIGHT"
+               for weight in range(len(weights)):
+                    sheet[f'D{weight+2}'] = weights[weight].text
+                    print(weights[weight].text)
+               print()
                     
-#                print(f'\n\nDone , Data extracted and saved in your excel for the {sheet_name}')
+               print(f'\n\nDone , Data extracted and saved in your excel for the {sheet_name}')
 
-#      try:
-#           #              convert to english language
-#           l0=driver.find_element_by_xpath("/html/body/div[1]/nav/div[2]/div/i")
-#           l0.click()
-#           l1=driver.find_element_by_xpath("/html/body/div[1]/nav/div[2]/div/ul/li[6]/button")
-#           l1.click()
+     try:
+          #              convert to english language
+          l0=driver.find_element_by_xpath("/html/body/div[1]/nav/div[2]/div/i")
+          l0.click()
+          l1=driver.find_element_by_xpath("/html/body/div[1]/nav/div[2]/div/ul/li[6]/button")
+          l1.click()
           
-#           search_bar = driver.find_element_by_xpath('//*[@id="root"]/header/div/div/form/div/input')
+          search_bar = driver.find_element_by_xpath('//*[@id="root"]/header/div/div/form/div/input')
           
-#           #                   give the postcode
-#           try:
-#                search_bar.send_keys(postcode)      
-#                search_bar.send_keys(Keys.RETURN)
-#                l2=driver.find_element_by_xpath('//*[@id="root"]/header/div/div/form/input')
-#                l2.click()
-#                accept= driver.find_element_by_xpath('//*[@id="root"]/div[1]/div/div/button[2]')
-#                accept.click()
-#           except:
-#                print('No way to pass postal code on the webpage')
+          #                   give the postcode
+          try:
+               search_bar.send_keys(postcode)      
+               search_bar.send_keys(Keys.RETURN)
+               l2=driver.find_element_by_xpath('//*[@id="root"]/header/div/div/form/input')
+               l2.click()
+               accept= driver.find_element_by_xpath('//*[@id="root"]/div[1]/div/div/button[2]')
+               accept.click()
+          except:
+               print('No way to pass postal code on the webpage')
 
-#           time.sleep(10)
-#           #                        DYNAMIC FROM HERE 
+          time.sleep(10)
+          #                        DYNAMIC FROM HERE 
 
-#           get_values('sheet_1','LANDING_PAGE',driver,*classnames)
-#           print('\n\n')
+          get_values('sheet_1','LANDING_PAGE',driver,*classnames)
+          print('\n\n')
      
-#           # #                      View the products from inside 
-#           product_button = driver.find_element_by_class_name('banner-item__button')
-#           product_button.click()
-#           time.sleep(10)
+          # #                      View the products from inside 
+          product_button = driver.find_element_by_class_name('banner-item__button')
+          product_button.click()
+          time.sleep(10)
 
-#           get_values('sheet_2','INNER_PAGE',driver,*classnames)
-#           print('\n\n')
+          get_values('sheet_2','INNER_PAGE',driver,*classnames)
+          print('\n\n')
 
-#           driver.close()      
-#           filename = fr"C:\Users\DELL\Desktop\excel\file_{postalcode}.xlsx"                                                           
-#           wb.save(filename)                                                          # saving file to the excel 
-#           wb.remove(wb['Sheet'])
-#           wb.save(filename)  
+          driver.close()      
+        #       filename = fr"C:\Users\Tushar\Desktop\file_{postalcode}.xlsx"  
+        #       os.mkdir(filename)                                                         
+        #   wb.save(filename)                                                          # saving file to the excel 
+        #   wb.remove(wb['Sheet'])
+        #   wb.save(filename)  
 
-#      except Exception as e:
-#           print(f'Issue in the postal code ❌{postalcode}❌, check and verify it again')
-#           print(e)
+     except Exception as e:
+          print(f'Issue in the postal code ❌{postalcode}❌, check and verify it again')
+          print(e)
 
 # web_scrap_automation(url,postalcode,'product-cell__description-name','product-price__unit-price',"//div[@class='product-cell__image-wrapper']/img","product-price__extra-price",None)
 
-""" #############################################################################################################################################################################""" 
 
-
-#   HERE IF WE CAN COMMENT 2 FN CALL , WE CAN WEB SCRAPE ALMOST EVERY SITE 
 ######################################################################################################################################################
 
 #    ubuntu multiple commands at once
@@ -963,3 +1121,17 @@ POINTS
 # pip install ipdb     |   python -m ipdb module.py         |  s > next step ,  c > continue   , q > quit 
 
 ############################################################################################################################
+
+#                                          new vs init     
+# class UppercaseTuple(tuple):
+
+#     def __init__(self, list) -> None:
+#         print(f"Start changes for {list}")
+
+#         for i, item in enumerate(list):
+#             self[i] = item.upper()
+
+# print(UppercaseTuple(["my list", "uppercased tuple"]))
+
+
+

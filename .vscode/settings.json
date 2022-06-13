@@ -1,8 +1,0 @@
-{
-    "python.pythonPath": "D:\\Users\\tusha\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
-    "python.testing.pytestArgs": [
-        "completed_automation"
-    ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
-}
