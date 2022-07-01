@@ -1,5 +1,6 @@
 
 import os
+from regex import P
 # from gtts import gTTS
 import speech_recognition as sr
 
@@ -263,63 +264,94 @@ same like func()   , we can pass any variable too in the sub functoin of the dec
 
 
 """ #############################################################################################################################################################################"""
-#                                           AUTOMATION OF THE WEBPAGE
+#                        AUTOMATION OF THE WEBPAGE
 
 
 ''' 
     Requests automation 
     with beautifulsoup  
 '''
-
 def requests_beautiful():
     
     ''' 
     get all TEXT , LINKS, IMAGES , TITLE  
     of the webpage
     from The base_url  '''
+    
+    
     import requests
     from bs4 import BeautifulSoup
     
     base_url = 'http://www.nytimes.com'
     r = requests.get(base_url)
+    print()
     # print(r)
+    # print(r.status_code)
+
+
+    # status code 
+    # 200 --> successful 
+    # 300 --> redirect issue - multiple response 
+    # 404 --> no page found
+    # 500 --> server error
 
 
     # GET All the Text from the Page 
-    # print(r.text)
+    # print(r.text)    # randomly ordered 
+    
     soup = BeautifulSoup(r.text,'html.parser')
 
+
+
     # GET title of the Page 
-    print(soup.title.text)
+    # print(soup.title.text)
 
 
     # GET all images from the page
     img_tags = soup.find_all('img')
-    print( [img.get('src') for img in img_tags ])
+    # p = [img.get('src') for img in img_tags ]
+    # print(p)
+    # print(all(p))    # overall True or false condition  , if any false > return false 
+
+    p = [img.get('src') for img in img_tags ]
+    # p = [img  for img in img_tags if img.get('src') ]
+    print(p)
+    # for i in p:
+    #     if i:         # i == link  True, NOne  == False   # if i === True statements
+    #         print(i)
+
+    
 
 
     # GET all anchor tags from the page
-    links = (soup.find_all('a'))                       
-    [print(link.get('href')) for link in links ]       # GET href link
+    # links = (soup.find_all('a'))                       
+    # [print(link.get('href')) for link in links ]       # GET href link
         
 
    # GET text from the class_ 
-    for story_heading in soup.find_all(class_="indicate-hover css-vip0cf"): 
-        print(story_heading.text)                     
+    #   server stress  more stres > more cost of the company 
+    # for story_heading in soup.find_all(class_="story-wrapper"): 
+    #     print(story_heading.text)                     
 
-        if story_heading.a: 
-            print(story_heading.a.text.replace("\n", " ").strip())
-        else: 
-            print(story_heading.contents[0].strip())
+        # if story_heading.a:      # if anchor tag exists 
+        #     print(story_heading.a.text.replace("\n", " ").strip())
+        # else: 
+        #     print('**********************')
+            # print(story_heading.strip()   )
 
-# requests_beautiful()
+requests_beautiful()
 
-''' selenium automation'''
+
+
+
+
+
+''' selenium automation '''
 
 from selenium import webdriver
 import time
 from selenium.webdriver.common.keys import Keys
-from openpyxl import Workbook  ,load_workbook
+from openpyxl import Workbook , load_workbook
 wb = Workbook()  
 url="https://www.mercadona.es/"
 postalcode='08013'
@@ -531,6 +563,22 @@ def web_scrap_automation(url,postcode,*classnames):
 #                # c+=1
 #                print(lines[num+1].split('data-test="product-cell-name">')[1].split('</h4>')[0])        # print and extract values from list 
 #      # print(c)
+##################################################################################
+#           COMPARE 2 Datetime objects
+
+## Compare 2 dates in seconds and find the difference
+## - query date     = getting from database - User
+## - datetime.now() = Current date 
+## timezone is forconverting both into same timezone and timedelta  is for conversion into seconds 
+
+# from datetime import datetime, timezone, timedelta
+# d1 = query.created_time.replace(tzinfo=timezone.utc).timestamp())
+
+# d = datetime.now()\
+# .replace(tzinfo=timezone.utc).timestamp()
+
+# print(d1-d)       # difference in seconds
+
 ##################################################################################
               
 #        list_files=[file for file in os.listdir() if file.endswith('.jpg') and 'no' in file ] 
@@ -1110,7 +1158,8 @@ POINTS
 ############################################################################################################################
 
 #                                        Selenium easy ways  
-# find element by text     =>  driver.find_element_by_xpath("//*[contains(text(), 'Call +XX XXXXXXXX72‎')]")
+
+# find values by text ( innerhtml text )    =>  driver.find_element_by_xpath("//*[contains(text(), 'Call +XX XXXXXXXX72‎')]")
 # find all links in table  =>  elements = driver.find_elements(By.XPATH,"//table[@class = 'table']//td/a")
 
 ############################################################################################################################

@@ -1,5 +1,7 @@
 import os , time 
 
+main_dir =r"C:\Users\Tushar\Desktop\django_prac\Django_bot"             # CREATE UR DIR FIRST 
+
 def add_under_installed_apps(main_dir,project_name):
     word = input('what needs to be  installed under installed apps  ? \n')
     if word:
@@ -17,14 +19,14 @@ def add_under_installed_apps(main_dir,project_name):
 def table_changes():
     os.system('python manage.py makemigrations')
     os.system('python manage.py migrate')
+
 def runserver():
     os.system('python manage.py runserver')
 def listdir_in_ur_home():
-    return os.listdir(r'C:\Users\tusha\Desktop\django_prac\Django_bot')      # [ listing down your files in this home directory ]
+    return os.listdir(main_dir)      # [ listing down your files in this home directory ]
 def chdir_to_home():
-    os.chdir(r'C:\Users\tusha\Desktop\django_prac\Django_bot')       # here ur projects and apps files will be installed  [ you can create ur directory and do changes accordingly ]
-check_packages = os.listdir(r'c:\users\tusha\desktop\python\env\lib\site-packages')    # if django , rest_framework , packages are  installed or not , set path where ur packages are installed in ur local system 
-main_dir =r'C:\Users\tusha\Desktop\django_prac\Django_bot'             # CREATE UR DIR FIRST 
+    os.chdir(main_dir)       # here ur projects and apps files will be installed  [ you can create ur directory and do changes accordingly ]
+check_packages = os.listdir(r"C:\Users\Tushar\AppData\Roaming\Python\Python310\site-packages")    # if django , rest_framework , packages are  installed or not , set path where ur packages are installed in ur local system 
 
 
 
@@ -34,8 +36,8 @@ if a in ['django' , 'go','','l','ok','yes']:
     chdir_to_home()    
     r=None
     for i in check_packages:
-            if i.endswith('virtualenv'):
-                r=True
+            if i in ('virtualenv'):
+                r = True
     if r:          
         os.system('python -m venv env2')
         print('Hope your virtualenv is not running in any other thread')
@@ -48,13 +50,14 @@ if a in ['django' , 'go','','l','ok','yes']:
         print('\n Your Project should have a valid Name ')
         exit()
 
-    if 'django' in check_packages:
-        time.sleep(2)
-        print('django is installed')
-    if 'djangorestframework-3.12.4.dist-info' in check_packages:
-        time.sleep(2)
-        print('even rest framework is installed  ')
-    else:
+    for each_package in check_packages:
+        if each_package in ('django','rest_framework'):
+            time.sleep(2)
+            print('django and rest framework are installed ')
+            time.sleep(2)
+            print('  ')
+            r = True
+    if not r:
         time.sleep(2)
         print('installing the workload')
         os.system(f'pip install django && pip install djangorestframework ')

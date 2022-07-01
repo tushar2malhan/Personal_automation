@@ -1,0 +1,96 @@
+#       kubernetes CONFIGURATION Files
+
+
+#  WHEN ever we need to deploy the PODS in kubernetes 
+  == we need to create a deployment object or yaml file 
+
+Overview of the content:
+
+  3 parts of a Kubernetes configuration file
+    - metadata
+    - specification
+    - status
+  format of configuration file
+  blueprint for pods (template)
+  connecting services to deployments and pods (label & selector & port)
+  connecting deployment to pods
+  connecting services to deployments
+  ports
+
+
+apiVersion: v1
+kind: Deployment  | Service
+
+
+metadata:
+    name : <name of the object>
+    labels :
+
+spec:   <Attributes of spec of the object>
+    replicas: <number of replicas>
+    selector:
+        matchLabels:
+            app: <name of the app>
+    
+    template:                           # template CONFIGURATION applies to a POD                                                                              
+        metadata:
+            labels:
+                app: <name of the app> nginx
+        spec:
+            containers:
+                - name: <name of the container>
+                  image: <image name>
+                  ports:
+                      - containerPort: <port number>
+                        protocol: TCP
+                volumes:
+                    - name: <name of the volume>
+                      hostPath:
+                        path: <path of the volume>
+
+
+status:   <Automatically updated by the kubernetes>
+- what is desired state and current state of the component
+- if desired != actual :- update the component
+Q Where does K8 get the desired status ?
+- it gets the desired status from etcd component in master node 
+ because it holds current status of any k8 component 
+
+
+
+Q Blueprint of pod or specifications for a pods is based on which configuration ?
+- Under template configuration > spec > containers configuration
+ ( the name, image, port number of ports are defined here )
+
+Q How connection is established between the pods between deployment and Service  ?
+- under metadata > using labels and  under spec of service > selector > matchLabels
+# both app names  == app:nginx are defined here  
+
+Q For matching the ports defined in the deployment and service, how are they matched ?
+- under spec of service > ports > targetPort :8080 
+# here under ports > db:service sends request to nginx service port:80 > defined under ports > port:80 in service
+# then service needs to know which pod it needs to send the request too!     ( targetPort)
+# so thats y we match the targetPort from service and deployment 
+
+# kubectl get pods -o wide              # >>> describe pods configuration 
+# kubectl get service  <service-name>   # >>> describe service configuration
+( when we check the service configuration, we get the port number of the service = where it listens to 
+  and the targetPort where it will send the request to 
+  endpoints = the actual ip address of pods where it is sending the request to )
+
+# when we describe the pods > we will confirm ip address of pods IP address is same as the endpoints
+
+
+customers = adidas, vodafone
+
+HENNING LANGE
+Co-founder & CEO
+
+Investor Stage Seed
+Henning Lange invested in Giant Swarm on Jul 25, 2014. 
+This investment - Seed Round - 
+Giant Swarm - was valued at $1.1M.
+
+Jul 25, 2014
+
+

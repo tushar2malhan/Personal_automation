@@ -1,5 +1,5 @@
+import datetime , time 
 import speech_recognition as sr
-import datetime , time
 from win10toast import ToastNotifier
 import pyttsx3
 
@@ -27,7 +27,7 @@ def takeCommand():
 
     except Exception as e:
         # speak( " WHAT ")   #Say that again will be printed in case of improper voice 
-        return "None" #None string will be returned
+        return "None" #None string will be returnedl
     return query # or QUERY.lower()
 
 def speak(audio):
