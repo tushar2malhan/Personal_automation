@@ -18,13 +18,10 @@
 
 
 
-**Devops**<br />
-1. Kubernetes -> (basics, yaml and queues) <br />
-2. Docker  -> ( docker instructions and samples)<br />
-
 **Open Cv Projects**<br />
 1. face detection (using face.xml) -> <br />
 2. Basics (opencv )  -> <br />
+
 
 
 **Practice** <br />

@@ -2,5 +2,5 @@ completed_automation/Protected/
 completed_automation\Protected\reminders.txt
 
 # Byte-compiled / optimized / DLL files
-*__pycache__/
+__pycache__/
 *.pyc
