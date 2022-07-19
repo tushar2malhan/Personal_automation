@@ -1,11 +1,17 @@
 ''' A complete automation Bot for your daily needs '''
 import  sys
 
-from click import confirm 
 sys.path.append(r'D:\Users\DELL\Downloads\env\Lib\site-packages')
 
 
-#   pip install openpyxl  selenium wikipedia pyjokes pywhatkit pygame pyautogui opencv-python numpy playsound translate  SpeechRecognition pyttsx3 pytube PyPDF2 pywikihow win10toast  translate paramiko  keyboard PyDictionary pytesseract
+#   REQUIREMENTS.TXT
+# pip install requests pyautogui selenium keyboard pytesseract  win10toast wikipedia pyjokes pywhatkit pygame pyautogui opencv-python numpy playsound translate  SpeechRecognition pyttsx3 pytube PyPDF2 pywikihow win10toast  translate paramiko  keyboard  pytesseract flask fastapi django gtts englisttohindi torch nltk regex openpyxl
+#  # issue with PyDictionary  
+
+# Downlaod chrome driver based on your chrome 
+# -  chrome > help > about google chrome >  check version of chrome
+# https://chromedriver.chromium.org/downloads
+
 
 from datetime import date
 # from  pygame import mixer
@@ -14,7 +20,8 @@ import os , json , requests , pickle , datetime , time
 import argparse ,sys
 import re 
 # if issue with PyAudio , go to https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio and search for pyaudio and download amd64.whl 
-# and run pip install  the downloaded file in the terminal (pip install PyAudio-0.2.11-cp310-cp310-win_amd64.whl)
+# and run pip install  the downloaded file in the terminal 
+# pip install PyAudio-0.2.11-cp310-cp310-win_amd64.whl  OR  pip install PyAudio-0.2.11-cp310-cp310-win_amd64.whl
 import webbrowser
 import os
 import smtplib

@@ -1,6 +1,10 @@
 import os , time 
 
-main_dir =r"C:\Users\Tushar\Desktop\django_prac\Django_bot"             # CREATE UR DIR FIRST 
+main_dir =r"C:\Users\Tushar\Desktop\django_Bot"             # CREATE UR DIR FIRST 
+
+if not os.path.exists(main_dir):
+    os.mkdir(main_dir)
+    print('Directory created')
 
 def add_under_installed_apps(main_dir,project_name):
     word = input('what needs to be  installed under installed apps  ? \n')
@@ -26,7 +30,7 @@ def listdir_in_ur_home():
     return os.listdir(main_dir)      # [ listing down your files in this home directory ]
 def chdir_to_home():
     os.chdir(main_dir)       # here ur projects and apps files will be installed  [ you can create ur directory and do changes accordingly ]
-check_packages = os.listdir(r"C:\Users\Tushar\AppData\Roaming\Python\Python310\site-packages")    # if django , rest_framework , packages are  installed or not , set path where ur packages are installed in ur local system 
+check_packages = os.listdir(r"c:\users\tushar\appdata\local\programs\python\python310\lib\site-packages")    # if django , rest_framework , packages are  installed or not , set path where ur packages are installed in ur local system 
 
 
 
@@ -34,33 +38,25 @@ a  = input('Create Django from scrath ').lower().strip()
 if a in ['django' , 'go','','l','ok','yes']:
 
     chdir_to_home()    
-    r=None
+    confirm_the_packages = None
     for i in check_packages:
-            if i in ('virtualenv'):
-                r = True
-    if r:          
-        os.system('python -m venv env2')
-        print('Hope your virtualenv is not running in any other thread')
+            if i in ('virtualenv','django','rest_framework'):
+                confirm_the_packages = True
+    if confirm_the_packages:          
+        # os.system('python -m venv env2')
+        print('Hope your virtualenv is not running in any other thread')  
+        time.sleep(2)
     else:
         os.system('pip install virtualenv && python -m venv env2')
         os.system('python -m venv env2')
+        print('installing the workload')
+        os.system(f'pip install django && pip install djangorestframework ')
     
     project_name = input('Project name ? \t')    
     if project_name in ['None',None,'',0,'empty']:
         print('\n Your Project should have a valid Name ')
         exit()
 
-    for each_package in check_packages:
-        if each_package in ('django','rest_framework'):
-            time.sleep(2)
-            print('django and rest framework are installed ')
-            time.sleep(2)
-            print('  ')
-            r = True
-    if not r:
-        time.sleep(2)
-        print('installing the workload')
-        os.system(f'pip install django && pip install djangorestframework ')
 
     if project_name in listdir_in_ur_home():
         time.sleep(2)
@@ -102,10 +98,10 @@ if a in ['django' , 'go','','l','ok','yes']:
         if 'psycopg2' not in check_packages:
             os.system('pip install psycopg2')
         else:
-            print('Already installed ')
+            print('Postgres module Already installed ')
         enter = input('wanna go inside and start ? ')
         if 'yes' in enter:
-                os.chdir(r'C:\Program Files\PostgreSQL\13\bin')                 # if u wanna enter shell directly kindly set ur path of Postgress/bin
+                os.chdir(r'C:\Program Files\PostgreSQL\14\bin')                 # if u wanna enter shell directly kindly set ur path of Postgress/bin
                 time.sleep(2)
                 print('kindly provide credentials for your postgres database ')
                 time.sleep(2)
@@ -124,17 +120,17 @@ if a in ['django' , 'go','','l','ok','yes']:
     table_changes()
   
 
-    ask= input('Wanna add rest_framework modules in ur views.py ?\t ').strip().lower()
-    if ask in ['yes','yup','y' ,'ok','yes ',' yes']:
-        with open(fr'{main_dir}\{project_name}\{app_name}\views.py','w') as f2:
-            f2.write(
+    # ask= input('Wanna add rest_framework modules in ur views.py ?\t ').strip().lower()
+    # if ask in ['yes','yup','y' ,'ok','yes ',' yes']:
+    with open(fr'{main_dir}\{project_name}\{app_name}\views.py','w') as f2:
+        f2.write(
 '''
 # Imported almost everything , create your view accordingly , if anything missed kindly add it manually
 
+import json
 from django.shortcuts import render
 from django.http import HttpResponse , JsonResponse
 from requests import api
-import json
 
 from django.views.generic import ListView
 from django.views.decorators.csrf import csrf_exempt
@@ -149,8 +145,8 @@ from rest_framework.authtoken.models import Token             # just like User t
 from rest_framework.generics import ListAPIView
 ''')
 
-    else:
-        print('Alright then , you can add it manually to your views.py file ')
+    # else:
+    #     print('Alright then , you can add it manually to your views.py file ')
 
 
 
@@ -251,7 +247,7 @@ urlpatterns = [
                 f.write(
 f'''
 class  {class_name} (APIView):                                  # CLASS BASE API       without SERIALIZERS
-      #permission_classes =[IsAuthenticated]                    # IF you have authentication , uncomment it and utlize as per your requirement ! 
+      # permission_classes =[IsAuthenticated]                    # IF you have authentication , uncomment it and utlize as per your requirement ! 
       def get(self,request,pk=None):
             return Response('Get called with class api True')
 
@@ -438,20 +434,19 @@ urlpatterns = [
             f.write(
 f'''
 from django.db import models
-# from django.db.models.fields import AutoField
-from django.db.models.fields import AutoField
 from django.contrib.auth.models import User
 
 class {model_name}(models.Model):
     pass
+    # id  column is always autogenerated by django
     # create your models columns accordingly
 
     # class Meta :
-    #     verbose_name ='Give specific name for your model '
-    #     ordering = [according to ur column_name]   # give column wise ordering
+    #     verbose_name_plural = 'Give specific name for your model '
+    #     ordering = ['id']       # give column wise ordering
 
     # def __str__(self):
-    #     return self          #return ur column here 
+    #     return str(self.id)         # Cant return int or None here else error
 
 
 ''')

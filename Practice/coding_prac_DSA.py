@@ -498,7 +498,10 @@ class algo:
         print(index1,index2)
         print(index2-index1)
        
-obj = algo()
+# obj = algo()
 # obj.bubble()
 # obj.insertion()
 # obj.insta_question()
+
+
+

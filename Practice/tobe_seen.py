@@ -339,7 +339,7 @@ def requests_beautiful():
         #     print('**********************')
             # print(story_heading.strip()   )
 
-requests_beautiful()
+# requests_beautiful()
 
 
 
@@ -1030,9 +1030,12 @@ class child1(A):
 # git checkout -- filename.py      [ before git add . ]     >>> undo the latest changes you just did !     ( or do . to undo all changes in all files )
 # git revert  hashcode             [ after git commit ]     >>> undo the changes and with the current changes in ur files , it will bring back old changes
 #                                                              ( like with my new updated code in fortclient it brought back old README.MD file which was deleted )
-#                     ** SENSITIVE COMMAND **
-# git reset --hard hashcode        [ after git commit ]     >>> will forceibly make your directory take back in time  with that git commit ,so all the current commits and files will be lost  permanently
+#                     ** SENSITIVE COMMANDS **
+# Q Want to  make your directory take back in time  with that git commit ,so all the current commits and files will be lost  permanently
+# git reset --hard hashcode        [ after git commit ]     
 
+# Q Want any old commit back from log ?
+# git checkout  hashcode              
 ###########################################################################################################################
 
 #                                            CSV basic operations
