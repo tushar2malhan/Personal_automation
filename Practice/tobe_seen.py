@@ -982,6 +982,11 @@ class child1(A):
 # SO WHEN U PUT FILE IN GITIGNORE , YOU WONT SEE THE FILE IN GIT STATUS   {  no relative path allowed , only absolute path }
 # git rm --cached <foldername>   incase folder dosent show up in repository
 
+# ** Suppose your changes made a HEAD branch and you lost the branch when checkouting to master
+# -  git reflog                     # it shows all the HEADS and their changes , find ur hash id c526b1f
+# - git checkout -b temp3 c526b1f  # will checkout to the hash id , so ur code will be updated based on that HEAD with new branch
+# then you can merge the branch to master and push the changes 
+
 ############################################################################################################################
 # git checkout -- filename.py      [ before git add . ]     >>> undo the latest changes you just did !     ( or do . to undo all changes in all files )
 # git revert  hashcode             [ after git commit ]     >>> undo the changes and with the current changes in ur files , it will bring back old changes
