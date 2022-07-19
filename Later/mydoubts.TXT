@@ -196,12 +196,10 @@ if default arg is given for single param
 
 @new method
 
-@ is    vs   == ?   >>> is check id and == check values 
+@ is    vs   == ?
 
  yield  where is it used   ?  diff with return  yield makes iterables on the fly , helps to save ram , runs by __next__()
- == generate values on the fly 
--  use iter(mutable_data_type) and use next() to get the values
--  use yield to get the values where it is inside function 
+
 
 
  DIFFERENCE between mal_func = functools.partial(mal_num,num)

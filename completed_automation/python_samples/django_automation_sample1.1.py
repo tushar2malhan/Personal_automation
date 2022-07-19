@@ -23,11 +23,10 @@ def add_under_installed_apps(main_dir,project_name):
 def table_changes():
     os.system('python manage.py makemigrations')
     os.system('python manage.py migrate')
-
 def runserver():
     os.system('python manage.py runserver')
 def listdir_in_ur_home():
-    return os.listdir(main_dir)      # [ listing down your files in this home directory ]
+    return os.listdir(r'C:\Users\tusha\Desktop\django_prac\Django_bot')      # [ listing down your files in this home directory ]
 def chdir_to_home():
     os.chdir(main_dir)       # here ur projects and apps files will be installed  [ you can create ur directory and do changes accordingly ]
 check_packages = os.listdir(r"c:\users\tushar\appdata\local\programs\python\python310\lib\site-packages")    # if django , rest_framework , packages are  installed or not , set path where ur packages are installed in ur local system 

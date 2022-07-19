@@ -41,6 +41,8 @@ from bs4 import BeautifulSoup
 import playsound
 import random
 
+
+from tkinter import Button, Entry, Label , Tk , StringVar, mainloop
 from pytube import YouTube
 from englisttohindi.englisttohindi import EngtoHindi
 import PyPDF2
