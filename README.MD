@@ -11,7 +11,7 @@
 2. Bot (Alexa type) -> <br />
 3. clean downloads (Download manager) -> <br />
 4. Connect Forclient (Notification)-> <br />
-5. Python_samples ( django_automation,job_automation,python samples ) -> <br />
+5. Python_samples ( django_automation - complete info,job_automation,python samples ) -> <br />
 6. Web Scraping (Amazon) -> <br />
 7. Readme Automation (Readme.md) -> <br />
 8. Python Samples (Directory) -> Python from Scratch <br />

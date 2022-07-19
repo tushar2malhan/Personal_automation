@@ -1,0 +1,10 @@
+
+    <h2 style="color:brown">Are you sure you want to delete this greeting ? </br>"{{item}}" </br></h2>
+
+    <br><br>
+    <a href="{% url 'base' %}">Cancel</a>
+    <br><br>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <input type="submit" value="Confirm">
+    </form>

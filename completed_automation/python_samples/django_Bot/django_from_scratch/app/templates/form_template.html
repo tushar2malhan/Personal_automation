@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form|HOME</title>
+</head>
+<body>
+    <h1> WELCOME TO THE FORM PAGE </h1>
+    <form action="" method="post">
+        {{form.as_p}}
+        <input type="submit" value="Submit">
+    </form>
+    <h3>All objects</h3>
+    <div>
+        {% for obj in all_objects %}
+        <div>
+            {{obj.id}}: 
+            {{obj.name}}
+            <a href="{% url 'delete' obj.id %}"><button> Delete </button> </a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

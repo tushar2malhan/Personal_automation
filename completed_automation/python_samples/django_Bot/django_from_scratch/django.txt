@@ -1,0 +1,1133 @@
+# Django 
+
+Views  [functions ] are of 2 types > function based views and class based views
+
+
+
+|||||||||||||||||       FRONT END 
+
+|                 Function Base  [ just need to import HttpResponse ]
+    
+    def about(request):
+        return HttpResponse("About us ")
+
+    urlpatterns = [ path('',about ) ]
+
+
+|                              Dynamic Urls 
+  
+    - url pattern can be further categorized in 3 types 
+    > int [1-9] ,
+    > str(string) , 
+    > slug (hello-my-ipaddress)  ! (@123) == error  | can take anything 
+    
+
+
+
+    urlpatterns = [  path('course/<slug:courseid>',course ), ]
+
+    def course(request,courseid):
+        return HttpResponse(f"Course id is {courseid}")
+
+    # if we dont know which type , the query will come > make it default 
+    urlpatterns = [  path('course/<courseid>',course ), ]
+
+
+|                           Render Html Templates
+
+    - create templates folder in app path  > create file  index.html   > write html code 
+    - set templates directory in settings.py > under TEMPLATES > 'DIRS': [BASE_DIR , 'templates'],
+    
+    from django.shortcuts import render 
+    
+    def renderpage(request):
+        return render(request,'index.html')             # name of the html page needs to be specified > index.html created in templates directory
+
+    * Need to restart server 
+
+
+|                           Send data to Html pages       dict   TAGS
+
+    -  We will send data created in django views to html pages 
+    - render function takes 3 arguments > request, html filename, dictionary {k:v} pair 
+
+    def renderpage(request):
+        data_to_be_send = {
+                    'name':'Tushar',
+                    'age':'21',
+                    'course':'Python'    ,
+            'course_list':['python','C','C++','java']
+            }
+      return render(request,'index.html',data_to_be_send)
+
+
+      - Now access this data_to_be_send in {{key}} html page 
+      - just parse the key and html page will show the value 
+      -  {{name}}   where Tushar is shown in html page 
+    
+    * Need to restart server  if not working 
+
+    - {{course_list}}  where python,C,C++,java are shown in html page in list 
+    - Now iterate over the list  and show the list in html page
+
+    <span class="spa">
+        {% for each_course in course_list  %}
+            <div>
+               {{forloop.counter}} {{each_course}}
+            </div>
+        {% endfor %}
+    </span>
+
+    -  {{forloop.counter}}              > gives index number of the list
+    - {{forloop.first}} {{each_course}} > First value is True and all are False 
+    - {{forloop.last}} {{each_course}}  > First value is False and all are True
+
+
+        <div >
+            <table >
+                <tr>
+                    <th>Name_of_course</th>
+                    <th>Price </th>
+                    
+                </tr>
+                <!-- tr refers to columns -->
+                <!-- td refers to the rows  -->
+                
+                {% for dict in course_details %}
+                <tr>
+                    <td>    {{dict.name}}</td>
+                    <td>   {{dict.price}} </td>
+
+                </tr>  
+                
+                {% endfor %}
+            </table>
+        </div>
+
+
+|                       Conditional Statement in html pages 
+        
+        - can use logic in dictionary in views only 
+        <div>
+            {% for number in numbers %}
+                {% if number > 2  %}
+                    {{number}}
+                {% else %}
+                    </br>
+                    {% endif %}
+            {% endfor %}
+            <br><br>
+            total length of number list is {{numbers|length}}
+        </div>
+
+
+
+|            Calling static files like js, css, images    -  load static TAG 
+    
+    -  create static directory besides templates directory in ur app path directory
+    = create and save all js, css, images in static directory
+
+    - under settings.py file > under STATICFILES_DIRS > 'STATIC_ROOT': os.path.join(BASE_DIR,'static'),
+    
+    STATICFILES_DIRS = [
+        BASE_DIR , 'static'             # now this static files are accessible 
+        ]
+
+
+     Now in index.html file > 
+        < link rel="stylesheet" href="/static/css/style.css" >       # now this css file is accessible placed in static directory
+        < img src = "/static/images/logo.png" >                       # now this image file is accessible placed in static directory
+        < script src="/static/js/script.js" > </script>              # now this js file is accessible placed in static directory
+
+    # Second way to call static directory >
+    # here we dont need to specify the path > it will automatically find the path in static directory
+    
+        in html page >
+           {% load static %}    >>> should be on top of the page 
+        
+        < link rel="stylesheet" href="{% static 'css/style.css' %} "   >  # now this css file is accessible placed in static directory
+
+        < img src = {%static 'images/logo.png' %} alt ='' width = '50' >  # now this image file is accessible placed in static directory
+
+
+|                include TAG         = change in  common html pages   
+
+    -  include tag is used to include html page in another html page
+    - so that we can use the same html page in multiple places in our html page
+    - like header and footer is commmon for all other templates pages  so that we dont need to change for every template
+
+    header.html page > copy the header html BODY code 
+    footer.html page > copy the footer html BODY code
+
+    in other html pages (index.html page ) at TOP 
+    {% include "header.html" %}
+
+    in other html pages (index.html page ) at BOTTOM 
+    {% include "footer.html" %}
+     > now this footer html code is included in index.html page
+     > now this header and footer can be use in any html page in our project
+
+
+
+
+|                    extends TAG          
+
+    - we create extends tag such that we create base.html file and add content block inside it
+    - we refers this content block for all other html templates pages like index.html page, about.html page etc.
+
+    but same way we include the header and footer in our Base page 
+------------------------------------------------
+    - index.html |
+    {% extends "base.html" %}
+    {% load static %}
+            html code for index.html page
+
+
+    - base.html  |
+    {% block content %}
+        - html body 
+    {% endblock %}
+--------------------------------------------------
+ 
+
+
+
+    - we use it so that we dont need to give header and footer in every html page 
+
+
+    in every html page > top line > 
+      {% extends 'base.html' %} > {% block content %}
+        html code for every html page
+      {% endblock %}
+
+    
+
+|               get url template tags - call pages via url 
+
+    -   header.html page >     we copy paste  the url from urls.py file 
+        <a href = '/'>Home</a> 
+        <a href = 'about-us/'>about us </a> 
+
+        where in urls.py 
+        urlpatterns = [
+            path('',views.index),
+            path('about-us/',views.about),          # here about page is rendered 
+        ]
+
+        
+|               URL TAG          - url tag is used to call the page via url
+        
+      (  here in urls.py )
+
+        name = 'app'        | if this name given then in header page we call it 
+
+        urlpatterns = [
+            path('',views.index,name='index'),
+            path('about-us/',views.about,name='aboutus'),          # here about page is rendered 
+        ]
+    - now we can use these names in href tag via name
+        
+      (  here in Header.html )
+        <a href = '{% url 'index' %}'>Home</a>
+        <a href = '{% url 'aboutus' %}'>about us </a>
+
+        <a href = '{% url 'app:index' %}'>Home</a>
+        <a href = '{% url 'app:aboutus' %}'>about us </a>
+
+
+
+|     highlight text 
+
+    -  {{request.path}}  >>> gives path of current  path 
+
+    - {% url 'home' as url %}           - alias of home as url 
+        <a href = '{{url}}'>Home</a>
+        <a href = '{{url}}'>about us </a>
+
+
+
+|       REDIRECTION IN HTML PAGES 
+    # Redirect  to thanks page  with the values 
+    # HttpResponseRedirect  redirects a new path 
+    # return HttpResponseRedirect("/thanks/?name="+name+"&email="+email)
+    
+    # redirect is a function that takes a path as an argument
+    return redirect("/thanks/?name="+name+"&email="+email) # request.GET['name']
+
+        |   * if action present, redirect is not worked then	
+
+    # 3 way to redirect is action in html form 
+    # is way of sending data to the next page
+    
+    #  request.POST['name']
+
+
+
+||||||||||||||||||||||   BACKEND 
+|                                       
+
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
+
+
+
+# if ur table is not getting created even after deleting files like 
+    db.sqlite  , migrations , pychaches file 
+    - python manage.py makemigrations 
+     python manage.py migrate --run-syncdb 
+
+
+
+-  ORDER BY 
+    # order by queries in models where we give ordering 
+    and order by query in views where we filter by orm
+
+
+Q                 how to get data     ?
+
+    IF getting data from forms , action in html page >   request.POST['name']  
+    IF FROM   url ?name=tushar   then                >   request.GET['name'] 
+    IF NEED data from json body                      >   json.loads(request.body)
+        
+
+    if request.method == 'PUT':
+        data = json.loads(request.body):
+        # data sent in json body with key value pairs
+        # here json will take the string and return the bool value to the db True or False 
+        - Questions.objects.filter(id = pk).update(text = data['text'],important = data['important'])
+        # filter helps to update where get just gets the data , no functionality can be performed 
+    
+    in forms html 
+    
+    if request.method == 'POST':
+        # print(request.POST)	
+        # get the data from the request from form fields
+       IF getting data from forms , action in html page >   request.POST['name']  
+       IF FROM   url ?name=tushar   then                >   request.GET['name'] 
+       IF NEED data from json body                      >   request.body
+        
+
+# queryset cant be shown in http response directly , convert to str
+
+
+
+
+-                           DJANGO FORMS |||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+    With Django forms, the standard forms HTML is auto-generated 
+        for you and you have to write code for only
+        where you want to customize the form.
+    Django forms also handle form validation for you, 
+        and you can override with self-written code 
+        only when you want some special case validation.
+    - Django maps the fields defined in Django forms into 
+        HTML input get_fields
+    
+    - Creating a form in Django is completely
+      similar to creating a model, 
+      one needs to specify what fields would 
+      exist in the form and of what type
+
+
+    from .models import Queries
+    from django.forms import  ModelForm
+    from django import forms
+
+    class MyForm(ModelForm):
+
+        class Meta:
+            model = Queries
+            fields = '__all__'
+            widgets = {
+                'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Mention Your greetings'}),
+            }
+        
+
+    - can create new Form (Model) or inherit from existing Form (Model)
+    - create a form in app/forms.py.
+    - create ur view and url
+        from .forms import MyForm
+
+        def show_django_form(request):
+            fn = MyForm
+            data = {"fn":fn}
+            
+            return render(request,'form.html',{'data':data})
+    
+    now in form.html page just extract the key value pair 
+    <form action = "{% url 'thanks' %}" method = "POST">
+            {% csrf_token %}
+                {{data.fn}}
+                <!-- <div>
+                    <label for="your_name">Your name: </label>
+                    <div>
+                        <input name="name" type="text" value="{{data.name}}" placeholder="name" >
+                    </div>
+                    <label for="email">Your email: </label>
+                    <div>
+                        <input name="email" type="text" value="{{data.email}}" placeholder="email">
+                    </div>
+                    <br><br>
+                </div> -->
+            <div>
+                <input type="submit" value="submit">
+            </div>
+    </form>
+
+    So django forms is used
+        = for validate_data
+        = and not to create html code for the form automatically
+
+
+
+PROCESS OF CREATING A FORM IN DJANGO         |||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+    form created >  view ( render html page list.html) > set the url >
+
+    in view ie functions 
+        = we bring models objects > tasks = Questions.objects.all()
+        - and send in html file ,cause we cant send form object or show in html file
+
+    now in that rendered html page marksheet.html
+    - form method = post
+    - in return we get the values by  request.POST['name']
+
+    
+    in list.html >   where we lay down all the values 
+    we make button for update and delete passing with their unique id for each on of them 
+    - when we click the update or delete button  = href="{% url 'app:update_form' greeting.id%}"
+    ( which call the update url with greeting.id )
+    > where the update function is invoked 
+    > so in list html as post request is sent
+    > the update button functionality will update or delete the attribute
+
+
+    <form action="" method="post">          # MAKE SURE IN action  = ''   and not action = '/' will not delelte 
+        {% csrf_token %}
+         <h5>item value is {{item.value}} and its id is {{item.id}} </h5> 
+        <button type="submit" class="btn btn-primary">Delete</button>
+    </form>
+            
+
+-           FUNCTION BASE VIEWS 
+    - HERE WE NEED TO specifically check 
+    | if request.method == 'POST', 'GET', 'PUT' or 'DELETE':
+    |       return HttpResponse ('hi')
+    - we do need to create seperate functions for each of the request method, can be done in one function too 
+
+
+-           CLASS BASE VIEWS 
+    - HERE IN CLASS BASE VIEW  we  get post put delete methods in one class
+    |       where these methods are name of the functions
+    def get(self,request):
+        return render(request,'list.html')
+    def post(self,request):
+        return render(request,'list.html')
+
+    These Views just return  HttpResponse, JsonResponse or render HTML page 
+
+
+
+
+    MODEL 
+
+    class Queries(models.Model):
+        name = models.CharField(max_length=100, default='')
+        roll = models.IntegerField(default=1)
+        city = models.CharField(max_length=100, default='')
+
+
+    SERIALIZERS - serialize the data    and does data validation where we create a class 
+
+    # ITs on top of  models   >>> so that we can validate the data of the model class and serialize it 
+    # NOW we dont need to check manually for each method 
+    # like          |    ALL these lines will not will not be included and data gets saved in the respective model class |
+    
+    if request.method == 'PUT' :    
+        if pk:
+            obj = Queries.objects.get(id = pk)
+            data = request.POST.get('data')
+            obj.name = data['name']
+            obj.roll = data['roll']
+            obj.city = data['city']
+            obj.save()
+            return JsonResponse({'status':'success'})
+
+        return JsonResponse({'status':'error'})
+    
+    - we use SERIALIZERS so that we dont need to use ORM queries in our views like            queryset  = model.objects.get(pk = pk)
+    instead we call the serializer class                                             Check     = serializers.serialize(queryset, many = True)
+    [ it converts queryset to python dictionary ] == Called Serialization 
+    so if we print Check.data   |  queryset is converted into Python Dictionary      Check.data
+    - now we render this data  into json so that its understandable by the frontend  json_data  = json.dumps(Check.data)  or JSONRender.render(Check.data)
+     #  we need to convert to json format, so that we can send it to the HttpResponse
+    - SO there is field level validations too, we do it in serializers class and not in views class 
+   
+
+
+    #  * Default `.create()` and `.update()` implementations are provided. in modelserializer 
+    # Thus we do validation by creating calling it beofre meta and write it explicitly 
+        class StudentSerializer(serializers.ModelSerializer):
+        # do validations on name column 
+        name = serializers.CharField(max_length=100,  read_only = True)  # means name column wont be updated but other column can be updated
+        class Meta :
+            model = Queries
+            fields = '__all__'
+        # other same way use def validate(): do the validations
+
+    # >>> HERE create, update are  created independently
+        class StudentSerializer (serializer.Serializer):            
+            name = serializers.CharField()
+            age = serializers.IntegerField()
+            city = serializers.CharField(max_length=100, default='')
+
+            def create(self, validated_data):                       #     #if not created , error is like this  
+                return Queries.objects.create(**validated_data)      #     NotImplementedError: `create()` must be implemented.
+
+            def update(self, instance, validated_data):
+                instance.name = validated_data.get('name', instance.name)
+                instance.age = validated_data.get('age', instance.age)
+                instance.email = validated_data.get('email', instance.email)
+                instance.save()
+                return instance
+            
+    # FIELD LEVEL VALIDATIONS            - where from model column we check if the data is valid or not roll
+    #   validate_columns_name = ['name','roll','city']    validate_['column_name']
+        def validate_roll(self, value):
+            if value < 0:
+                raise serializers.ValidationError("Roll number cannot be negative")
+            elif value > 100:
+                raise serializers.ValidationError("Roll number cannot be greater than 100")
+            return value
+
+        OR 
+        # this validate is in built where we perform self validations for each field
+        # here data 
+        def validate(self, data):      
+            if data['roll'] < 0:
+                raise serializers.ValidationError("Roll number cannot be negative")
+            elif data['roll'] > 100:
+                raise serializers.ValidationError("Roll number cannot be greater than 100")
+            
+            return data
+
+
+    
+     SERIALIZERS        VS      MODELSERIALIZER 
+    - here in Serializer we create each method explicitly where validation is done specifically ,
+    -   for Serializer , we need explicitly need to create  and update function in the class
+    - we USE this serialize when some fieldsa are coming which are not in ur models like password, email etc.
+
+    -  not like ModelSerializer where it is AUTOMATIC  for all fields,  we dont need to create create and update function in the class
+       
+
+    -- if request.method == 'POST':     >>> DESERIALIZATION 
+    |        data = JSONParser().parse(request)     # json to python 
+    |        serializer = StudentSerializer(data=data)            # here we are passing the derialized data to the serializer
+    |           if serializer.is_valid():                        # confirms with model validattions 
+    |              serializer.save()                             # here we are saving the data to the database
+
+    -- if request.method == 'PUT ':     
+    |           data = JSONParser().parse(request)
+    |           obj = model.object.get(pk = pk)                 # where we get single queryset
+    |           serializer = StudentSerializer(obj, data=data)  # here we update the object with data we got from the frontend or Postman 
+    |           serializer = StudentSerializer(obj, data=data, partial = True )  # means not necessarly we pass all the data from models 
+
+    |           if serializer.is_valid():
+    |                serializer.save()
+    |                return JsonResponse(serializer.data)
+
+    -- if request.method == 'DELETE':
+    |           obj = model.object.get(pk = pk).delete()       # here we delete the object from the database
+    |           return HttpResponse(status=204)                # here we send the response with status code 204
+
+
+
+    
+    DRF   - DJANGO REST FRAMEWORK 
+
+    - here ease and reduce the code 
+
+    instead of 
+    def normal_func(request):
+        if request.method == 'POST':   
+            return HttpResponse ('Hi')
+    
+    we call all the GET POST PUT DELETE methods in same function 
+        # we import api_view from rest_framework.decorators import api_view
+        # no need to call HttpResponse or JsonResponse
+        # in drf content  body  we call by  >   {"content":  "somestring"}
+    
+    
+    @api_view(['GET', 'POST','PUT','DELETE'])
+    def drf_func(request,ok=None):
+        all_objects = Queries.objects.all()
+        serializer = StudentSerializer(all_objects, many=True)
+        if request.method == 'POST':
+                serializer = StudentSerializer(data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    print('New Data Saved')
+                    return Response(serializer.data)
+        if request.method == "PUT":
+                import pdb;pdb.set_trace()
+                ok = request.data.get('id')
+                one_obj = Queries.objects.get(id = ok )
+                serializer = StudentSerializer(one_obj, data = request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    print('data is updated')
+                    return Response({'data updated':serializer.data})
+                ...
+        if request.method == "DELETE":
+                one_obj = Queries.objects.get(id = ok ).delete()
+                return Response({'data deleted':'deleted'})
+
+        return  Response(serializer.data,202)
+
+    
+
+
+    CLASS BASE VIEW 
+
+    |    api_view  = better than HttpResponse or JsonResponse
+    |    # class based views  , rest is same 
+    |    class  cls_func(APIView):
+            def get(self, request, pk=None):
+                    if not pk:
+                        obj = Queries.objects.all()
+                        serializer = StudentSerializer(obj, many=True)
+                        return Response(serializer.data)
+                    serializer = StudentSerializer(Queries.objects.get(id=pk))
+                    return Response(serializer.data)
+            def post(self,request):
+                    serializer = StudentSerializer(data=request.data)
+                    if serializer.is_valid():
+                        serializer.save()
+                        return Response(serializer.data, status=201)
+                        
+            def put(self,request,pk=None):
+                    obj = Queries.objects.get(id = pk)  # url =  http://127.0.0.1:8000/cls/9/
+                    # else:
+                    #  pk = request.data.get('id')      # where in data we pass id 
+                    #                                   url =  http://127.0.0.1:8000/cls/ 
+                    # obj  = Querys.objects.get(id = pk)
+                    serializer = StudentSerializer(obj, request.data)
+                    if serializer.is_valid():
+                        serializer.save()
+                        return Response(serializer.data)
+                    return Response({'message':'put called'})
+            def delete(self,request,pk=None):
+                    obj = Queries.objects.get(id = pk).delete()
+                    return Response({'message deleted':obj})
+
+
+
+
+
+    |    MIXINS 
+    |    Thus we need to call HTTP methods inside them 
+    |    from rest_framework.generics import GenericAPIView
+
+    |    from rest_framework.mixins import (
+    |        ListModelMixin,                 - list all the querset  > model.objects.all()       
+    |        CreateModelMixin,               - creating and saving to db   > model.objects.create()  and serializer.save() > means create and validate_data
+    |        RetrieveModelMixin,             - get single object from db > model.objects.get() , if not received then 404 error > model.objects.get(id=pk)
+    |        UpdateModelMixin,               - updates both in db and in serializer > model.objects.get(id=pk) , serializer.save()
+    |        DestroyModelMixin,        )     - deletes from db and from serializer > model.objects.get(id=pk) , serializer.delete()
+    |
+    |    Here but each class is different so each seprate url for each class 
+    |       path('cls_retreive_mixins/<int:pk>', csrf_exempt(cls_retreive_mixins.as_view()) ), - pk already taken , no need to pass it > pk = pk
+    |   here ListModelMixin and CreateModelMixin are one group                                DONT REQUIRE TO PASS PK IN URL > pk = pk
+    |   and  RetrieveModelMixin , UpdateModelMixin , DestroyModelMixin are another group    where WE REQUIRE PK
+
+    
+    | #      MIXINS   Making two groups these  5 classes
+    | #      LIST AND CREATE - No pk requried
+    | class grp_list_create_mixins(GenericAPIView, ListModelMixin, CreateModelMixin):
+        queryset = Queries.objects.all()
+        serializer_class = StudentSerializer
+
+        def get(self, request,*args,**kwargs):
+                return self.list(request,*args,**kwargs)
+        def post(self, request,*args,**kwargs):
+                return self.create(request,*args,**kwargs)
+
+    | #      RETREIVE DESTROY UPDATE - pk is required
+    | class grp_retreive_update_delete_mixins(GenericAPIView,
+                                RetrieveModelMixin, 
+                                UpdateModelMixin,
+                                DestroyModelMixin):
+        queryset = Queries.objects.all()
+        serializer_class = StudentSerializer
+        
+        def get(self, request,*args,**kwargs):
+                return self.retrieve(request,*args,**kwargs)
+        def put(self, request,*args,**kwargs):
+                return self.update(request,*args,**kwargs)
+        def delete(self, request,*args,**kwargs):
+                return self.destroy(request,*args,**kwargs)
+
+
+    path('grp_list_create_mixins', csrf_exempt(grp_list_create_mixins.as_view()) ),
+    path('grp_retreive_update_delete_mixins/<int:pk>', csrf_exempt(grp_retreive_update_delete_mixins.as_view()) ),
+    |   > this way to seprate url 
+    |  >>>. but if you make the path same for both above 2 , eveything will work,  
+   
+    |           LIKE THIS 
+    path('grp_list_create_mixins', csrf_exempt(grp_list_create_mixins.as_view()) ),
+    path('grp_list_create_mixins/<int:pk>', csrf_exempt(grp_retreive_update_delete_mixins.as_view()) ),
+
+
+
+
+
+    |             GENERICS views 
+    
+    |    MIXINS VS Generic Views
+    |    - in 3 lines this is done, no need to write get post methods explicitly in generics views 
+    |    - also gives combination of HTTP methods  - ListCreateAPIView, RetrieveUpdateDestroyAPIView,RetrieveUpdateDestroyAPIView, RetrieveDestroyAPIView
+    |    - REST TOTALLY SAME LIKE MIXINS , just we dont use http methods explicitly 
+
+        #       COMBINATION OF LIST CREATE 
+        class grp_generics_list_create_view(ListCreateAPIView):
+            queryset = Queries.objects.all()
+            serializer_class = StudentSerializer
+
+        #       COMBINATION OF RETREIVE UPDATE DELETE 
+        class grp_generics_retreive_update_delete_view(RetrieveUpdateDestroyAPIView):
+            queryset = Queries.objects.all()
+            serializer_class = StudentSerializer
+    
+    |   path('grp_generics_list_create_view', csrf_exempt(grp_generics_list_create_view.as_view()) ),
+    |   path('grp_generics_list_create_view/<int:pk>', csrf_exempt(grp_generics_retreive_update_delete_view.as_view()) ),
+
+    ***   incase any issues like in field  ,
+    | request goes to these views 
+    | > serializers to check validated data 
+    | > models to save data
+
+
+
+
+    |        VIEWSET
+
+    |     -  from ViewSet       REDUCE URL , not required <int:pk> with help of routers 
+    | We need router here  for our router  in project.urls.py
+
+    from rest_framework.routers import DefaultRouter
+    from app.views import *
+    # creating router object 
+    router = DefaultRouter()
+
+    # register the viewsets with the router
+    router.register('student',nromal_viewset, basename='student')
+
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        path('',include('app.urls')),            # uncomment it accordingly
+        path('api/',include(router.urls)),]
+
+
+    OUTPUT == 
+    {
+        "student": "http://127.0.0.1:8000/api/student/"
+    }
+    - which we can redirect to the url in our frontend to get the data
+    - WE create this router so that we shouldnt create EXTRA url for PK   student/<int:pk>
+    - http://127.0.0.1:8000/api/student/1/   > will automatically create 
+
+   
+    class nromal_viewset(viewsets.ViewSet):
+        def list(self, request):
+                queryset = Queries.objects.all()
+                serializer = StudentSerializer(queryset, many=True)
+                return Response(serializer.data)
+        def create(self, request):
+                serializer = StudentSerializer(data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=201)
+        def retrieve(self, request, pk=None):
+                queryset = Queries.objects.get(id = pk)
+                serializer = StudentSerializer(queryset)
+                return Response(serializer.data)
+        def update(self, request, pk=None):
+                queryset = Queries.objects.get(id = pk)
+                serializer = StudentSerializer(queryset, data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
+        def destroy(self, request, pk=None):
+                queryset = Queries.objects.get(id = pk).delete()
+                return Response({'message deleted':queryset})
+        def partial_update(self,request,pk):
+                queryset = Queries.objects.get(id = pk)
+                serializer = StudentSerializer(queryset, data=request.data, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
+
+    |           MODEL VIEWSET
+    | CRUD in one viewset   in 3 lines 
+    | we create one router first >>> router.register('model_viewset',model_viewset, basename='model_viewset')
+    | then we create viewset >>> 
+    
+    # Model ViewSet - retrieve,read operations only - no create,update,delete
+    class read_only_model_viewset(viewsets.ReadOnlyModelViewSet):
+        queryset = Queries.objects.all()
+        serializer_class = StudentSerializer
+
+    # Model ViewSet - CRUD complete
+    class model_viewset(viewsets.ModelViewSet):
+        queryset = Queries.objects.all()
+        serializer_class = StudentSerializer
+
+
+
+    |   TEMPLATE VIEWS based on  func 
+    | - we create 2 html files - success and form_template  and 
+    | - we create class based view and pass the html file name as template_name in class based view
+
+
+        from django.views import View
+        from app.forms import Myform
+
+        def func_base_FormView(request):
+        form = Myform()
+        all_objects = Queries.objects.all()
+        if request.method == 'POST':
+                form = Myform(request.POST)
+                if form.is_valid():
+                    form.save()
+                    return render (request, 'success.html', {'form': form}) 
+                return HttpResponse ('form is invalid ')
+        return render (   request, 'form_template.html', {'form': form, 'all_objects': all_objects}  )
+
+
+
+    |   TEMPLATE VIEWS based on class
+        class cls_base_FormView(View):
+        form_class = Myform
+        initial = {'key': 'value'}
+        template_name = 'form_template.html'
+        all_objects = Queries.objects.all()
+
+        def get(self, request, *args, **kwargs):
+            form = self.form_class(initial=self.initial)
+        #   import pdb; pdb.set_trace()
+            return render(request, self.template_name, {'form': form,  'all_objects': self.all_objects})
+
+        def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+                form.save()
+                # return redirect('/success/')     # both way we can render and send data 
+                return render (request, 'success.html', {'form': form})  # this way too 
+
+        return render(request, self.template_name, {'form': form, 'all_objects': self.all_objects})
+
+    | form_template.html 
+
+        <body>
+                <h1> WELCOME TO THE FORM PAGE </h1>
+            <form action="" method="post">
+                {{form.as_p}}
+                <input type="submit" value="Submit">
+            </form>
+            <h3>All objects</h3>
+            <ul>
+                {% for obj in all_objects %}
+                    <li>{{obj.id}}: {{obj.name}}</li>
+                {% endfor %}
+        </body>
+
+    | success.html
+    
+        <body>
+                <h1>You are Successfully authorize  to view this Page </h1>
+                <div>
+                    {{form.name}}
+                </div>
+                
+                <div>
+                    <!-- button to go /success/ -->
+                    <a href="/success/">
+                        <button>
+                            Back
+                        </button>
+                </div>
+        </body>
+
+
+    |    FORMS VS SERIALIZERS
+    | forms used to validate data in frontend and serializers used to validate data in backend
+
+
+
+    |   AUTHENTICATION AND AUTHORIZATION
+    - we make restrictions to access the data - we can make it in viewset or in serializer
+    - no username, password == unauthenticated == so no access to the functions 
+
+
+    from rest_framework.authentication import BasicAuthentication, TokenAuthentication
+    from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+    
+    BasicAuthentication = required name and password  single                       permission_classes = [IsAuthenticated] 
+    SessionAuthentication = only token   but can provide multiple classes like >   permission_classes = [IsAuthenticated], [AllowAny], [IsAdminUser] , [IsAuthenticatedOrReadOnly], [DjangoModelPermissions]
+    TokenAuthentication = required token
+
+
+    
+    | Authentication in function base views 
+
+        @authentication_classes(BasicAuthentication)
+        @permission_classes(IsAuthenticated)
+        def func_base(request):
+            return HttpResponse('this auth works if we use decorators')
+
+
+    
+    | Authentication in class base views 
+
+    class ModelViewSet(viewsets.ModelViewSet):
+        querset = Queries.objects.all()
+        serializer_class = StudentSerializer
+        authentication_classes = [BasicAuthentication]
+        permission_classes = [IsAuthenticated]
+
+    # now only superusers or normal users  can access this class   - where we create users in admin panel
+    # now if u wanna  this authentication  global for all classes              - 
+    |   under settings.py > REST_FRAMEWORK = 
+    |   {'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.TokenAuthentication']
+    |   'DEFAULT_PERMISSION_CLASSES'     : ['rest_framework.permissions.IsAuthenticated']           }       
+
+
+    # Can create custom permissions and thus pass it in the viewset of permission_classes
+        Create > custom_permission.py  > import in views.py 
+        
+        class CustomPermission(permissions.BasePermission):
+            def has_permission(self, request, view):
+                if request.user.is_superuser:
+                    return True
+                return False
+                if request.method == 'POST':
+                    return True
+        permission_classes = [CustomPermission]    >>> now permissionare are for superusers and post method only
+
+        * do login in DRF right hand side panel > click on user > click on login > enter name and password > click on login
+
+    # Token generation 
+    #  we import rest_framework.authoken in settings.py 
+
+    # generate token for each user by   
+    | 1. python manage.py drf_create_token superuser    >>  token is generated and stored in database   python manage.py drf_create_token user1  
+    | 2.  else go to admin panel and generate token manually 
+   
+   
+    | 3 way is via API endpoint 
+        from rest_framework.authtoken.views import obtian_auth_token
+        -   create a path in project.urls.py > path('api/token/', views.TokenView.as_view(), name='token_view')
+
+     |        Token authentication
+     |        - in views.py 
+     |              @api_view(['POST'])                         # login portal 
+     |               def login (request):
+     |                 # if request.method == 'POST':
+     |                 data = JSONParser().parse(request)
+     |                 username = data['username']
+     |                 password = data['password']
+     |                 user = User.objects.get(username=username)
+     |                 if user.check_password(password):
+     |                     token, obj=Token.objects.get_or_create(user=user)       # if user is right , we create token by passing this user object
+     |                     print(token , obj)
+     |                     return Response({'message':f'Login successful {username} ','token':token.key})
+     |                 else:
+     |                     return Response({'message':'Login unsuccessful'})
+
+
+    
+      
+
+
+
+
+-       ORM          |||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+|   Join Query 
+    # make sure these are registered under admin models 
+    # TABLES = 2 tables Employees and department where Employee has foreign key column named as "department" which refers to department table and department table has column name , id is by default
+
+    | emp = Employee.objects.all().select_related('department')
+    | emp =  Employee.objects.select_related('department') 
+    # confirm with sql = print(emp.query) 
+    
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+    * Employee.objects.order_by('-age')         ( order_by, all, get )        >>> returns a query set 
+    * Employee.objects.values('name','age')                                   >>> returns the actual data { Dictionary } not the object
+    >>> [(i.name, i.department.name) for i in emp]                            >>> or get values by looping over querset
+
+    * .values takes columns_names in string format                  >>> Employee.objects.values('name')
+    * order_by takes column_names in string format                  >>> Employee.objects.order_by('-age')
+    * .filter and annotate take column_name straight forward        >>> Employee.objects.filter(name='raj')
+
+    * REMEMBER if we need to query on objects then we use get , order by ,
+     = if we need to query on values then we use values , order by , filter , annotate
+       Employee.objects.values('department__name').annotate(count=Count('department__name')).filter(count__gt=1)
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+    | ValueError: Field 'id' expected a number but got 'IT'.
+    >>> Employee.objects.filter(department=1)  
+
+
+    >>> [(i.name,i.department) for i in Employee.objects.select_related('department').order_by('age') ]
+    
+    Q Give Employees having department__name == 'IT' ?
+    >>> Employee.objects.filter(department__name ='IT') 
+    >>> Employee.objects.filter(department__id=2)     
+
+    Q  Give Employees having department__name == 'IT' and age > 30 ?
+    >>> Employee.objects.filter(department__name ='IT', age__gt=30)
+    >>> Employee.objects.filter(department__id=2, age__gt=30)
+    >>> Employee.objects.filter(department__name='IT',age__lt=30) 
+
+
+    Q lookups in orm < , >, = ,<=, >=, != , ==
+    Q Employees whose department is >= 2 ?
+    # lt and lte are same 
+    # for lookups we use __ and gte if greater than or lte if less than and equal to
+    >>> Employee.objects.filter(department__id__gte=2)
+
+
+    Q Employees whose department is >= 2 and age is <= 30 ?
+    >>> Employee.objects.filter(department__id__gte=2, age__lte=30)
+
+    Q Employees whose department is >= 2 and age is <= 30 and name is like '%a%' ?
+    >>> Employee.objects.filter(department__id__gte=2, age__lte=30, name__contains='a')
+
+    Q Employees whose name startswith 'a' ?
+    >>> Employee.objects.filter(name__startswith='a')
+    >>> Employee.objects.filter(endswith='a')
+
+    Q Employees whose name department name startswith a  ?
+    >>> Employee.objects.filter(name__startswith='a', department__name__startswith='a')
+    >>> Employee.objects.filter(department__id__startswith=1) 
+
+    Q exlude Employees whose name department name startswith a  ?
+    >>> Employee.objects.filter(department__id__startswith=1).exclude(name__startswith='j')
+
+    Q find second largest record in Employee table ? 
+    >>> Employee.objects.order_by('-age')[1]
+
+    Q print name and age of Employee with max age ? 
+    | from django.db.models import Max
+    >>> Employee.objects.values('name','age').order_by('-age')[0]  or Employee.objects.all().aggregate(Max('age'))  
+
+    Q print values of   second last employee ?
+    >>> Employee.objects.values('name','age').order_by('-id')[1] 
+
+    Q count Employee in each  department ?
+    >>> Employee.objects.values('department__name').annotate(count=Count('department__name'))
+
+    Q Find rows with duplicate department name ?
+    >>> Employee.objects.values('department__name').annotate(count=Count('department__name')).filter(count__gt=1)
+
+
+    Q find distinct records in Employee table ?
+    >>> Employee.objects.values('age').distinct()
+
+
+    Q use   and, or, not, in    in filters ?
+    >>> Employee.objects.filter(age__gt=30, age__lt=40)  # and == ,  
+    >>> Employee.objects.filter(age__gt=30, age__lt=40).exclude(age__gt=35)   # not == exclude
+    >>> Employee.objects.filter(name__in=['tushar','k','l']) 
+
+
+    Q  Extra 
+    Employee.objects.extra(where=['name=%s'] ,params=['tushar'])
+    Employee.objects.extra(where=["name='a' OR bar = 'a'", "baz = 'a'"])
+    Employee.objects.extra(where=["name='a' OR id = '1'"])         # either name == 'a' or id == 1
+
+
+    Q   truncate table ?
+    >>> Employee.objects.all().delete()
+
+# Do calcualtions on runtime ( like on views )  , not extra field
+
+
+
+    COUNT
+        from django.db.models import Count
+
+        User.objects.aggregate(Count('id'))   |  User.objects.aggregate(total=Count('id')) with alias total
+        (User.objects
+        .values('is_active')
+        .annotate(total=Count('id')))
+        GROUP BY is_active 
+
+        student_dta = User.objects.all()
+        avg = student_dta.aggregate(Avg('marks'))
+        summ = student_dta.aggregate(Sum('marks'))
+        min = student_dta.aggregate(Min('marks'))
+        max = student_dta.aggregate(Max('marks'))
+        totalcount= student_dta.aggregate(Count('marks'))
+        get values from this context by 
+            avg.marks__avg  , min.marks__min , max.marks__max
+
+    < , > = 
+        lt for less than and gt for greater than. 
+        User.objects.filter(id__gt=50)  |   User.objects.get(id__gt=50) 
+        DIFFERENCE BETWEEN GET AND FILTER , IT SHOWS ERROR IN GET AS GET IS USED TO GET SINGLE OBJECT
+        User.objects.filter(id__lt=50)
+
+    [f.name for f in User._meta.get_fields()] >  get field names 
+
+        User.objects.values() get column and data of rows 
+        .values_list()  , get values in a list 
+
+
+    Q query
+        User.objects.filter ( Q (username__startswith = 'r') | Q(id= 21) )
+        # either username starts with r or id = 21 |          &  -  and operator
+
+    User.objects.filter(
+            Q(first_name__startswith='R') & ~Q(last_name__startswith='Z'))
+        #whose first_name starts with ‘R’, but not if the last_name has ‘Z’
+
+
+    In query  
+        Student.objects.filter(id__in=[1,2,3,4])
+        # value list 
+        Student.objects.all().values_list('id')
+
+
+    good examples 
+        User.ojects.filter(age__isnull=True), 
+        User.objects.filter(age__in=[10,21,31]).values('id','age')
+        User.objects.exlude(id__in=[i for i in range(10)]).values('age')
+        User.objects.filter(age__lt=20).exists()           - return True / false
+        User.objects.contains(city__contains='ldh')        - Like operator  city__exact='LDH'
+        User.objects.filter(Q(city='city1') & Q(age=20)    - same as match case 
+        User.objects.filter(Q(city='city1') & ~Q(age=20)) - NOT OPERATOR ~   , exludes also work  
+        __startswith |  __endswith
+        User.objects.filter(age__gte=20)   			       -   gt - greater than , gte - greater than or equal to , lt , lte = less than equal to
+        Student.objects.extra(select={'AGE':'age'}).values('id','AGE ) - set alias
+        User.objects.all().values('id').count() or len(queryset)      - find total of the count
+        
+
+
+
+
+    LIST_API-VIEW > MIXINS > GENRICS > VIEWSETS
+
+        we need to add data for thee nested serializer \
+        then we override modelserializer and do create method \
+        for the questions model , we can do question.objects.create(**validate_data)
+        but as we can see choices proprty is created in questions model , so \ 
+        we need to extract choices  and create objects choice objects  \
+
+        http://example.com/api/products?category=clothing&in_stock=True
