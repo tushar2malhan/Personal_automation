@@ -1,10 +1,14 @@
 # Django 
 
-Views  [functions ] are of 2 types > function based views and class based views
+  FRONT END Material >>> info for front end templates , jinja , all tags ,forms , REDIRECTION
+  BACKEND Material   >>> context, process of forms ,function & cls base views , Models,
+  |                      serializers, DRF func and class based , mixins, generics views , 
+  |                      viewsets, routers , func base and cls base template views , 
+  |                      authentication and its types  for both func base and class based 
+  ORM QUERIES       >>> detail info about orm queries
+  IMPORTANT ISSUES  >>> Troubleshooting
 
-
-
-|||||||||||||||||       FRONT END 
+|||||||||||||||||       FRONT END Material
 
 |                 Function Base  [ just need to import HttpResponse ]
     
@@ -178,15 +182,18 @@ Views  [functions ] are of 2 types > function based views and class based views
     but same way we include the header and footer in our Base page 
 ------------------------------------------------
     - index.html |
-    {% extends "base.html" %}
-    {% load static %}
-            html code for index.html page
+    {% extends 'base.html' %}
+    {% block content %}
+            <h1> This is login.html </h1>
+    {% endblock  %}
 
 
     - base.html  |
-    {% block content %}
-        - html body 
-    {% endblock %}
+    < html code including header 
+    style />
+      {% block content %}
+      {% endblock content %}
+    < html code  footer style >
 --------------------------------------------------
  
 
@@ -263,7 +270,7 @@ Views  [functions ] are of 2 types > function based views and class based views
 
 
 
-||||||||||||||||||||||   BACKEND 
+||||||||||||||||||||||   BACKEND Material
 |                                       
 
 python manage.py makemigrations
@@ -431,6 +438,30 @@ PROCESS OF CREATING A FORM IN DJANGO         |||||||||||||||||||||||||||||||||||
 
 
     MODEL 
+
+    # in class models > Meta > if abstract = True > it works as an abstractmethod
+    - where we can access these fields of this abstract class 
+      in other classes where we do inheritance of them 
+
+    class BaseModel(model.Model):
+        uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+        created_at = models.DateTimeField(auto_now_add=True)
+
+        class Meta:
+            abstract = True
+    
+    class Check(BaseModel):
+        name = models.CharField(max_length=100)
+        email = models.EmailField()
+    class Check2(BaseModel):
+        name = models.CharField(max_length=100)
+        email = models.EmailField()
+
+    # >>> so now this Check  and Check2  models will have a uuid and created_at fields 
+    
+
+
+
 
     class Queries(models.Model):
         name = models.CharField(max_length=100, default='')
@@ -786,7 +817,7 @@ PROCESS OF CREATING A FORM IN DJANGO         |||||||||||||||||||||||||||||||||||
 
 
 
-    |   TEMPLATE VIEWS based on  func 
+|   TEMPLATE VIEWS based on  func 
     | - we create 2 html files - success and form_template  and 
     | - we create class based view and pass the html file name as template_name in class based view
 
@@ -795,38 +826,58 @@ PROCESS OF CREATING A FORM IN DJANGO         |||||||||||||||||||||||||||||||||||
         from app.forms import Myform
 
         def func_base_FormView(request):
-        form = Myform()
-        all_objects = Queries.objects.all()
-        if request.method == 'POST':
-                form = Myform(request.POST)
+            form = Myform()
+            all_objects = Queries.objects.all()
+            if request.method == 'POST':
+                    form = Myform(request.POST)
+                    if form.is_valid():
+                        form.save()
+                        return render (request, 'success.html', {'form': form}) 
+                    return HttpResponse ('form is invalid ')
+            return render (   request, 'form_template.html', {'form': form, 'all_objects': all_objects}  )
+
+
+
+|   TEMPLATE VIEWS based on class
+        
+        class cls_base_FormView(View):
+            form_class = Myform
+        
+            template_name = 'form_template.html'
+            all_objects = Queries.objects.all()
+
+            def get(self, request, *args, **kwargs):
+                form = self.form(instance=request.user)
+                return render(request, self.template_name, {'form': form,  'all_objects': self.all_objects})
+
+            def post(self, request, *args, **kwargs):
+                form = self.form(request.POST or None, instance=request.user)
                 if form.is_valid():
                     form.save()
-                    return render (request, 'success.html', {'form': form}) 
-                return HttpResponse ('form is invalid ')
-        return render (   request, 'form_template.html', {'form': form, 'all_objects': all_objects}  )
+                    return redirect('/success/')     
+                return render (request, 'success.html', {'form': form,'all_objects': self.all_objects}) 
 
+    | SECOND WAY TO RENDER HTML CONTENT VIA CLASS BASED VIEWS 
+    |        == TOTALLY SAME AS ABOVE == 
+    
+        from django.views.generic import TemplateView
+        from app.forms import Myform
+        class cls_base_FormView(TemplateView):
+            form_class = Myform
+            template_name = 'form_template.html'
+            all_objects = Queries.objects.all()
 
+            def get(self, request, *args, **kwargs):
+                form = self.form_class(instance=request.user)
+                return render(request, self.template_name, {'form': form,  'all_objects': self.all_objects})
 
-    |   TEMPLATE VIEWS based on class
-        class cls_base_FormView(View):
-        form_class = Myform
-        initial = {'key': 'value'}
-        template_name = 'form_template.html'
-        all_objects = Queries.objects.all()
+            def post(self, request, *args, **kwargs):
+                form = self.form_class(request.POST or None, instance=request.user)
+                if form.is_valid():
+                    form.save()
+                    return redirect('/success/')     
+                return render (request, 'success.html', {'form': form,'all_objects': self.all_objects})
 
-        def get(self, request, *args, **kwargs):
-            form = self.form_class(initial=self.initial)
-        #   import pdb; pdb.set_trace()
-            return render(request, self.template_name, {'form': form,  'all_objects': self.all_objects})
-
-        def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-                form.save()
-                # return redirect('/success/')     # both way we can render and send data 
-                return render (request, 'success.html', {'form': form})  # this way too 
-
-        return render(request, self.template_name, {'form': form, 'all_objects': self.all_objects})
 
     | form_template.html 
 
@@ -859,14 +910,25 @@ PROCESS OF CREATING A FORM IN DJANGO         |||||||||||||||||||||||||||||||||||
                         </button>
                 </div>
         </body>
+    
+    |   QUERIES 
+    | Q Wanna add any  login_required mechanism on this CLASS BASE VIEW ? |
+    |   -  from django.contrib.auth.decorators import login_required   <url.py>
+    |   -  path('profile/', login_required(profile.as_view()), name='profile'),     # just add it in url 
+    |   = better to do this step for function base template views too !
 
 
-    |    FORMS VS SERIALIZERS
+
+
+
+
+
+|    FORMS VS SERIALIZERS
     | forms used to validate data in frontend and serializers used to validate data in backend
 
 
 
-    |   AUTHENTICATION AND AUTHORIZATION
+|   AUTHENTICATION AND AUTHORIZATION
     - we make restrictions to access the data - we can make it in viewset or in serializer
     - no username, password == unauthenticated == so no access to the functions 
 
@@ -947,21 +1009,42 @@ PROCESS OF CREATING A FORM IN DJANGO         |||||||||||||||||||||||||||||||||||
      |                     return Response({'message':'Login unsuccessful'})
 
 
+     | Now  when u login with user who has been added by superuser, his token can be generated in 3 ways ,now wherever IsAuthenticated class 
+     | is used , u can use token authentication which can be generated by auth token 
+     | IF in thunder client >  go to bearer > token prefix = Token > Bearer token = token 
+     > and now hit the request , it will work 
+
+        #  Step 1 > POST http://127.0.0.1:8000/login/  in json body , send username and password {"username": "vitor", "password": "test@123"}
+        #          and get a token in response  {"message": "Login successful vitor ", "token": "e8e93f7a21a4e45c67527d644a69e3e4fc296721"}
+        # Step 2 > GET  http://127.0.0.1:8000/      call the views function and pass the token in header as Authorization : Token <token>
+
+        # Now  when u login with user who has been added by superuser, his token can be generated in 3 ways 
+        # | now wherever IsAuthenticated class is used ,
+        # | u can use token authentication which can be generated by auth token  by this function login
+        # | IF You are in thunder client >  go to bearer > token prefix = Token > Bearer token = token 
+        # | and now hit the request , it will work 
+
+        #  Second way to login > http://127.0.0.1:8000/api-obtain-auth/  in json body , send username and password {"username": "vitor", "password": "test@123"}
+
+
+
     
       
 
 
 
 
--       ORM          |||||||||||||||||||||||||||||||||||||||||||||||||||||
+-       ORM QUERIES          |||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 |   Join Query 
     # make sure these are registered under admin models 
     # TABLES = 2 tables Employees and department where Employee has foreign key column named as "department" which refers to department table and department table has column name , id is by default
 
-    | emp = Employee.objects.all().select_related('department')
+    | emp = Employee.objects.all().select_related('department').all()
     | emp =  Employee.objects.select_related('department') 
-    # confirm with sql = print(emp.query) 
+    |                   OR 
+    | Employee.objects.filter(department__id=1)   # we access the department table column and get the id = 1 directly
+    #               confirm with sql = print(emp.query) 
     
 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -970,13 +1053,16 @@ PROCESS OF CREATING A FORM IN DJANGO         |||||||||||||||||||||||||||||||||||
     * Employee.objects.values('name','age')                                   >>> returns the actual data { Dictionary } not the object
     >>> [(i.name, i.department.name) for i in emp]                            >>> or get values by looping over querset
 
-    * .values takes columns_names in string format                  >>> Employee.objects.values('name')
-    * order_by takes column_names in string format                  >>> Employee.objects.order_by('-age')
-    * .filter and annotate take column_name straight forward        >>> Employee.objects.filter(name='raj')
+    *** .values takes columns_names in string format                  >>> Employee.objects.values('name')
+    *** order_by takes column_names in string format                  >>> Employee.objects.order_by('-age')
 
-    * REMEMBER if we need to query on objects then we use get , order by ,
-     = if we need to query on values then we use values , order by , filter , annotate
-       Employee.objects.values('department__name').annotate(count=Count('department__name')).filter(count__gt=1)
+    *** .filter and .annotate take column_name straight forward        >>> Employee.objects.filter(name='raj'), Employee.objects.all().annotate(total_age=Sum('age'))
+    *** .exclude takes column_name straight forward                    >>> Employee.objects.exclude(name='raj')
+    *** . exclude takes Q object                                       >>> Employee.objects.filter(Q(name='raj') | Q(age=20))
+
+    *** REMEMBER if we need to query on objects then we use get , order by ,order by , filter 
+     = if we need to query on values then we use values , annotate
+       EG >  Employee.objects.values('department__name').annotate(count=Count('department__name')).filter(count__gt=1)
 
 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -1027,6 +1113,9 @@ PROCESS OF CREATING A FORM IN DJANGO         |||||||||||||||||||||||||||||||||||
     | from django.db.models import Max
     >>> Employee.objects.values('name','age').order_by('-age')[0]  or Employee.objects.all().aggregate(Max('age'))  
 
+    >>> max_age_guy = Employee.objects.all().aggregate(Max('age'))   and then 
+    >>> Employee.objects.filter(age=max_age_guy['age__max'])            # 2 way to filter the max age guy
+
     Q print values of   second last employee ?
     >>> Employee.objects.values('name','age').order_by('-id')[1] 
 
@@ -1055,6 +1144,12 @@ PROCESS OF CREATING A FORM IN DJANGO         |||||||||||||||||||||||||||||||||||
 
     Q   truncate table ?
     >>> Employee.objects.all().delete()
+
+    Q need all column_names from the model ?
+    >>> Employee.objects.all().values_list()
+    or 
+    >>> Employee._meta.get_fields()
+
 
 # Do calcualtions on runtime ( like on views )  , not extra field
 
@@ -1091,8 +1186,7 @@ PROCESS OF CREATING A FORM IN DJANGO         |||||||||||||||||||||||||||||||||||
 
 
     Q query
-        User.objects.filter ( Q (username__startswith = 'r') | Q(id= 21) )
-        # either username starts with r or id = 21 |          &  -  and operator
+        User.objects.filter ( Q (username__startswith = 'r') | Q(id= 21) ) # either username starts with r or id = 21 |          &  -  and operator
 
     User.objects.filter(
             Q(first_name__startswith='R') & ~Q(last_name__startswith='Z'))
@@ -1131,3 +1225,16 @@ PROCESS OF CREATING A FORM IN DJANGO         |||||||||||||||||||||||||||||||||||
         we need to extract choices  and create objects choice objects  \
 
         http://example.com/api/products?category=clothing&in_stock=True
+
+
+
+-       IMPORTANT ISSUES         |||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q Suppose db is connected but table 
+  throwing error where it does not exist in db in django ! 
+
+-  python manage.py migrate --run-syncdb
+-  python manage.py makemigrations appname
+-  python manage.py migrate --fake appname
+
+python manage.py makemigrations && python manage.py migrate && python manage.py runserver

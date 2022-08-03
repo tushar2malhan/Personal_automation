@@ -135,6 +135,49 @@ def check_if_else():
 #         print(min)
 
 # print(min,second_max)
+
+
+
+'''convert int to date in string format like 100 == 1m20s '''
+    # def solution(n):
+    #     if n <= 60:
+    #         return (str(n)+'s')
+    #     elif n <= 3600:
+    #         return(str(n//60)+'m'+str(n%60)+'s')
+    #     elif n <= 86400:
+    #        # round up to the second unit only
+    #         return(str(n//3600)+'h'+
+    #         str(n%3600//60+1  )+'m'
+    #         if n%60 != 0 else str(n//3600)+'h'+
+    #         str(n%3600//60)+'m'+ str(n%60)+'s')
+
+
+    # # print(solution(7263))
+
+''' calculate average time need to be downloaded X bytes
+where B = array of bytes already downloaded and 
+Z is taken as B[-Z:] time to download the last Z bytes'''
+    # def solution (X,B,Z):
+    #     if X != sum(B):
+    #         try:
+    #             import pdb; pdb.set_trace()
+    #             remainder = X - sum(B)
+    #             average = round(sum(B[-Z:])/Z) 
+    #             return round(remainder/average)
+    #         except: return -1
+    #     else:
+    #         return 0
+    # # print(solution(100,[10,6,6,8,9],2))
+
+
+    # def solution(S,B):
+    #     Summ = sum([float(i) for i in B])
+    #     B = [round(float(S)*float(x)/Summ,2) for x in B]
+    #     return [str(i) for i in B]
+        
+    # print(solution("1.00",["0.05","1.00"]))
+
+
 ##################################################################################################################################################
 
 ''' Decorator is closuers for python 
@@ -307,14 +350,6 @@ def requests_beautiful():
     for story_heading in soup.find_all(class_="indicate-hover css-vip0cf"): 
         print(story_heading.text)                     
 
-<<<<<<< HEAD
-# requests_beautiful()
-=======
-        if story_heading.a: 
-            print(story_heading.a.text.replace("\n", " ").strip())
-        else: 
-            print(story_heading.contents[0].strip())
->>>>>>> 632aa1df7942dfcf34c9d616b24d02f8de79d875
 
 # requests_beautiful()
 
@@ -1145,5 +1180,18 @@ POINTS
 
 # print(UppercaseTuple(["my list", "uppercased tuple"]))
 
+############################################################################################################################
 
+#                                   API EXPERIENCE
+
+# - Db connectivity file, Db operations file, Main task scheduler file should always be splitted out in different files
+#   [ never do operations or calculations in the main.py file or views.py file ]
+# - use config.py for urls, values  and config files for configurations like time limit, status_name, status_values
+# - use function.variables instead global variables for ease access
+# - instead of extracting data in multiple files again > create columns in database table - do the extraction one time only 
+#   [ no overload hitting request on db, instead create extra column names and use that in ur code ]
+# - suppose each main heading(module) has different values or if one or more does have same value 
+#   > use dictionary for key value pairs , 
+#   > such that specific url is accessed for specific keyword (Value) for each module 
+#   [ dont specifically use replace or if else statements in these cases, so hard code where key is matched with value and thus we get the url with specific values ]
 
