@@ -7,7 +7,7 @@
 import os , time 
 
 # CREATE UR DIR FIRST  if not , I'll create it for you
-main_dir =r"C:\Users\Tushar\Desktop\django_Bot"             
+main_dir = r"C:\Users\Tushar\Desktop\django_Bot"             
 
 # if django , rest_framework , packages are  installed or not , set path where ur packages are installed in ur local system
 # Make sure you have listed your packages directory here  
