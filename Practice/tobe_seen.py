@@ -75,7 +75,7 @@ Print a list of all the score values from all users excluding the first 10 users
 # elif d['d'] >0:
 #         print('c')
 # else:
-#         print('not ok')
+#       print('not ok')
 
 
 def check_if_else():
@@ -1143,7 +1143,9 @@ POINTS
 # Remove new vesion of python from system variables 
 # check version , old will be  placed
 ############################################################################################################################
+
 #                                                Convert py to exe 
+
 # cd into dir pyinstaller (pip install pyinstaller) > pyinstaller filename.py
 # cd into dist > then run filename.exe , thus can send others ur software
 # (FIle outside dist dir , runs the file without terminal so for bussiness use)
@@ -1153,10 +1155,27 @@ POINTS
 # DONT CONVERT IMG TO ICO file as icon for ur softw
 # pyinstaller  --onefile  --name = test_fortclient c:/Users/Tushar/Desktop/python/completed_automation/connect_fortclient.py 
 
+############################################################################################################################
+#                                                Convert Video to Gif
+# pip install moviepy
+
+
+# def Video_to_gif(video_path, gif_path="test.gif"):
+#     import moviepy.editor as mpy
+#     import webbrowser
+#     clip = mpy.VideoFileClip(video_path)
+#     clip.write_gif(gif_path, fps=10)
+#     clip.close()
+#     webbrowser.open(gif_path)         # open gif in browser
+# Video_to_gif("test.mp4")
+
+
+
 
 ############################################################################################################################
 
 #                                        Selenium easy ways  
+
 # find element by text     =>  driver.find_element_by_xpath("//*[contains(text(), 'Call +XX XXXXXXXX72‎')]")
 # find all links in table  =>  elements = driver.find_elements(By.XPATH,"//table[@class = 'table']//td/a")
 
@@ -1169,7 +1188,8 @@ POINTS
 
 ############################################################################################################################
 
-#                                          new vs init     
+#                                          new vs init   
+  
 # class UppercaseTuple(tuple):
 
 #     def __init__(self, list) -> None:
@@ -1184,14 +1204,33 @@ POINTS
 
 #                                   API EXPERIENCE
 
-# - Db connectivity file, Db operations file, Main task scheduler file should always be splitted out in different files
-#   [ never do operations or calculations in the main.py file or views.py file ]
+#   Module / Functions should always be splitted out in separate files - Db connectivity file, Db operations file, Main task scheduler 
+#           [ never do operations or calculations in the main.py file or views.py file ]
 # - use config.py for urls, values  and config files for configurations like time limit, status_name, status_values
 # - use function.variables instead global variables for ease access
 # - instead of extracting data in multiple files again > create columns in database table - do the extraction one time only 
-#   [ no overload hitting request on db, instead create extra column names and use that in ur code ]
+#           [ no overload hitting request on db, instead create extra column names and use that in ur code ]
 # - suppose each main heading(module) has different values or if one or more does have same value 
-#   > use dictionary for key value pairs , 
-#   > such that specific url is accessed for specific keyword (Value) for each module 
-#   [ dont specifically use replace or if else statements in these cases, so hard code where key is matched with value and thus we get the url with specific values ]
+#           > use dictionary for key value pairs , 
+#           > such that specific url is accessed for specific keyword (Value) for each module 
+#           [ dont specifically use replace or if else statements in these cases, so hard code where key is matched with value and thus we get the url with specific values ]
+# - Follow coding standards by PEP-8
 
+############################################################################################################################
+                            
+#                            Import From Nested Directory to Nested Directory 
+
+# -  Cannot be done with init.py file 
+# 
+# - import os, sys; sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(_file_))))
+#           [    os.path.abspath(_file_) is the file name of the file which is being executed ]
+#           [    os.path.dirname(os.path.dirname(os.path.abspath(_file_))) is the directory name of the file ]
+
+# - sys.path.append(r"\path\to\dir") takes input as "directory path"  where filename varibales and func are accessed
+
+#                           How to import file name with dash in it  "cpdss-ml"
+# - misc = importlib.import_module("cpdss-ml.app.database") = 
+#           [ where importlib helps to import directory or filename with "-"  
+#             and thus we give path which is dir\to\filename        ]
+
+############################################################################################################################
