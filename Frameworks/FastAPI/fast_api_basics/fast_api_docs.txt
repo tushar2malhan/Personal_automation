@@ -1,0 +1,191 @@
+# pip install fastapi  uvicorn startlette 
+    
+    uvicorn     - helps to run fast api web server   > opens port localhost://8000
+
+    from fastapi import FastAPI
+
+    # app = FastAPI()    >>> initialize the api with an object 
+    # app.get(), app.post(),delete,put
+
+    # in shell  > uvicorn filename:app --reload    # make dynamic changes as it shows
+
+
+
+''' Advantages of FastAPI '''
+
+    #  FastAPI is a lightweight framework for building web APIs
+
+    # free documentation with fast api 
+    - go to url/docs     -- inbuilt in fast api to give details
+
+
+
+# - DATA VALIDATIONS IN URL 
+
+    Query parameter                # taken it by default 
+        
+        -->  IN BROWSER == localhost:8000/get_by_name?name=abc
+        
+        @app.get('/get_by_name')
+        def get_item(name:str):          # name:str = None   >>> to make sure  no error when named not called 
+            print(name)
+
+
+    
+    --- IN Query parameter in url we give ?key=value
+
+    --- IN Path parameter in url we give  /value    , 
+        it will assume it {parameter} from function
+
+        
+        Path parameter     # User passes {item_id}   
+
+            @app.get('/get-item/{item_id}')    
+            def get_item(item_id:int):                     # HERE type annonation is used to specify the type of data
+                return {'item_id': item_id}                # only int in this case , no other data type is allowed
+
+            def get_item(item_id:int,name:str = None)      # multiple data validations can be done
+
+            
+
+            @app.post('/post')
+            def check_post(all_data: dict):                # here in post request , we validaat to come in dictionary only 
+                l = []                                     # as all_data is a dictionary 
+                l.append(all_data)                         # can use schema to validate data or direct path 
+                return l                                   # schema = check_post(body:BookSchema)   # where BookSchema contains validations in schema.py file
+
+    
+    # Q want to show this data validation error according to your description ?
+            
+            from fastapi import Path 
+            def get_item(item_id:int = Path(None,description = ' the id should be correct') ) 
+            def get_item(item_id:int = Path(...,gt=0,le=100) ) # gt=0,le=100 is data validation
+            
+            * ->  IN BROWSER == localhost:8000/get-item/10  
+            * ->  IN BROWSER == localhost:8000/get-item/0                   # error is shown   
+
+    
+            - For data validation IN "STRING" URL
+            from fastapi import Query    
+            @app.get('/')
+            async def get_home(item_id :str = Query('Default Value',min_length = 2, max_length = 10)):
+                        return item_id
+
+            
+            - For data validation IN "INT"   URL
+            from fastapi import Path
+            @app.get('/{item_id}')
+            async def get_id(item_id :str = Path('Default Value',title = 'Item Id', description = 'Id required here ')):
+                return {'item_id ':item_id}
+
+      --> Second Way to do validations is creating schema.py file where each models validations are stored 
+      
+      '''   Schema for Models   '''
+        from datetime import datetime
+        from pydantic import BaseModel, Field
+
+
+        class QueueHeaderSchema(BaseModel):
+            process_id: str = Field(None,title='Description of the process_id ', max_length = 32)
+            process: str = Field(None,title='Process Type  ', max_length = 15)
+            status: str = Field('new',title='Status of the Process  ', max_length = 10)
+            created_time: datetime = Field(..., example="2022-07-01T00:00:00.000Z")
+
+            class Config:
+                orm_mode = True
+
+    ____ Use Path or Field (schema) for VALIDATIONS of the USER DATA ____
+
+
+# - DATA VALIDATIONS IN JSON BODY GIVEN BY USER 
+
+    - Notice that we have Config class where we set orm_mode=True
+    and is all what we need for Pydantic models, without Sqlalchemy model objects will not be serialized to JSON.
+    
+    # we use pydantic, typing to validate our models data that we receive like validating the json body from put or post methods
+    # unlike data validations done in query path , we do data validations on url
+
+    
+    @app.put('/update/{item_id}')
+    async def update(*, item_id : int, item: Queue_H):
+        results = {'item_id':item_id, 'item':item}
+        print(results)
+        return results
+
+    * Schemas.py 
+    class Queue_H(BaseModel):
+        id: str
+        process_id: str = Field(None,title='description of the process_id ',max_length=300)
+        process: str 
+        start_time: datetime  = Body(None)
+        end_time: datetime 
+        created_time: datetime 
+        last_modified_time: datetime
+        process_after : timedelta = Body(None) 
+        repeat_at : time = Body(None)
+
+        # tags : List[str] = []
+        # tags : Set[str]  = []     # no duplicates with [optional data type ]
+        # Image: IMAGE_class = None # will refer to the other pydantic class named IMAGE_class
+        #  From pydantic , we have different type of validations , like HttpUrl , color, FilePath,datetime
+        #        which can be placed on these objects , so that user gives absolute Data
+        # Image: List[IMAGE_class]  # for multiple images with same paramter
+
+
+
+
+    [*]          kwargs.pop("module", None)  # default value given, just like get(1,False)
+
+
+
+    DATA PROVIDED IN HEADERS
+
+    - from fastapi import FastApi, Header
+    @app.get('items/')
+    async def read(*,user_agent:str = Header(None)): # values given in Headers if Headers('abc') else Headers will gather user info where Headers(None)
+        return {'User_agent':user_agent}	 # user_agent == middlewear ie info of the user 
+
+
+
+#  -  DB connection
+
+    DATABASE_URL='postgres+psycopg2://cpdssuser:9VC6D1C0B1eyatg7BeIa0MN4d9@cpdssdbqa.chdo37r0lkuo.ap-southeast-1.rds.amazonaws.com:5432/cpdss_ml_db'
+
+    DATABASE_URL = f"postgresql://postgres:admin@localhost:5432/postgres" 
+    [ DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}" ]
+
+    SQL lite     = "sqlite:///./sql_app.db"
+
+
+
+
+
+#  -  Mapping 2 tables using primary key and foreign keys
+
+    
+    > header, details =  database.query(models.QueueHeader, models.QueueDetail).join(models.QueueDetail, models.QueueHeader.id == models.QueueDetail.queue_id).filter(models.QueueHeader.status == 'in progress').limit(1).first()
+    | Direct join where just the foreign key is added in second table, no mapping of relation is done !
+    | so header refers to primary key table rows             &        details refers to foreign key table rows
+
+
+    > or make a relationship in models :>  
+    |   Primary key Table 
+    |   queue_details = relationship('QueueDetail', backref='queue_header',passive_deletes=True)
+
+    |   Foreign key Table 
+    |   queue_id = Column(BigInteger, ForeignKey('queue_header.id', ondelete='CASCADE'))
+
+    | where one can refer to all rows from primary key table under column name "queue_details"
+    | query = db.session.query(QueueHeader).join(QueueDetail, QueueHeader.id == QueueDetail.queue_id).filter(QueueHeader.status == 'in progress').limit(1).queue_details
+
+
+
+
+
+
+
+
+
+
+
+

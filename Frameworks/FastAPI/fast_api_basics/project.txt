@@ -1,0 +1,55 @@
+java angular
+another vendor > singapore wd python algorithm > IQR == vendor_name
+
+- we will generate plan for queue mechanism 
+- connecting application
+- using api tools > HTTP
+- for enabling > fast apis requesting application and respond to other party
+- it will process data > 
+- receive json daata > fast api > sending ackn id > algo module > cpdssmp > 
+- license , algo cannot take more than 1 request at a time ,
+ ( ambi gurbi model to process data ,  ) we cannot take multiple requests , we need to process  1 request 
+
+- fast api with table and maintain queue
+- record in table > schedule task and process table from queue table in db
+- new req from data > put entries into databaase  from json data > new entry in fast api in 2 table 
+ from 1 table > algo module (schedule task)
+
+1 query = select in progress queries  > for checking if any requests coming ( because it will rquest 1 data ) it means some progres is running 
+
+get query order by id descn  where status = 1 order by id desc limit 1
+
+send that 1 request to algo module 
+
+python ls module is calling cpdss module and sending json back
+
+update the status of the query to 3 == completed  after data sent to cpdss module 
+
+
+if request in progress :
+ check_start_time of the progress in table
+ if request more than 1 hr , >>> kill it 
+
+CPDSS ->  https request(json ) -> fast api  -> algo module > 
+
+fast api > sending back to cpdss as an acknowlegement -> cpdss 
+
+them fast api > algo > analysis data > output (https) > cpdss
+
+
+when req frm fast api >>> ackn 
+>>> insert data into queue tables 
+>>> ackn to cpdss
+scehduler in fast api ( every 2 sec ) -> (using fast api @repeat_every decorator )
+>>> check queue table for progress record 
+if new entry (update queue status) > json > algo module (where queue status to be completed )
+ 
+loading database in postgres sql
+
+>>> 2 yr experience if client ask
+
+>>> 
+new req > fast api > table > ackn > scheduler in fast api in queue table in db 
+> if not process > data load > algo module > qa complted and failed 
+
+# no need to send ackn if request with attempt count fails>=2

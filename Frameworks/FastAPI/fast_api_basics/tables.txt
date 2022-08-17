@@ -1,0 +1,27 @@
+queue_header
+
+id - bigint - pk - auto sequence
+process_id - varchar(32) - not null - strip the hyphons
+process - varchar(10) - not null - lodablestudy/loadingplan,....
+status - varchar(10) - not null  - new/inprogress/completed/failed
+start_time - time stamp
+end_time - time stamp
+created_time - time stamp
+last_modified_time - time stamp
+
+
+queue_detail
+id - bigint - pk - auto sequence
+queue_id - big int -fk
+input_json - jsonB
+
+
+
+
+
+
+
+-- user created                       = create user tushar with encrypted password 'admin';  
+-- privileges invoked to user tushar  = grant all privileges on database postgres to tushar;
+-- expose db on localhost             = psql -h localhost -p 5432 postgres                   
+ 
