@@ -631,7 +631,7 @@ class UserRegisterForm(UserCreationForm):
             f.writelines(lines_list)
     
     else:
-        print('Sure, Its confirmed it is a Backend Application')
+        print('\n\t[*]Sure, Its confirmed it is a Backend Application')
 
     model_request = input('\n[*] Do you want to create a model for this project ? \t')
     
