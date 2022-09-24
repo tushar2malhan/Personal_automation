@@ -63,7 +63,7 @@ while True:
             and make sure the ALGORITHM sets to predict more than 0.8 percent accuracy
             and if we have any, do play bgm to make it more realistic      """
             speak('Sure , will be counting on you sir')
-            os.system(r'"C:\Users\Tushar\Downloads\model_detection_Output\abs_hd_output.avi"')
+            os.system(r"path_of_the_video")
             import time;time.sleep(25)
             speak('Well i could clearly depict that you are in shape sir  ')
         else:

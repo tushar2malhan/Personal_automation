@@ -632,7 +632,7 @@ def searcher():
         
 # search = searcher()
 # next(search)    
-# search.send('Tushar')         # yield == text == search.send()
+# search.send('Tushar')         # yield = text == search.send() == input
 # search.send('aaaa')
 # search.close()
 
@@ -673,6 +673,19 @@ async def foo():
 
 # asyncio.run(main('tushar'))
 
+async def f(n):
+    print(1,'function')
+    # call f2 async function
+    await f2()
+    print(2,'function called here ')
+    return n
+
+    
+async def f2():
+    print(2,'function brought here')
+    return 2
+
+# asyncio.run(f(1))
 
 
 ''' __new__ vs __init__'''
@@ -728,9 +741,13 @@ class circle():
 #             [* log2 *] --> from log import * 
 
 #               importing from sub directory
-# import os,sys
+import os,sys
 # sys.path.append(os.getcwd())
 # from log.old import * 
+#   OR 
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# print(os.path.abspath(__file__) ) # gives the path of the file
+# print(os.path.dirname(os.path.abspath(__file__))) # gives the path of the directory
 
 
 

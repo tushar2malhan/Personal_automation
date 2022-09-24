@@ -167,7 +167,7 @@ def whatsapp_send():
         whatsapp_func('+917814891872')
     elif name in ['maugham','mom','mata','meri maa','mommy']:
         whatsapp_func('+917814891872')
-    elif 'papa' in name:
+    elif 'Das' in name:
         whatsapp_func('+919967541997')
     elif name in ['mum','mom']:
         whatsapp_func('+918169257690')

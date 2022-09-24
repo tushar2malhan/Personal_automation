@@ -18,6 +18,10 @@
 
 
 
+**Frameworks**<br />
+1. Django   -> Detailed Explanation [django.txt] with a project [ drf & app] <br />
+2. FastAPI  -> Detailed Explanation [fast_api_docs.txt] with a project [ app] and docker env <br />
+
 **Open Cv Projects**<br />
 1. face detection (using face.xml) -> <br />
 2. Basics (opencv )  -> <br />
@@ -26,13 +30,13 @@
 
 **Practice** <br />
 1. Python_Advance > Major projects and Topic covered with examples  -> <br />
-2. TobeSeen       > Each part of python is Explored        -> <br />
-3. Coding Prac    > DSA Covered       -> <br />
+2. DSA            > Dsa Explained with different approaches        -> <br />
+3. TobeSeen       > Python Hacks       -> <br />
+4. Coding Prac    > DSA Covered       -> <br />
 
 
-**Data Structures & Algorithms** <br /> 
-1. Information  -> <br />
-2. Practice        -> <br />
+**getrich.sh** <br /> 
+1. Linux shell bash Commands with relevant examples and explanation -> <br />
 
 
 **Later** <br /> 
