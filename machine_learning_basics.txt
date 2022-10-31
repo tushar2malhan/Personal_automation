@@ -1,0 +1,1486 @@
+---------------------MACHINE LEARNING------------------------------------------
+
+	ML is supervised and unsupervised form of ability of a computer to generate data based on formulas
+
+	_ Here major job will be data cleaning _ 
+
+	SUPERVISED 
+		
+		Supervised we give the output features like column giving output YES or NO -> then we train and test the model based on the output
+			|	Types of supervised 
+				- regression   = gives continous value  # which can infinite number
+				- classfication = gives discrete value  # which will either be YES or No  bool  ie either spam and not spam or HOT and COLD or 1 and 0
+
+		- LINEAR REGRESSION is contionus regression model of supervised model
+			-  Here number can be infinite
+			- 	Eg price of house predicted on size of the house
+
+		- LOGISTIC REGRESSION = follows classfication model of supervised model 
+			-	# either 0 or 1 
+			- 	Eg Verifying whether it is cat or dog or an email is spam or not spam 
+
+
+
+		Q why we split the data in test or train ?
+			- so that our test data should work well inorder to pass the train data 
+			- The approach we are going to use here is to split available data in two sets
+
+			Training: We will train our model on this dataset
+			
+			Testing: We will use this subset to make 
+				actual predictions using trained model
+				The reason we don't use same training set for testing 
+				is because our model has seen those samples before, 
+				using same samples for making predictions might give 
+				us wrong impression about accuracy of our model. 
+				It is like you ask same questions in exam paper as you 
+				tought the students in the class.
+
+			- Overfitting = it refers  a situation where 
+			model works fine in training data (80%) but not on test data rest( 20 % )
+
+
+SUMMARY
+
+
+		GRADIENT DESCENT and COST FUNCTION 
+			-> it finds best fit line for the algorithm
+
+			cost function formula = sum( (actual_data_points - predicted_data_points) *2 )/total_no_features
+			-> also called Mean square error
+
+			->  --
+			import numpy as np
+
+			def gradient_descent(x,y):
+				m_curr = b_curr = 0
+				iterations = 10000
+				n = len(x)
+				learning_rate = 0.08
+
+				for i in range(iterations):
+					y_predicted = m_curr * x + b_curr
+					cost = (1/n) * sum([val**2 for val in (y-y_predicted)])
+					md = -(2/n)*sum(x*(y-y_predicted))
+					bd = -(2/n)*sum(y-y_predicted)
+					m_curr = m_curr - learning_rate * md
+					b_curr = b_curr - learning_rate * bd
+					print ("m {}, b {}, cost {} iteration {}".format(m_curr,b_curr,cost, i))
+
+			x = np.array([1,2,3,4,5])
+			y = np.array([5,7,9,11,13])
+
+			import pandas as pd
+			from sklearn.linear_model import LinearRegression
+			import math
+
+			def predict_using_sklean():
+				df = pd.read_csv("test_scores.csv")
+				r = LinearRegression()
+				r.fit(df[['math']],df.cs)
+				return r.coef_, r.intercept_
+
+			gradient_descent(x,y)
+
+		SAVE MODEL AND IMPORTING THE MODEL 
+			- After model has been trained, we can save it  using Pickle model or joblib
+			
+			Joblib module
+				|	import joblib
+				|	joblib.dump(model,'model_joblib')     # saving the previous model named as "model_joblib"
+				|	model_= joblib.load("model_joblib")   # Loading the "model_joblib" model 
+			
+			pickle module 
+				|	= is not good with more of np arrays 
+
+				import pickle
+				with open('model_pickle',"wb") as f:
+						pickle.dump(reg,f)
+				with open('model_pickle','rb') as f:
+					model = pickle.load(f)
+ 
+		 	Since model is ready, we can load it 
+				|	with open(r'.\models\banglore_home_prices_model.pickle', 'rb') as f:
+				|		__model = pickle.load(f)
+				Now based on any server or python function i can use the __model to predict the data on FastAPI server
+				| 	__model.predict( INPUT, OUTPUT) -> round(artifacts().get('model').predict([x])[0],2)
+				|	__model.predict([x])  ;	  __model.predict([[2,1,0]])      
+
+		TEXT REPRESENTATION 
+
+			Since machines cant understand text and the difference ,
+			so we use convert text to numbers inorder to predict the data 
+			
+			TEXT REPRESENTATION = converting text into vector of numbers 
+			|	= Usually Naive bayes is used for text representation
+
+			LIMITATIONS OF TEXT REPRESENTATION
+				- consumes a lot of memory  == Limitation of text representation
+				- less space , as for each word vector of numbers will be stored
+
+		TYPES OF TEXT REPRESENTATION
+
+			ONE HOT ENCODING 
+				UseCase - Q What if in LinearRegression model column is of string where area name is stored 
+				- previously we were training models where each column was numeric type but here situation is different
+				- using one hot encoding , we can mark bool values for each area, specifying whether that area 
+				|  belongs to that home or not !
+				| = where from the vocabulary of all unique words ,
+				| we create an array for each word , to mark it in a vector array 
+				| shape 0 or 1 -> whether that word was present in vocabulary or not !
+				| == Dummy Variables
+
+			LABEL ENCODING  = here we index for each word from the vocabulary ,
+				| like in txt file , mark index for each word in the string 
+				| == LabelEncoder
+
+			BOW = 	Bag of words 
+				- Here each word is distributted in a vocabulary and from that vocabulary
+				| we count each word as hot encoding, wher n = 1
+
+				# when we do prediction we make training and test data
+				from sklearn.model_selection import train_test_split
+
+				X_train, X_test, Y_train, Y_test = train_test_split(message_body, spam, test_size =0.2)
+				# we check the messages column having spam column as 1 cause we applied function - (lambda x: 1 if x --'spam' else 0)
+
+				from sklearn.feature_extraction.text import CountVectorizer
+
+				v = CountVectorizer()    # VOCALBULARY CREATED FROM X_train.values which is just the body of 100s of emails or raw data
+
+				X_train_cv = v.fit_transform(X_train.values)
+				print(X_train_cv.toarray()[:2][0])
+				# this will mark 0 or 1 for each token from the vocabulary list for each email 
+
+				Q How to get all the words created in the dictionary ?
+				- v.get_feature_names_out()[10:30]
+
+				BOW (2,3) = BAG OF n WORDS 
+					- here words are combined "n" times - to make it more predictable 
+					
+					bi-gram		= From sentence  word is combined is in double set , n == 2
+					|	Example :=  "Thor eat", "eat pizza", "loki tall", "loki eat"
+
+					tri-gram	= From sentence is combined is in triple set , n == 3
+					|	Example :=  "Thor eat pizza ", "eat pizza loki ", "loki tall eat", "loki eat"
+
+				|  so we combine all grams , to make model more predictable 
+
+			TF-IDF  => weighting system that assigns a weight to 
+				each word in a document based on its term frequency (tf) 
+				and the reciprocal document frequency (tf) (idf). 
+				The words with higher scores of weight are deemed 
+				to be more significant.
+
+				- We use Log in the formual because it makes it in binary range float point
+				| such that if word appears 1 million time , it should give adequate output 
+				
+				TF = Term frequency = number of times particular word (t) came in single doc 
+				|  formula ==  word/total_words_in_doc
+				| like market word came 48 times in a sentence having 100 words == 0.48 |
+
+
+				IDF = document frequency - number of times t(actual word) is present in all docs(inputs or each list)
+				|	lower times the word appears in Doc , Higher the weight of the word
+				|   formula ==  log(total_docs/word_frequency_in_each_doc) 				|
+				|   so word "that" came in 3 docs out of 4 so weight == 4/3 == 1.33 for word "that"  |
+
+				So TF * IDF == weight assigned for the word 
+
+			WORD EMBEDDINGS 
+				= It helps to capture word realtionship with words inorder to relate to them 
+
+
+
+    | 				 CODING 			 |
+	
+	- Read csv file using Pandas -> 
+		|	=pd.read_csv('filename.csv')
+
+	- Pre-processing 
+
+		= CHECK ALL COLUMNS WHICH ARE NULL 
+			
+			df.isnull().sum()
+		
+			# fill null values by taking mean
+			
+			df.Cabin.mean()   or    df.Cabin.median()   --> df.Age = df.Age.fillna(df.Age.mean())
+		
+	 	= UnderSampling
+			- A simple technique of undersampling.
+			where each word catgory is assigned equal value 
+
+			min_samples = 1381 
+			# we have these many SCIENCE articles and SCIENCE is our minority class
+			#  - ie having less values 
+			# SO We will adjust other categories to adjust all 4 categories data in same shape
+
+
+			df_business = df[df.category=="BUSINESS"].sample(min_samples, random_state=2022) 
+			df_sports = df[df.category=="SPORTS"].sample(min_samples, random_state=2022)
+			df_crime = df[df.category=="CRIME"].sample(min_samples, random_state=2022)
+			df_science = df[df.category=="SCIENCE"].sample(min_samples, random_state=2022)
+
+			df_balanced = pd.concat([df_business,df_sports,df_crime,df_science],axis=0)
+			df_balanced.category.value_counts()
+
+		= Feature Engineering
+			Add/Update/rectify new columns 
+				df['price_per_sqft'] = df['price']*100000/df['total_sqft']
+				df.head()
+
+			~ == exclude 
+				df3[~df3['total_sqft'].apply(is_float)].head(10)
+
+			- Change row value if row numeric value is less than 10
+				location_stats = df5['location'].value_counts(ascending=False)
+				location_stats_less_than_10 = location_stats[location_stats<=10]
+				# location_stats_less_than_10.shape
+				df5.location = df5.location.apply(lambda x: 'other' if x in location_stats_less_than_10 else x)
+				# df.location.shape
+				len(df5.location.unique())   
+
+		= df.HeartDisease.value_counts()    # Total count of 0 and 1  
+		
+		= Treat Outliners     =>   We remove the large scale gap between values which makes it difficult to predict
+			
+			df.describe()      = to  check the max, min percent for each column
+			
+			Detect outliers using percentile
+				|  = df[ df['height'] < df['height'].quantile(0.95) &  df['height'] > df['height'].quantile(0.05)  ] # ->  return rows with height not greater than 95 % and not less than 5 %
+				
+				| Explore samples that are above 99.90% percentile  |
+				| and below 1% percentile rank                      |
+				|                   == 
+				| min_thresold, max_thresold = df.price_per_sqft.quantile( [0.001, 0.999] )
+				| df[  ( df.price_per_sqft < max_thresold) & ( df.price_per_sqft > min_thresold ) ]
+
+			Using Standard deviation to remove the high and lowe outliers
+				
+				| upper_limit = df.height.mean() + 3 * df.height.std()   == 3 Standard deviation
+				| lower_limit = df.height.mean() - 3 * df.height.std()   == 3 Standard deviation
+				NEW_df = df [ ( df.height < upper_limit ) & ( df.height > lower_limit )  ] 
+
+		= MinMaxScaler - Use Case == when values are in negative
+
+			- convert numeric values into Binary range (0,1) for SINGLE COLUMN
+			
+			from sklearn.preprocessing import MinMaxScaler
+			scaler = MinMaxScaler()
+
+			scaler.fit(df[['Income($)']])
+			df['Income($)'] = scaler.transform(df[['Income($)']])
+
+			scaler.fit(df[['Age']])
+			df['Age'] = scaler.transform(df[['Age']])
+			df   #  -->     column will in  range between 0-1  ie in binary value
+
+		= StandardScaler      =>   Converts columns numeric small range for all columns 
+				
+				from sklearn.preprocessing import StandardScaler
+
+				scaler = StandardScaler()
+				X_scaled = scaler.fit_transform(X)    # X == Input 
+				X_scaled[:3] 
+			
+		= df.groupby('left').mean()         # get the satisfaction level for all employees who left or not
+		
+		= TEXT REPRESENTATION
+			
+			= Text to numeric mapping using dummy variables dummies |  LabelEncoder  | MAP |
+				
+				# --> Additional columns created for each catgory marking 0 or 1 
+				# --> though arrises problem of Dummy trap variable for the model 
+				dummies = pd.get_dummies(df['Car Model'])        
+				merged = pd.concat([df,dummies],axis='columns')
+				# Then we remove the car model "key", because we got the binaries for each model
+				final = merged.drop(['Car Model'], axis='columns')
+				# Finally we remove one of the column inorder to avoid Dummy trap Variable
+				final = final.drop(['BMW'], axis='columns')			
+				____________________________________________
+				
+				
+				# -->  will mark numeric number for each category
+				from sklearn.preprocessing import LabelEncoder     
+				le = LabelEncoder()
+				df['Car Model'] = le.fit_transform(df['Car Model']) 
+				____________________________________________
+
+
+				# Numeric mapping to Emotion column   
+				# can use Label encoder too, but it gives random value,
+				# here we assign number 
+				df['Emotion_number'] = df.Emotion.map({
+					"anger":0,
+					"joy":1,
+					"fear":2    })
+				____________________________________________
+
+			=  convert string columns to int using ->  (w2n, CountVectorizer, TfidfVectorizer   ) ,
+
+				CountVectorizer    =>   returns the DICTIONARY  of unique words from the strings provided 
+					
+					from sklearn.feature_extraction.text import CountVectorizer
+					X_train_dictionary = CountVectorizer()   
+					
+					#      X_train.values == all X email body messages
+					X_train_count = X_train_dictionary.fit_transform(X_train.values)   
+					
+					X_train_dictionary.get_feature_names()           	 # Check unique words
+					X_train_count.toarray()[:2]                      	 # numeric array mapping unique words with dictionary 
+					from sklearn.naive_bayes import MultinomialNB    	 # Choosing Model
+					model = MultinomialNB()
+				
+					
+					model.fit(X_train_count, y_train)                	 # Since email body text in string cant be understood , we created numpy array
+
+					emails_count = X_train_dictionary.transform(emails)  # emails == input data
+					model.predict(emails_count)       					 # returns array if its spam or not !
+				
+				TF-IDF  => 		returns the dictionary with weight of words assigned to each word in doc 
+								here it directly fits and train the model |
+
+					from sklearn.feature_extraction.text import TfidfVectorizer
+					v = TfidfVectorizer()
+					v.fit(corpus)   					 # corpus == list of sentences
+					output = v.transform(corpus)		 # transform returns output Dictionary
+
+					print(v.vocabulary_)				 # let's print the vocabulary
+					v.get_feature_names_out()			 # all dict names 
+
+				Sklearn Pipeline   =>   dont need to tranform the "sample data" 
+										as compared with CountVectorizer or TfidfVectorizer
+
+										Pipeline([
+											()     --> vectorizer
+											()     --> model name
+										])
+
+					-------------------------------------
+					from sklearn.pipeline import Pipeline
+					clf = Pipeline([
+						('vectorizer', CountVectorizer()),		 # --> vectorizer
+						('nb', MultinomialNB())					 # --> model name
+					])
+					clf.fit(X_train, y_train)
+					clf.score(X_test,y_test)
+					# get the predictions for X_test and store it in y_pred
+					y_pred = clf.predict(X_test)
+
+
+					--------------------------------------
+					from sklearn.pipeline import Pipeline
+					from sklearn.feature_extraction.text import TfidfVectorizer
+					from sklearn.neighbors import KNeighborsClassifier
+
+					clf = Pipeline([
+						('vectorizer', TfidfVectorizer()),		 # --> vectorizer
+						('KNN', KNeighborsClassifier())			 # --> model name
+					])
+					clf.fit(X_train, y_train)
+					clf.score(X_test,y_test)
+
+					# get the predictions for X_test and store it in y_pred
+					y_pred = clf.predict(X_test)
+
+
+					#4. print the classfication report
+					print(classification_report(y_test, y_pred))
+
+				LOOP  
+					- just like GridSearchCV. we loop all models and vectorizers to get count 
+
+					from sklearn.model_selection import train_test_split
+
+					X_train, X_test, y_train, y_test = train_test_split(
+						df.Comment,
+						df.Emotion,
+						test_size=0.2,
+						stratify=df.Emotion_number,
+						random_state=2022
+					)
+					# X_train.shape, X_test.shape, 
+
+					from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+					from sklearn.pipeline import Pipeline
+					from sklearn.ensemble import RandomForestClassifier
+					from sklearn.metrics import classification_report
+					from sklearn.naive_bayes import MultinomialNB
+					
+					# Using Pipeline to Train the data 
+					vectorizers = [TfidfVectorizer, CountVectorizer]
+					models = [RandomForestClassifier, MultinomialNB ]
+
+					for each_vectorizers in vectorizers:
+						for model in models:
+							clf = Pipeline([
+								('each_vectorizers name', each_vectorizers() ),
+								('model name', model())
+							])
+							
+					clf.fit(X_train, y_train)
+					print(f'clf score for model {model()} and vectorizer {each_vectorizers()} is \n',clf.score(X_test,y_test),'\n')
+
+				word embeddings
+
+					
+					en_core_web_lg == this model is trained on google articles 
+					 				   which shows the similarity of words between 
+									   each other 
+
+					import spacy
+					nlp = spacy.load("en_core_web_lg")
+					
+
+					base_token = nlp("bread")
+					base_token.vector.shape
+
+					doc = nlp("bread sandwich burger car tiger human wheat")
+
+					for token in doc:
+						print(f"{token.text} <-> {base_token.text}:", token.similarity(base_token))
+
+						# IT will compare all the words in the doc with base_token "bread" and check the 
+						# similarity using vectors that they are converted into 
+
+					def print_similarity(base_word, words_to_compare):
+						base_token = nlp(base_word)
+						doc = nlp(words_to_compare)
+						for token in doc:
+							print(f"{token.text} <-> {base_token.text}: ", token.similarity(base_token))
+
+
+
+	= Predict Outcome  without converting string to  numbers 
+		
+		# INSTEAD OF CONVERTING INTO NUMBERS , WE CAN DIRECTLY PREDICT ON STRING ROWS  TOO
+
+		import pandas as pd
+		import numpy as np
+		from sklearn.tree  import DecisionTreeClassifier  # Popular ML algo
+		from sklearn.linear_model import LogisticRegression
+
+		music_data = pd.read_csv("music.csv")
+		X = music_data.drop(columns = ['genre'])  # DROPS columns genre
+		y = music_data['genre']
+		# music_data
+		model = LogisticRegression() 
+		model.fit(X.values,y)      # use X.values so that they dont use headers and dont give warning 
+		predictions = model.predict([ [21, 1], [22, 0] ]) # passing entire dataset for prediction
+		predictions
+
+	- Taking input X and output y
+
+		X = df [ ['Car Model','Mileage', 'Age(yrs)'] ].values
+		y = df['Sell Price($)'].values 
+		
+		# AFTER TAKING INPUTS  same thing using LabelEncoder ()
+		le_company = LabelEncoder()
+		X['company'] =  le_company.fit_transform(X['company'])
+
+		# After Taking Input , use StandardScaler or MinMaxScaler
+		from sklearn.preprocessing import StandardScaler
+
+		scaler = StandardScaler()
+		X_scaled = scaler.fit_transform(X)    # X == Input 
+		X_scaled[:3] 
+		
+	- Splitting  the Data -- input = X_train, X_test,    & output data = y_train, y_test 
+		
+		|	from sklearn.model_selection import train_test_split
+		|	X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.3)  ## Splitting into 70:30 ratio
+	
+	- Choosing model = LinearRegression 
+
+		from sklearn.linear_model import LinearRegression, LogisticRegression
+		from sklearn.tree import DecisionTreeClassifier
+		from sklearn.ensemble import RandomForestClassifier
+		
+		model = DecisionTreeClassifier()
+		model = LinearRegression()
+		model = RandomForestClassifier( n_estimators=30 )
+		
+		model.fit( X_train, y_train )    # model.fit( input, target )
+
+		| If its Naive base Approach - then can use Sklearn Pipeline |
+
+	- Score the model -> 
+		
+		model.score(X,y)
+		model.score(X_test,y_test)
+
+	- Predict the outcome -> 
+
+		model.predict( [ [2,45000,4] ]  )   # based on the model columns ( car_model = 2, mileage = 45000, age = 4 yrs )
+		model.predict(X_test)
+
+	- Testing the Model
+	
+	Approach 1 - Split train and test    - like we did it earlier
+	
+	Approach 2 - 
+
+		K Fold Cross Validation 
+		= uses n number of stack to distribute test data for every stack
+		from sklearn.model_selection import KFold
+		kf = KFold(n_splits=3)
+		for train_index, test_index in kf.split([1,2,3,4,5,6,7,8,9]):
+			print( test_index, train_index)
+
+		Cross_val_score function -  Better Approach than above
+		= Here we dont need to manually run the loop for 
+		each train data and test data like we did in above 
+		code # - using cross val_score , it will automatically 
+		run the test data for each partition
+
+		from sklearn.model_selection import cross_val_score
+		cross_val_score(
+			LogisticRegression(solver='liblinear',multi_class='ovr'),    # Model name with params
+			digits.data,                                                 # input X given 
+			digits.target,                                               # input y given 
+			cv=3    )                                                    # total number of stack to use ie 3 
+
+	Approach 3 - GridSearchCV - Mixture of both - Best Approach - as Run for all your models with all params 
+		= hyper parameter tunning using GridSearchCV
+		
+		# GridSearchCV  - helps to remove the loop created in KFold !!
+		# Thus can work on multiple parameters and kernels at same time !!
+		
+		EXAMPLE 1:   Single Model 
+
+		from sklearn.model_selection import GridSearchCV
+			clf = GridSearchCV(
+				svm.SVC(gamma='auto'),          # model name   svc or logistics or decision tree with params ()
+				
+				{'C':[1,10,20],
+				'kernel': ['rbf','linear']},    # all the different variants need to choose
+				
+				cv=5, return_train_score=False )  # finally choosing number of stack to split and train test data
+			clf.cv_results_                      # shows the results 
+			clf.best_params_                     # will give the best results automatically
+			clf.best_score_                      # returns best score of the kernel
+
+		EXAMPLE 2:   All Models with all Params
+
+		import pandas as pd
+
+		from sklearn import datasets
+		iris = datasets.load_iris() 
+		digits = datasets.load_digits()
+
+
+		from sklearn.linear_model import LinearRegression, LogisticRegression
+
+		from sklearn import svm
+
+		from sklearn.tree import DecisionTreeClassifier
+		from sklearn.ensemble import RandomForestClassifier
+
+		from sklearn.naive_bayes import GaussianNB, MultinomialNB
+
+		from sklearn.model_selection import GridSearchCV
+
+
+		models = {
+			'svm': {
+				'model_name': svm.SVC(gamma='auto'),
+				'params' : {
+					'C': [1,10,20],
+					'kernel': ['rbf','linear']
+				}  
+			},
+			'random_forest': {
+				'model_name': RandomForestClassifier(),
+				'params' : {
+					'n_estimators': [1,5,10]
+				}
+			},
+			'logistic_regression' : {
+				'model_name': LogisticRegression(solver='liblinear',multi_class='auto', max_iter=1000),
+				'params': {
+					'C': [1,5,10]}
+			},
+			
+			'linear_regression' : {
+				'model_name': LinearRegression(),
+				'params': {}
+			},
+			
+			'naive_bayes_gaussian': {
+				'model_name': GaussianNB(),
+				'params': {}
+			},
+			
+			'naive_bayes_multinomial': {
+				'model_name': MultinomialNB(),
+				'params': {}
+			},
+			
+			
+			'decision_tree': {
+				'model_name': DecisionTreeClassifier(),
+				'params': {
+					'criterion': ['gini','entropy'],
+				}
+			}   
+		}
+
+		scores = []
+
+		for model_name, mp in models.items():
+			clf =  GridSearchCV(
+				mp['model_name'],      # model name with params 
+				mp['params'],          # models params 
+				cv=5,                  # number of stacks
+				return_train_score=False)
+			
+			clf.fit(iris.data, iris.target)  # input , output
+			
+		# Storing results
+			scores.append({
+				'model': model_name,
+				'best_score': clf.best_score_,
+				'best_params': clf.best_params_
+			})
+			
+		# # Displaying results
+		df = pd.DataFrame(scores,columns=['model','best_score','best_params'])
+		df
+
+	- Improve the Scoring of the Model
+
+		REGULARIZATION
+			- here in the situation of Overfitting , 
+			how can we further improve the model accuracy where in situation 
+			training score is 68% but test score is 13.85% which is very low
+
+			| Normal Regression is clearly overfitting the data |
+			
+			lasso_reg = linear_model.Lasso(alpha=50, max_iter=100, tol=0.1)
+			lasso_reg.fit(train_X, train_y)
+
+			| Using Ridge (L2 Regularized) Regression Model
+			from sklearn.linear_model import Ridge
+			ridge_reg= Ridge(alpha=50, max_iter=100, tol=0.1)
+			ridge_reg.fit(train_X, train_y)
+
+			We see that Lasso and Ridge Regularizations prove to be 
+			beneficial when our Simple Linear Regression Model overfits.
+			These results may not be that contrast but significant 
+			in most cases.Also that L1 & L2 Regularizations are used 
+			in Neural Networks too.
+
+		BAGGING
+		
+			EXAMPLE :	
+				
+				from sklearn.model_selection import train_test_split
+				from sklearn.model_selection import cross_val_score
+				X_train, X_test, y_train, y_test = train_test_split( X_scaled, y, stratify=y, random_state=10 )
+
+				from sklearn.linear_model import LogisticRegression
+
+				model = LogisticRegression(max_iter=1000)
+				model.fit(X_train, y_train)
+
+				model.score(X_test,y_test)
+				# model.predict(X_test)
+
+		| Approach 2 to check the score  cross_val_score   -  Not Always it gives best score |
+				
+				scores = cross_val_score(
+					LogisticRegression(max_iter=1000),        # model name 
+					X,y,                                      # input output
+					cv = 5 )                                  # total stacks 
+				scores
+				scores.mean()
+
+				->  SCORE == 77 % using cross val_score  <-  |       -- it gave less score than SPLITTING METHOD    |
+
+
+				from sklearn.ensemble import BaggingClassifier
+
+				bag_model = BaggingClassifier(
+					LogisticRegression(max_iter=1000),
+					n_estimators=100,                      # this will use 100 models of Logisitics to take the majority 
+					max_samples=0.8,
+					oob_score=True,
+					random_state=0
+				)
+
+				bag_model.fit(X_train, y_train)
+				bag_model.score(X_test, y_test)
+
+				-> SCORE == 81 % using BAGGING  <-
+			
+	- Choosing Features 
+		
+		PCA
+				Principal Component Analysis
+				- is a process of figuring out the most Important 
+				independent components or Features required to take 
+				out the output ie the target 
+				
+				EXAMPLE: 
+					
+					from sklearn.decomposition import PCA
+					
+					pca = PCA(0.95)                  # Use components such that 95% of variance is retained
+					X_pca = pca.fit_transform(X)
+					X_pca.shape    					 # returns 29 columns instead of 64 in total 
+
+					[ # manually selecting only 2 components and 
+					# training on that
+					# Let's now select only two components
+					pca = PCA(n_components=2) -> return score 60 % : not good 
+					]
+
+					X_train_pca, X_test_pca,
+					y_train, y_test = train_test_split	( X_pca, y, test_size=0.2, random_state=30)
+					from sklearn.linear_model import LogisticRegression
+
+					model = LogisticRegression(max_iter=1000)
+					model.fit(X_train_pca, y_train)
+					model.score(X_test_pca, y_test)
+
+	- CONFUSION MATRIX - to Visualize where model is lacking
+	from sklearn.metrics import confusion_matrix
+
+	y_predicted = model.predict(X_test)
+	cm = confusion_matrix(y_test, y_predicted)
+
+	- Plot the data on GRAPH    ->   
+	import matplotlib.pyplot as plt; 
+	%matplotlib inline
+
+	plt.xlabel('Age')
+	plt.ylabel('Salary')       # giving X label and  y label on the  graph
+	
+	# Scatter DOTS on graph     -> plt.scatter( df['Mileage'], df['Sell Price($)'] )       
+
+	# Scatter BAR on graph      -> pd.crosstab(df.Salary, df.left).plot(kind = 'bar' )     
+
+	# Plot CONFUSION MATRIX 
+
+		import seaborn as sn
+		plt.figure(figsize = (10,7))
+		sn.heatmap(cm, annot=True)
+		plt.xlabel('Predicted')
+		plt.ylabel('Truth')                                    
+
+	# Show IMAGES on the Plot
+
+		plt.gray() 
+		for i in range(4):
+		plt.matshow(digits.images[i])                         
+
+	# plot HISTOGRAM  
+
+		import matplotlib.pyplot as plt
+		import numpy as np
+		%matplotlib inline                                  
+
+		bin_edges = [0,15,30,45,60]
+		plt.hist(commute_times,
+				bins=bin_edges,
+				density=False,
+				histtype='bar',
+				color='b',
+				edgecolor='k',
+				alpha=0.5)
+
+		plt.xlabel('Commute time (min)')
+		plt.xticks([0,15,30,45,60])
+		plt.ylabel('Number of commuters')
+		plt.title('Histogram of commute times')
+
+		plt.show()
+
+	- Save the model, Load the Model 
+	= using pickle or joblib -> import joblib; joblib.dump(model,'model_name'); model_= joblib.load("model_joblib")
+
+	UNSUPERVISED MODEL
+		In UNSUPERVISED - target is not given ie Output y , from the given inputs 
+		or called independent variables , we find the Output 
+
+		= KMeans
+		Here we scatter the data and divide them into clusters of group for each
+		category
+		
+		Q Here probelm states , we need to find the characteristics of the groups or 
+		cluster created from Age and income of Employees ?
+		
+		- from sklearn.cluster import KMeans
+		km = KMeans(n_clusters=3)
+		output_predicted = km.fit_predict(df[['Age','Income($)']])   # == input given -> Age, Income 
+		output_predicted                                             # == got the ouput from Age and Income
+
+		ELbow method 
+		In real life, putting clusters will be difficult so we use elbow plot method
+		Here we give range of k and it Calculates best option for the outcome
+		- by looking at the elbow on the chart , we find the key
+
+		The elbow method runs k-means clustering on the dataset for a range of 
+		values for k (say from 1-10) and then for each value of k 
+		computes an average score for all clusters.
+
+		sse = []                    
+		k_rng = range(1,10)
+		for k in k_rng:
+			km = KMeans(n_clusters=k)
+			km.fit(df[['Age','Income($)']])
+			sse.append(km.inertia_)               #  sum of squre errors == km.inertia_
+
+		# we got all the SSE, now we plot it and check the elbow
+		plt.xlabel('K')
+		plt.ylabel('Sum of squared error')
+		plt.plot(k_rng,sse)
+
+
+
+ALL MODELS INFORMATION 
+	
+		LINEAR REGRESSION    ( Predicting infinite number  of a product)
+			
+			Here these features are from csv file given features of a house and 
+			we need to predict the price of it !
+
+			price = mi*area + m2 * bedrooms + m3 *age +b
+			(  where area, bedrooms and age are features of my product , m refers to coeffecients, b = intercept  )
+
+			reg = linear_model.LinearRegression()
+			reg.fit(df[['area','bedroom','price']], df.price)    
+			-> here 1 arg = features  
+			-> and 2 arg == target  -> which we need to find or predict
+
+			so this reg.fit  will give 3 cofficients by :-
+			print(reg.coef_) 
+			-> array([  112.06244194, 23388.88007794, -3231.71790863])
+
+			print(reg.intercept_)   -> b for interception 
+
+
+			Q  Now Find price of home with 3000 sqr ft area, 3 bedrooms, 40 year old ?
+
+			-> using formula of price  			( price = mi*area + m2 * bedrooms + m3 *age +b )
+			-> 112 * 3000 + 23389 *3 + 3232* 40
+			-> :: price == 535447
+
+			-> thats what reg.predict does  where we supply 3 features of the product and we get the target
+			# == reg.predict([3000,3,40]) == 53447  
+
+
+			*** Our LinearRegression model is completed ***
+
+		LOGISTIC REGRESSION    ( Predicting Bool value of the outcome )
+			- it doesnt give an numeric or specific number but a bool value 
+			either yes or no, thats what makes it different from logistics regression
+			and classfication model type of supervised MACHINE LEARNING
+			- Here predicted values is on one of the option bases
+
+			Classfication types 
+			- binary      = which predicts Yes or no
+			- multiclass  = will predict choosing one of the options
+
+			Logistic Regression uses Gradient Descent 
+			as one of the approaches for obtaining the 
+			best result, and feature scaling helps to 
+			speed up the Gradient Descent convergence process
+
+			DUMMY variables
+			 	- it is important to know that these multiclass options are  values  
+				| converted in to numeric number , Thus when model is getting predicted, it is not 
+				| useful to use all the categories or all the binaries to predict, it makes
+				| model less accurate and overloads the LogisticRegression model 
+				| - thus faces dummy trap variable == so just drop one column or one model from 
+				| all the categories, as it automatically detect , 
+				| if that category belongs to 0 or 1 if not 2
+				| When you can derive one variable from other variables, 
+				| they are known to be multi-colinear
+				|
+				| 2 ways we can make dummy variables
+				|	-  pd.get_dummies(df.Species, drop_first=True)  ( will drop the first value too) -> then concat with original df 
+				|	-  Using sklearn OneHotEncoder - use label encoder to convert town names into numbers
+				|	   from sklearn.preprocessing import LabelEncoder  
+				|	   le =  LabelEncoder() ; df['Car Model'] = le.fit_transform(dfle['Car Model'])
+				
+				| Finally thus we can get our INPUT X and output y values  to predict the model 
+				|	   X = df[['Car Model','Mileage', 'Age(yrs)']].values
+				|	   y = df['Price']
+
+		DECISION TREE 
+			- sometimes its not easy to draw logistics or linear regression line to come up with DECISION Boundary
+			thats where DECISION tree comes into picture 
+			- here solution is bisected the spaces into further smaller spaces or problem statements
+			like binary search algorithm
+			- with comparision with logistics regression, it performed much better than DECISION tree, but this might not 
+			be the case always
+
+			- here problem statements states that we find specific values for each department
+			Eg like salary above 100k for managers or engineers in  companies google, Meta, Apple  
+			- so there would be situation where salary is more than 100 k for managers but not for engineers 
+			and that too not for all 3 companies 
+
+		SUPPORT VECTOR MACHINE
+			- quite popular ml algorithm
+			- you get gamma and kernel with the model = SVM uses kernel trick to solve non-linear problems
+			-  This means that image classification 
+			|  using Support Vector Machine (SVM) method is better than Decision Tree (DT) 
+
+			- from sklearn.svm import SVC
+			| model = SVC()
+
+			| 			Tune parameters in SVC 			 |
+
+			|1. Regularization (C)
+			|model_C = SVC(C=1)
+			|model_C.fit(X_train, y_train)
+			|model_C.score(X_test, y_test)
+
+			|2. Gamma
+			|model_g = SVC(gamma=10)
+
+			|3. Kernel
+			|model_linear_kernal = SVC(kernel='linear')
+
+		RANDOM FOREST ALORITHM 
+			-	model = RandomForestClassifier(n_estimators=20)
+			-   n_estimators means it used 20 random Trees to train model 
+
+		NAIVE_BASE
+
+			- Naive   refers  that each variable or features provided or given 
+			also called as Input ( X ) are independent from each other and has no realtion with 
+			other features or columns 
+			
+			| 3 types of naive base approaches
+			| 		Bernoulli    -> when output needs 0 or 1   		 [ like email spam or not ]
+			|       Multinomial  -> discrete where output range(1,5) [ like movie rating , out of 5 ]
+			|		GaussianNB   -> normal distribution = infinite   [ like getting target for iris dataset or salary ]	
+			
+			Example  1 :
+
+				| from sklearn import datasets
+				| wine = datasets.load_wine()
+
+				| from sklearn.model_selection import train_test_split
+				| X_train, X_test, y_train, y_test = train_test_split(wine.data, wine.target, test_size=0.3, random_state=100)
+
+				| from sklearn.naive_bayes import GaussianNB, MultinomialNB
+				| model = GaussianNB(); model.fit(X_train,y_train); model.score(X_test,y_test)  
+				|# score == 1
+				
+				| model = MultinomialNB()(); model.fit(X_train,y_train); model.score(X_test,y_test)
+				|# score == 0.7
+
+			CountVectorizer :
+				| Now suppose we need to create dictionary for CHatbot ,
+				| we need all unique words like in dictionary,
+				| So we create a dictionary of words using CountVectorizer 
+				| dataset for count vectorizer is df.Message , 
+				| because we have a lot of string data we got from email messages 
+				| After splitting , X_train stores all the email messages 
+
+				| from sklearn.feature_extraction.text import CountVectorizer			
+				| X_train_dictionary = CountVectorizer()			
+				| X_train_count = X_train_dictionary.fit_transform(X_train.values)	
+				
+				| Q Check the unique word by: 	
+				| -> X_train_dictionary.get_feature_names()
+			
+				| X_train_count.toarray()[:2]   
+				|	# This creates a matrix where message_body is broken into words
+				|	#  mapped with unique word in X_train_dictionary and marked in 0 or 1
+				|	# --> SO EMAIL_BODY CONVERTED INTO NUMBER METRICS
+
+				| from sklearn.naive_bayes import MultinomialNB
+				| model = MultinomialNB()
+				| model.fit(X_train_count, y_train) ->   Since email body text in string cant be understood , we created numpy array
+      			| emails = [
+      			| 	'Hey mohan, can we get together to watch footbal game tomorrow?',
+      			| 	'Upto 20% discount on parking, exclusive offer just for you. Dont miss this reward!'
+      			| ]
+      			| emails_count = X_train_dictionary.transform(emails)
+      			| model.predict(emails_count)
+
+			
+			Sklearn Pipeline   
+			    - Here, we will convert the text data into numpy array directly 
+					: Not required ->  X_train_dictionary.transform(emails) 
+					: as done in CountVectorizer manually
+
+				| from sklearn.pipeline import Pipeline
+				| clf = Pipeline([
+				| 	('vectorizer', CountVectorizer()),
+				| 	('nb', MultinomialNB())  ]) 
+				
+				| X_train == email body
+
+				| clf.fit(X_train, y_train)
+				| clf.score(X_test,y_test)
+
+		KNN
+		   -   Nearest Neighbors algorithm is a supervised 
+			machine learning algorithm for labeling an 
+			unknown data point given existing labeled data
+
+			from sklearn.neighbors import KNeighborsClassifier
+			knn = KNeighborsClassifier(n_neighbors=10)
+			knn.fit(X_train, y_train)
+
+		REGULARIZATION
+			- here in the situation of Overfitting , 
+			how can we further improve the model accuracy where in situation 
+			training score is 68% but test score is 13.85% which is very low
+
+			| Normal Regression is clearly overfitting the data |
+			
+			lasso_reg = linear_model.Lasso(alpha=50, max_iter=100, tol=0.1)
+			lasso_reg.fit(train_X, train_y)
+
+			| Using Ridge (L2 Regularized) Regression Model
+			from sklearn.linear_model import Ridge
+			ridge_reg= Ridge(alpha=50, max_iter=100, tol=0.1)
+			ridge_reg.fit(train_X, train_y)
+
+			We see that Lasso and Ridge Regularizations prove to be 
+			beneficial when our Simple Linear Regression Model overfits.
+			These results may not be that contrast but significant 
+			in most cases.Also that L1 & L2 Regularizations are used 
+			in Neural Networks too.
+
+		PCA
+			Principal Component Analysis
+			- is a process of figuring out the most Important 
+			independent components or Features required to take 
+			out the output ie the target 
+			
+			EXAMPLE: 
+				
+				from sklearn.decomposition import PCA
+				
+				pca = PCA(0.95)                  # Use components such that 95% of variance is retained
+				X_pca = pca.fit_transform(X)
+				X_pca.shape    					 # returns 29 columns instead of 64 in total 
+
+				[ # manually selecting only 2 components and 
+				  # training on that
+				  # Let's now select only two components
+				  pca = PCA(n_components=2) -> return score 60 % : not good 
+				]
+
+				X_train_pca, X_test_pca,
+				y_train, y_test = train_test_split	( X_pca, y, test_size=0.2, random_state=30)
+				from sklearn.linear_model import LogisticRegression
+
+				model = LogisticRegression(max_iter=1000)
+				model.fit(X_train_pca, y_train)
+				model.score(X_test_pca, y_test)
+
+		BAGGING
+		  Its a combination of multiple models 
+		  like answers of LinearRegression, logistic_regression, decision_tree -> majority taken by bagging 
+		  = We do this because single model classfication is weaker 
+		  | so basically bag number of models answers and take majority of the answer 
+		  
+		  EXAMPLE :	
+			
+			from sklearn.model_selection import train_test_split
+			from sklearn.model_selection import cross_val_score
+			X_train, X_test, y_train, y_test = train_test_split( X_scaled, y, stratify=y, random_state=10 )
+
+			from sklearn.linear_model import LogisticRegression
+
+			model = LogisticRegression(max_iter=1000)
+			model.fit(X_train, y_train)
+
+			model.score(X_test,y_test)
+			# model.predict(X_test)
+
+			# Approach 2 to check the score         -- it gave less score than SPLITTING METHOD
+			
+			scores = cross_val_score(
+				LogisticRegression(max_iter=1000),
+				X,y,
+				cv = 5,
+			)
+			scores
+			scores.mean()
+
+			->  SCORE == 77 % using cross val_score  <-
+
+			from sklearn.ensemble import BaggingClassifier
+
+			bag_model = BaggingClassifier(
+				LogisticRegression(max_iter=1000),
+				n_estimators=100,                      # this will use 100 models of Logisitics to take the majority 
+				max_samples=0.8,
+				oob_score=True,
+				random_state=0
+			)
+
+			bag_model.fit(X_train, y_train)
+			bag_model.score(X_test, y_test)
+
+			-> SCORE == 81 % using BAGGING  <-
+		
+	UNSUPERVISED 
+		- does need any output feature - here it direcly predicts the outcome
+		- we predict the target just by looking at the clusters , the independent input variables
+		
+		K_MEANS
+			- we put a number of  cluster like ,k = 2,  depending upon the clusters distributted on plot
+			| this k will group the clusters distributted on the plot to make it divided
+			| Thus, input will match with one of the k == which is target [ ie total 2 clusters ]
+			| here we then adjust clusters where closed clusters which will match with
+			| line drawn in between them to get the output 
+
+
+			Elbow Plot - 
+				| .Sometimes those clusters are not divided properly as 
+				| per our input where k= 2,
+				| * here we will give range of n clusters - 
+				| it will check for all in given range ie k =  range(1,10)  
+				| The elbow method runs k-means clustering on the dataset 
+				| for a range of values for k (say from 1-10) and then for 
+				| each value of k computes an average score for all clusters.
+
+				| SO from the plot - we pick the number where number is in elbow shape plot  # == 3
+			
+
+
+	EACH MODEL'S TESTING in SUMMARY 
+		
+		- Approach 1: Use train_test_split and manually tune parameters by trial and error
+		- Approach 2: Use K Fold Cross validation
+		- Approach 3: Use GridSearchCV
+		
+		TRAIN & TEST SPLIT 
+			- here we divide the training and ouput data in 80:20 ratio
+			- X_train, X_test, y_train, y_test = train_test_split( input_data, output_data, test_size = 0.2 )
+
+		KFold  CROSS EVALUATION
+		 	METHODS TO TEST THE DATA to predict the model 
+				- OPTION 1 = test and evaluate 100 % of your trained model 
+				- OPTION 2 = split train and test model and evaluate the score then
+				- OPTION 3 = k fold mechanism
+
+			K FOLD  creates number of folds which are like stack 
+			| which divide train into number of paritions like 5 stack calls
+			| here in first case test data would be first parition and
+			| later 4 will be training data , next turn test data is second parition
+			| so each time test data parition is changing to get the BEST PICTURE OVERALL
+
+			- Out of all models which are 
+				linear, logistics, SVM, Decision Tree, 
+				Random forest it checks and shows  which one is best
+
+			Calculate the score using cross validation
+			| - this will automatically check for each parition test data without creating a manual loop 
+			| ## cross_val_score( model_name() , INPUT_X ,  output_y, total_number_of_stacks  )	 ##
+			
+			| from sklearn.model_selection import cross_val_score
+			| cross_val_score(LogisticRegression(solver='liblinear',multi_class='ovr'), digits.data, digits.target,cv=3)
+		
+		HYPER PARAMETER TUNING 
+			- choosing the best model for the query by doing testing on all models at once  
+		
+		GridSearchCV(  model_name,  params, stack_size, return_train_score=False : Optional ) 
+
+		Example:
+			from sklearn import svm
+			from sklearn.linear_model import LogisticRegression
+			from sklearn.ensemble import RandomForestClassifier
+
+			models = {
+				
+				"LogisticRegression":{                            #   model name LogisticRegression
+					"model_name":LogisticRegression(),
+					"params":{
+						'C': [1,5,10]}     },
+				
+				'svm':{
+					"model_name":svm.SVC(gamma='auto'),           #  model name SVM
+					"params": { 
+						"C":[1,10,20],
+						'kernel': ['rbf','linear']  }    },
+				
+				
+				"RandomForestClassifier":{                        #   model name RandomForestClassifier
+					"model_name":RandomForestClassifier(),
+					"params":{
+						'n_estimators': [1,5,10] }   }
+			}
+
+			scores = []
+			for model_name, mp in models.items():
+				clf =  GridSearchCV(
+					mp['model_name'],      # model name with params 
+					mp['params'],          # models params 
+					cv=5,                  # number of stacks
+					return_train_score=False)
+				
+				clf.fit(iris.data, iris.target)  # input , output
+				
+				# Storing results
+				scores.append({
+					'model': model_name,
+					'best_score': clf.best_score_,
+					'best_params': clf.best_params_
+				})
+				
+			# Displaying results
+			df = pd.DataFrame(scores,columns=['model','best_score','best_params'])
+			df
+
+
+			## OUTPUT 
+			0	LogisticRegression	0.980000	{'C': 10}
+			1	svm	0.980000	{'C': 1, 'kernel': 'rbf'}
+			2	RandomForestClassifier	0.966667	{'n_estimators': 1}
+
+
+			Based on above, I can conclude that SVM with C=1 and kernel='rbf' 
+			and  LogisticRegression ()   with c= 10 
+			are the best model for solving my problem of iris flower classification
+    
+
+
+
+
+
+
+
+
+----------------------------NLP------------------------------------------------
+	
+	Q Face any issue downloading module or module not found error persists ?
+	- anaconda terminal >  python -m spacy download en ; pip install spacy ;
+	
+	---------------------PRE-PROCESSING------------------------------------------
+		raw text -> vector of arrays -> naive bayes classifier ( Because of CountVectorizer )  -> Returns Dictionary
+
+		problem here is word meanings could play different role so we use sentence embeddings technique
+
+		so even if sentence in training data is = "Hurry up for an offer to win cash "
+		will be equivalent to sentence in REAL data = "rush for this great deal to win money"
+
+		BERT == google's sentence embeddings
+
+		3 types to solve 
+		rules & heuristics, ML, DL
+
+		- we can use some kind of vectorizer to convert these texts ..
+		TF-IDF  vectorizer converts text to np array
+		> then we use naive base classifier
+
+
+	REAL LIFE SCENERIO 
+		- in aws s3 cloud there are 100s of prescriptions and report data of clients 
+		> we use google's OCR to convert image to text data 
+		> Doc2Vec ( converting text to array - vector ) 
+		> finally logistics regression classification which tells prescription or report data 
+
+		spacy is smart, if we check type of token ie type(doc[0]) == spacy token, 
+		furthermore we can check doc[0].text or .like_num attributes 
+		to get the confirmation of the data_type other attributes
+		are = is_punct, is_currecny, token.i [ index ] 
+
+	EXAMPLE
+		Eg - we read() from file stored in var text  which is doc == nlp(text)
+		for token in doc:
+			if token.is_email:
+				print(token.text)
+		# So it will check and grab all the emails
+
+		Q what if language is in Hindi ?
+
+			nlp = spacy.blank('hi')
+			doc = nlp("इन"")
+			so here we can check on the attributes like is_currency or like_num
+
+		Q So wanna split sentence acc to ur own rules ?
+			
+			doc = nlp('gimme double extra cheese')
+			from spacy. symbols import ORTH
+			nlp.tokenizer.add_special_case("gimme",[
+				{ORTH:'gim'},
+				{ORTH:'me'},	
+			])
+
+		# gimme created 2 token -> gim, me 
+
+		so PIPELINE  is combination of tokenization, steeming, POS and NER
+		- although we can download pre - trained pipeline too
+		python -m spacy download en_core_web_sm
+
+
+		# PRE - DEFAULT PIPELINE LOADED  # 
+		-> 	nlp = spacy.load("en_core_web_sm")  
+
+	Q NLTK VS SPACY 
+		SPACY 
+			- much intelligent tool than nltk where pipline already given,
+			| one needs to just use the methods to access 
+			| so this pipeline includes POS, lemmitization 
+			| and stemming and NER , u dont need to do these steps individually 
+
+			doc = nlp('some text data')
+			for token in doc:
+				print(token,token.pos_, token.lemma_)
+		
+
+			for ent in doc.ents:
+				print(ent.text, ent.label_, spacy.explain(ent.label_))
+
+		NLTK
+			- here pipelines are created manually for stemming, lemmitization and other pre processing
+			import nltk
+			from nltk.stem.snowball import SnowballStemmer
+
+			snowBallStemmer = SnowballStemmer("english")
+
+			sentence = "Provision Maximum multiply owed caring on go gone going was this"
+			wordList = nltk.word_tokenize(sentence)
+
+			stemWords = [snowBallStemmer.stem(word) for word in wordList]
+
+
+	Q add custom token from the  pipeline
+
+		check ur self pipeline by = nlp.pipe_names
+		add specficially a pipeline module
+		nlp = spacy.blank('en')
+		nlp.add_pipe("ner",source = source_nlp)
+		print(nlp.pipe_names)
+
+	Q second way to add custom token  from the pipeline 
+		- assuming u got the package spacy.load("en_core_web_sm")
+		- check pipe_names == print(nlp.pipe_names)
+		ar = nlp.get_pipe('attribute_ruler')
+		ar.add([	{"TEXT":"BRO"}, [{"TEXT":"Brah"}]],
+		"LEMMA":"BROTHER")
+		- so now lemma became brother for tokens bro and brah
+
+	- By default spacy does not support stemming or lemmitization we can use 
+	
+		nltk package for that			 or 
+		use spacy.load("en_core_web_sm")
+		# this gives pre trained pipeline from spacy official docs
+		
+		for token in doc:
+			print(token,token.pos_, token.lemma_)
+
+		Q remove specific pos from text ?
+		- for token in doc:
+			if token.pos_ not in ['SPACE','X',"OTHER"]":
+			print(token, token.pos_)
+		# this will remove ['?','.',' ']
+
+	Q style and display creatively
+		- from spacy import displacy
+
+		displacy.render(doc, style = 'ent')
+		# will display it like bold 
+
+	Q sometimes text cant classify correct entities
+		- so we set them explicitly to make it work
+
+		from spacy.tokens import Span
+		s1 - Span(doc, 0, 1, label="ORG")
+		s2 = Span(doc, 5, 6, label="ORG")
+		doc.set_ents ([s1, s2], default="unmodified")
+		
+		- OR use this site -> https://huggingface.co/dslim/bert-base-NER?text=Michael+Bloomberg+founded+Bloomberg+in+1982
+
+	Q How can you create ur own NER ?  (SEPERATE )
+		- so this hugging face added good patterns to make this pre -trained model perfect 
+		- check docs to see how its done -> https://spacy.io/usage/rule-based-matching
+
+		- Rule base NER - using regex ( like if word in caps, word before proper noun is name  )
+		- simple Lookup where we mention the model to train and summarize all company names as text data 
+
+	STOP WORDS 
+		#import spacy and load the model
+
+		import spacy
+		nlp = spacy.load("en_core_web_sm")
+		
+		Commonly used words in any language. 
+		For example, in English, “the”, “is” and “and”, would easily qualify as stop words
+		Thus, we remove them to make the model better
+
+		from spacy.lang.en.stop_words import STOP_WORDS
+		# Listed all stop words
+		[ print(token) for token in doc if token.is_stop ]
+
+	
+	Word Vectors
+
+		Word2Vec			
+			
+			import spacy 
+			nlp = spacy.load('en_core_web_lg')   # lg supprts vectors , sm doesnt support it
+			doc = nlp("dog cat banana kem")
+			for token in doc:
+				print(token.text, "Vector:", token.has_vector, "OOV:", token.is_oov,
+				token.similarity('bread'))
+				
+				# those vectors are stored in pre defined model like 
+				# in this one , thus it wont detect any new word if it pops up
+				#--> Thus Train your own model 
+				# dog, cat , banana == vector but not for kem word
+
+
+		Gensim Library
+			# All gensim models are listed on this page: 
+			https://github.com/RaRe-Technologies/gensim-data
+
+			wv = api.load('word2vec-google-news-300') 
+			wv.similarity(w1="great", w2="good")
+
+			--> # This is a huge model (~1.6 gb) trained on 2 billion google news articles
+	
+
+		FASTTEXT 
+			= most popular for word embeddings and training models 
+			- train own ner from here 
+			
+			- it does not support vectorization or lemmitization, 
+			- so we use re module to remove it
+			
+			PRE PROCESSING for TranslatedInstructions
+
+				def preprocess(text):
+					text = re.sub(r'[^\w\s\']',' ', text)  # removes punctuations
+					text = re.sub(r'[ \n]+', ' ', text)    # Removes extra space and \n from string
+					return text.strip().lower() 
+
+				preprocess(text)         # removed whitespace or n characters
+
+			Apply changes to all rows
+				df.TranslatedInstructions = df.TranslatedInstructions.map(preprocess)
+			
+
+			- 	whenever you need to train the model u need specific format file
+			- 	where your input data is stores, like stored file in .txt
+			Exported the model as input saved in txt file == also called input file
+				df.to_csv("food_receipes__19.txt", columns=["TranslatedInstructions"], header=None, index=False)
+			
+			Train &  load the model   using the column TranslatedInstructions
+				import fasttext
+				model = fasttext.train_unsupervised("food_receipes.txt") 
+			
+			model.get_nearest_neighbors("paneer")   # from the trained model , lets find similar words
+
+			-	here it takes all words from txt file and returns pair of words matching to it 
+
+
+
+-----------------------JUPYTER NOTEBOOK SHORTCUTS-------------------------------
+	A = INSERT NEW CELL 
+	B = INSERT IT BELOW
+	D = DELETE CELL
+	S = SAVE CHECKPOINT
+
