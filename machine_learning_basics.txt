@@ -82,115 +82,6 @@ SUMMARY
 
 			gradient_descent(x,y)
 
-		SAVE MODEL AND IMPORTING THE MODEL 
-			- After model has been trained, we can save it  using Pickle model or joblib
-			
-			Joblib module
-				|	import joblib
-				|	joblib.dump(model,'model_joblib')     # saving the previous model named as "model_joblib"
-				|	model_= joblib.load("model_joblib")   # Loading the "model_joblib" model 
-			
-			pickle module 
-				|	= is not good with more of np arrays 
-
-				import pickle
-				with open('model_pickle',"wb") as f:
-						pickle.dump(reg,f)
-				with open('model_pickle','rb') as f:
-					model = pickle.load(f)
- 
-		 	Since model is ready, we can load it 
-				|	with open(r'.\models\banglore_home_prices_model.pickle', 'rb') as f:
-				|		__model = pickle.load(f)
-				Now based on any server or python function i can use the __model to predict the data on FastAPI server
-				| 	__model.predict( INPUT, OUTPUT) -> round(artifacts().get('model').predict([x])[0],2)
-				|	__model.predict([x])  ;	  __model.predict([[2,1,0]])      
-
-		TEXT REPRESENTATION 
-
-			Since machines cant understand text and the difference ,
-			so we use convert text to numbers inorder to predict the data 
-			
-			TEXT REPRESENTATION = converting text into vector of numbers 
-			|	= Usually Naive bayes is used for text representation
-
-			LIMITATIONS OF TEXT REPRESENTATION
-				- consumes a lot of memory  == Limitation of text representation
-				- less space , as for each word vector of numbers will be stored
-
-		TYPES OF TEXT REPRESENTATION
-
-			ONE HOT ENCODING 
-				UseCase - Q What if in LinearRegression model column is of string where area name is stored 
-				- previously we were training models where each column was numeric type but here situation is different
-				- using one hot encoding , we can mark bool values for each area, specifying whether that area 
-				|  belongs to that home or not !
-				| = where from the vocabulary of all unique words ,
-				| we create an array for each word , to mark it in a vector array 
-				| shape 0 or 1 -> whether that word was present in vocabulary or not !
-				| == Dummy Variables
-
-			LABEL ENCODING  = here we index for each word from the vocabulary ,
-				| like in txt file , mark index for each word in the string 
-				| == LabelEncoder
-
-			BOW = 	Bag of words 
-				- Here each word is distributted in a vocabulary and from that vocabulary
-				| we count each word as hot encoding, wher n = 1
-
-				# when we do prediction we make training and test data
-				from sklearn.model_selection import train_test_split
-
-				X_train, X_test, Y_train, Y_test = train_test_split(message_body, spam, test_size =0.2)
-				# we check the messages column having spam column as 1 cause we applied function - (lambda x: 1 if x --'spam' else 0)
-
-				from sklearn.feature_extraction.text import CountVectorizer
-
-				v = CountVectorizer()    # VOCALBULARY CREATED FROM X_train.values which is just the body of 100s of emails or raw data
-
-				X_train_cv = v.fit_transform(X_train.values)
-				print(X_train_cv.toarray()[:2][0])
-				# this will mark 0 or 1 for each token from the vocabulary list for each email 
-
-				Q How to get all the words created in the dictionary ?
-				- v.get_feature_names_out()[10:30]
-
-				BOW (2,3) = BAG OF n WORDS 
-					- here words are combined "n" times - to make it more predictable 
-					
-					bi-gram		= From sentence  word is combined is in double set , n == 2
-					|	Example :=  "Thor eat", "eat pizza", "loki tall", "loki eat"
-
-					tri-gram	= From sentence is combined is in triple set , n == 3
-					|	Example :=  "Thor eat pizza ", "eat pizza loki ", "loki tall eat", "loki eat"
-
-				|  so we combine all grams , to make model more predictable 
-
-			TF-IDF  => weighting system that assigns a weight to 
-				each word in a document based on its term frequency (tf) 
-				and the reciprocal document frequency (tf) (idf). 
-				The words with higher scores of weight are deemed 
-				to be more significant.
-
-				- We use Log in the formual because it makes it in binary range float point
-				| such that if word appears 1 million time , it should give adequate output 
-				
-				TF = Term frequency = number of times particular word (t) came in single doc 
-				|  formula ==  word/total_words_in_doc
-				| like market word came 48 times in a sentence having 100 words == 0.48 |
-
-
-				IDF = document frequency - number of times t(actual word) is present in all docs(inputs or each list)
-				|	lower times the word appears in Doc , Higher the weight of the word
-				|   formula ==  log(total_docs/word_frequency_in_each_doc) 				|
-				|   so word "that" came in 3 docs out of 4 so weight == 4/3 == 1.33 for word "that"  |
-
-				So TF * IDF == weight assigned for the word 
-
-			WORD EMBEDDINGS 
-				= It helps to capture word realtionship with words inorder to relate to them 
-
-
     | 				 CODING 			 |
 	
 	- Read csv file using Pandas -> 
@@ -301,39 +192,40 @@ SUMMARY
 		
 		= TEXT REPRESENTATION
 			
-			= ML ~ Text to numeric mapping using dummy variables dummies |  LabelEncoder  | MAP |
+			= If using ML Approach ~ Text to numeric mapping using dummy variables dummies |  LabelEncoder  | MAP |
 				
-				# --> Additional columns created for each catgory marking 0 or 1 
-				# --> though arrises problem of Dummy trap variable for the model 
-				dummies = pd.get_dummies(df['Car Model'])        
-				merged = pd.concat([df,dummies],axis='columns')
-				# Then we remove the car model "key", because we got the binaries for each model
-				final = merged.drop(['Car Model'], axis='columns')
-				# Finally we remove one of the column inorder to avoid Dummy trap Variable
-				final = final.drop(['BMW'], axis='columns')			
-				____________________________________________
+				ONE HOT ENCODING
+					# --> Additional columns created for each catgory marking 0 or 1 
+					# --> though arrises problem of Dummy trap variable for the model 
+					dummies = pd.get_dummies(df['Car Model'])        
+					merged = pd.concat([df,dummies],axis='columns')
+					# Then we remove the car model "key", because we got the binaries for each model
+					final = merged.drop(['Car Model'], axis='columns')
+					# Finally we remove one of the column inorder to avoid Dummy trap Variable
+					final = final.drop(['BMW'], axis='columns')			
+					____________________________________________
 				
-				
-				# -->  will mark numeric number for each category
-				from sklearn.preprocessing import LabelEncoder     
-				le = LabelEncoder()
-				df['Car Model'] = le.fit_transform(df['Car Model']) 
-				____________________________________________
+				LABLE ENCODER
+					# -->  will mark numeric number for each category
+					from sklearn.preprocessing import LabelEncoder     
+					le = LabelEncoder()
+					df['Car Model'] = le.fit_transform(df['Car Model']) 
+					____________________________________________
 
 
-				# Numeric mapping to Emotion column   
-				# can use Label encoder too, but it gives random value,
-				# here we assign number 
-				df['Emotion_number'] = df.Emotion.map({
-					"anger":0,
-					"joy":1,
-					"fear":2    })
-				____________________________________________
+					# Numeric mapping to Emotion column   
+					# can use Label encoder too, but it gives random value,
+					# here we assign number 
+					df['Emotion_number'] = df.Emotion.map({
+						"anger":0,
+						"joy":1,
+						"fear":2    })
+					____________________________________________
 
-			= NLP ~ Convert string columns to VECTORS using ->  (w2n, CountVectorizer, TfidfVectorizer   ) ,
+			= If using NLP Approach ~ Convert string columns to VECTORS using ->  (w2n, CountVectorizer, TfidfVectorizer   ) ,
 
-				Building	~ CountVectorizer and TfidfVectorizer  - methods of Conversion
-				Testing 	~ cosine_similarity & sklearn pipeline - way to TEST the model
+				Building	~ CountVectorizer and TfidfVectorizer (TF-IDF)  - methods of Conversion of text to Number 
+				Testing 	~ cosine_similarity & sklearn pipeline - way to TEST the model 
 
 				Building The Model
 
@@ -382,45 +274,7 @@ SUMMARY
 						------------------------------------------------------------------------------------------
 
 				Testing Model
-
-					cosine_similarity =>  checks the angle between number of vectors 
-
-							- so we use cosine_similarity to predict the Nearest neighbors of angles of angels to predict the OUTPUT 
-
-							from sklearn.feature_extraction import text
-							from sklearn.metrics.pairwise import cosine_similarity		
-							
-						|-----------------------------------------------------------------------------------------------------------------------------|
-						|																															  |
-						| articles = data["Article"].tolist()												# Input made from list of strings 		  |		 																			  |
-						| tfidf = text.TfidfVectorizer(input = articles, stop_words="english")  		    # returns Dictionary					  |
-						|																															  |
-						| matrix = tfidf.fit_transform(articles)					 # CONVERSION DONE   -> 	from tags column 					  |
-						| sim = cosine_similarity(matrix)							  # checking similar words  									  |	
-						| vector.toarray()                             				  # Vector ( numpy array ) created from tags column				  |
-						| cv.get_feature_names()                     				  # List of all words presented in the array to be HOT ENCODED	  |
-						| def recommend_articles(x):																								  |	
-						|		return ", ".join(data["Title"].loc[x.argsort()[–5:–1]])    															  |
-						| data["Recommended Articles"] = [recommend_articles(x) for x in sim]														  |
-						| data.head()																												  |	
-						|-----------------------------------------------------------------------------------------------------------------------------|							
-
-						|------------------------------------------------------------------------------------------------------------------------------|
-						|	from sklearn.feature_extraction.text import CountVectorizer 															   |
-						|	cv = CountVectorizer(max_features=5000,stop_words='english')                                                               |
-						|																															   |	
-						|	vector = cv.fit_transform(new['tags']).toarray()																		   |
-						|	from sklearn.metrics.pairwise import cosine_similarity																	   |
-						|	similarity = cosine_similarity(vector)                                                                                     |
-						|	new[new['title'] == 'The Lego Movie'].index[0]                                                                             |
-						|	def recommend(movie):                                                                                                      |
-						|		index = new[new['title'] == movie].index[0]                                                                            | 
-						|		distances = sorted(list(enumerate(similarity[index])),reverse=True,key = lambda x: x[1])							   |
-						|		for i in distances[1:6]:                                                                                               |
-						|			print(new.iloc[i[0]].title)                                                                                        |
-						|	recommend('Gandhi')                                                                                                        |
-						|------------------------------------------------------------------------------------------------------------------------------|
-
+				
 
 					Sklearn Pipeline   =>   dont need to tranform the "sample data" 
 											as compared with CountVectorizer or TfidfVectorizer
@@ -463,8 +317,58 @@ SUMMARY
 
 						#4. print the classfication report
 						print(classification_report(y_test, y_pred))
+					
+					cosine_similarity => 
 
-				LOOP Created to check BOTH vectorizer with all models 
+							Let’s say you have two documents. The best way to check whether both documents 
+							are similar or not is to find the cosine similarity between each document. 
+							Its value is between  -1 and 1. If the value is 1 or close to 1 then both 
+							documents are the same and if it is close to -1 then documents are not the same.
+
+							[ We can call cosine_similarity() by passing both vectors. 
+							[ It will calculate the cosine similarity between these two. It will be a value between [0,1]. 
+							[ If it is 0 then both vectors are completely different. But in the place of that, if it is 1, 
+							[ It will be completely similar. 
+							[ So we use cosine_similarity to predict the Nearest neighbors of angles of angels to predict the OUTPUT 
+
+						!--- using TfidfVectorizer  model to build the model  --!
+
+						from sklearn.feature_extraction import text
+						from sklearn.metrics.pairwise import cosine_similarity		
+			
+						|-----------------------------------------------------------------------------------------------------------------------------|
+						|																															  |
+						| articles = data["Article"].tolist()										# Input made from list of strings 				  |		 																			  |
+						| tfidf = text.TfidfVectorizer(input = articles, stop_words="english")  	# returns Dictionaryby removing stop words 		  |			  |
+						|																															  |
+						| matrix = tfidf.fit_transform(articles)					  # CONVERSION DONE   -> 	from tags column 					  |
+						| sim = cosine_similarity(matrix)							  # checking similar words  									  |	
+						| vector.toarray()                             				  # Vector ( numpy array ) created from tags column				  |
+						| cv.get_feature_names()                     				  # List of all words presented in the array to be HOT ENCODED	  |
+						| def recommend_articles(x):																								  |	
+						|		return ", ".join(data["Title"].loc[x.argsort()[–5:–1]])    															  |
+						| data["Recommended Articles"] = [recommend_articles(x) for x in sim]														  |
+						| data.head()																												  |	
+						|-----------------------------------------------------------------------------------------------------------------------------|							
+						
+						!--- using CountVectorizer  model to build the model  --!
+						|-----------------------------------------------------------------------------------------------------------------------------|
+						|	from sklearn.feature_extraction.text import CountVectorizer 															  |
+						|	cv = CountVectorizer(max_features=5000,stop_words='english')                                                              |
+						|																														      |	
+						|	vector = cv.fit_transform(new['tags']).toarray()																	      |
+						|	from sklearn.metrics.pairwise import cosine_similarity																	  |
+						|	similarity = cosine_similarity(vector)                                                                                    |
+						|	new[new['title'] == 'The Lego Movie'].index[0]                                                                            |
+						|	def recommend(movie):                                                                                                     |
+						|		index = new[new['title'] == movie].index[0]                                                                           | 
+						|		distances = sorted(list(enumerate(similarity[index])),reverse=True,key = lambda x: x[1])							  |
+						|		for i in distances[1:6]:                                                                                              |
+						|			print(new.iloc[i[0]].title)                                                                                       |
+						|	recommend('Gandhi')                                                                                                       |
+						|-----------------------------------------------------------------------------------------------------------------------------|
+
+				Loop Created to check BOTH vectorizer with all models 
 					- just like GridSearchCV. we loop all models and vectorizers to get count 
 
 						from sklearn.model_selection import train_test_split
@@ -498,7 +402,7 @@ SUMMARY
 						clf.fit(X_train, y_train)
 						print(f'clf score for model {model()} and vectorizer {each_vectorizers()} is \n',clf.score(X_test,y_test),'\n')
 				
-				word embeddings
+				Word Embeddings
 
 					
 					en_core_web_lg == this model is trained on google articles 
