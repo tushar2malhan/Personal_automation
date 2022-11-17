@@ -352,21 +352,41 @@ SUMMARY
 						|-----------------------------------------------------------------------------------------------------------------------------|							
 						
 						!--- using CountVectorizer  model to build the model  --!
-						|-----------------------------------------------------------------------------------------------------------------------------|
-						|	from sklearn.feature_extraction.text import CountVectorizer 															  |
-						|	cv = CountVectorizer(max_features=5000,stop_words='english')                                                              |
-						|																														      |	
-						|	vector = cv.fit_transform(new['tags']).toarray()																	      |
-						|	from sklearn.metrics.pairwise import cosine_similarity																	  |
-						|	similarity = cosine_similarity(vector)                                                                                    |
-						|	new[new['title'] == 'The Lego Movie'].index[0]                                                                            |
-						|	def recommend(movie):                                                                                                     |
-						|		index = new[new['title'] == movie].index[0]                                                                           | 
-						|		distances = sorted(list(enumerate(similarity[index])),reverse=True,key = lambda x: x[1])							  |
-						|		for i in distances[1:6]:                                                                                              |
-						|			print(new.iloc[i[0]].title)                                                                                       |
-						|	recommend('Gandhi')                                                                                                       |
-						|-----------------------------------------------------------------------------------------------------------------------------|
+							
+							from sklearn.feature_extraction.text import CountVectorizer
+							cv = CountVectorizer(max_features=5000,stop_words='english')
+								
+							vector = cv.fit_transform(new['tags']).toarray()  # Tags column converted into array 
+
+							# vector                                    	  #  tags column converted into numpy array 
+
+							from sklearn.metrics.pairwise import cosine_similarity
+							similarity = cosine_similarity(vector)    		  # we check similarity of each vectory or array with each other 
+
+							similarity[0]  # (Avatar movie[0]) this will be an array showing similarity between 0 to 1 for each movie or tag
+								# here each movie is stored as per index of similarity rows
+
+								# list(enumerate(similarity[index]))  			  # since similarity are all the movies ,we give index to each movie manually
+								# now we use sorted -> sorted(list(enumerate(similarity[index])),reverse=True,key = lambda x: x[1]) 
+								# so that we get similar movies based on max similarity score 
+								# since all scores of movie[0] will be fetched out from list of all other movies( ie tags )
+
+							# EXAMPLE 
+								# new[new['title'] == 'The Lego Movie']
+								# new[new['movie_id'] == 12]
+								# new.iloc  										 # index position of each movie in the array
+							
+							def recommend(movie):
+								index = new[new['title'] == movie].index[0]
+								distances = sorted(list(enumerate(similarity[index])),reverse=True,key = lambda x: x[1])
+								for i in distances[1:6]:
+									print(new.iloc[i[0]].title)   # print the title 
+
+							recommend('Gandhi')  
+							
+							# Got the Recommended movies based on similarity score from similarity
+						
+
 
 				Loop Created to check BOTH vectorizer with all models 
 					- just like GridSearchCV. we loop all models and vectorizers to get count 
@@ -776,7 +796,24 @@ SUMMARY
 		plt.show()
 
 	- Save the model, Load the Model 
-	= using pickle or joblib -> import joblib; joblib.dump(model,'model_name'); model_= joblib.load("model_joblib")
+	= using pickle  -> 
+		
+		import pickle
+		with open('model_pickle',"wb") as f:
+			pickle.dump(model_name,f)					# Save 
+
+		with open('model_pickle','rb') as f:
+			model = pickle.load(f)						# Load
+
+		model.predict([[2,10,10]])						# predict 
+
+	= using joblib -> 
+		import joblib
+		joblib.dump(new,'similar_movies.pkl')   		# new == model_name
+	
+	  	import joblib
+		model_= joblib.load("similar_movies.pkl")	    # Load the model
+		print(pd.DataFrame(model_))
 
 	UNSUPERVISED MODEL
 		In UNSUPERVISED - target is not given ie Output y , from the given inputs 
