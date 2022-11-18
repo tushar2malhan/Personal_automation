@@ -89,16 +89,36 @@ SUMMARY
 
 	- Pre-processing 
 
-		= CHECK ALL COLUMNS WHICH ARE NULL 
+		= Check which columns are Null 
 			
 			df.isnull().sum()
 		
-		= fill null values by taking mean  = df.Cabin.mean()   or    df.Cabin.median()   --> df.Age = df.Age.fillna(df.Age.mean(), inplace = True)
+		= Fill null values by taking mean  = df.Cabin.mean()   or    df.Cabin.median()   --> df.Age = df.Age.fillna(df.Age.mean(), inplace = True)
 		    
-			df.authors.fillna('no author', inplace = True)
+			# Replace Particular Column null values 
+				df.authors.fillna('no author', inplace = True)  
 
-			df.fillna('none',inplace=True)    # REPLACE ALL VALUES AT ONCE 
+			# REPLACE ALL VALUES AT ONCE 
+				df.fillna('none',inplace=True) 
+
+			# DROP NULL values 
+				
+				df.dropna(inplace=True)   
 		
+		= Get the info for each column in DataFrame
+			
+			df.info()
+
+			# df.describe()		- to check the values difference between columns 
+		
+		= Duplicated items in df 
+
+			df.duplicated()		- on complete df 
+
+			df.duplicated(subset=['Survived', 'Pclass', 'Sex'])   - on specific columns
+
+			df.value_counts()	- group by 
+
 	 	= UnderSampling
 			- A simple technique of undersampling.
 			where each word catgory is assigned equal value 
@@ -186,10 +206,10 @@ SUMMARY
 				X_scaled = scaler.fit_transform(X)    # X == Input 
 				X_scaled[:3] 
 			
-		= get the satisfaction level for all employees who left or not
+		= Get the satisfaction level for all employees who left or not
 		 	
 			df.groupby('left').mean()         
-		
+
 		= TEXT REPRESENTATION
 			
 			= If using ML Approach ~ Text to numeric mapping using dummy variables dummies |  LabelEncoder  | MAP |
@@ -224,40 +244,37 @@ SUMMARY
 
 			= If using NLP Approach ~ Convert string columns to VECTORS using ->  (w2n, CountVectorizer, TfidfVectorizer   ) ,
 
-				Building	~ CountVectorizer and TfidfVectorizer (TF-IDF)  - methods of Conversion of text to Number 
-				Testing 	~ cosine_similarity & sklearn pipeline - way to TEST the model 
-
-				Building The Model
+				Building vocabulary	~ CountVectorizer and TfidfVectorizer (TF-IDF)  - methods of Conversion of text to Number 
 
 					CountVectorizer == BAG OF WORDS   =>   mark 0, 1 for every word from string of input value given 
-					| when vectors are marked from the bag of words -> it displays it to the graph and shows the Nearest neighbors |
-						
-						from sklearn.feature_extraction.text import CountVectorizer
-						
-						X_train_dictionary = CountVectorizer()   
-						
-						X_train_count = X_train_dictionary.fit_transform(X_train.values)  # Conversion Done   -> from input value X_train.values == all emails 
-						X_train_count.toarray()[:2]                      				  # Numeric array mapping unique words with dictionary 
-						
-						X_train_dictionary.get_feature_names()           	 			  # List of  unique words
+						| when vectors are marked from the bag of words -> it displays it to the graph and shows the Nearest neighbors |
+							
+							from sklearn.feature_extraction.text import CountVectorizer
+							
+							X_train_dictionary = CountVectorizer()   
+							
+							X_train_count = X_train_dictionary.fit_transform(X_train.values)  # Conversion Done   -> from input value X_train.values == all emails 
+							X_train_count.toarray()[:2]                      				  # Numeric array mapping unique words with dictionary 
+							
+							X_train_dictionary.get_feature_names()           	 			  # List of  unique words
 
 
-					|------------------------------------------------------------------------------------------------------------------------------|
-					| cv = CountVectorizer(max_features=5000,stop_words='english') # Features limited and stopped words implemented 				  |
-					| vector = cv.fit_transform(new['tags'])      				  # CONVERSION DONE   -> 	from tags column 					  |
-					| vector.toarray()                             				  # Vector ( numpy array ) created from tags column				  |
-					| cv.get_feature_names()                     				  # List of all words presented in the array to be HOT ENCODED	  |
-					|------------------------------------------------------------------------------------------------------------------------------|
+						|------------------------------------------------------------------------------------------------------------------------------|
+						| cv = CountVectorizer(max_features=5000,stop_words='english') # Features limited and stopped words implemented 				  |
+						| vector = cv.fit_transform(new['tags'])      				  # CONVERSION DONE   -> 	from tags column 					  |
+						| vector.toarray()                             				  # Vector ( numpy array ) created from tags column				  |
+						| cv.get_feature_names()                     				  # List of all words presented in the array to be HOT ENCODED	  |
+						|------------------------------------------------------------------------------------------------------------------------------|
 
 
-						
-						from sklearn.naive_bayes import MultinomialNB    	 # Choosing Model -> Naive Bayes 
-						model = MultinomialNB()			
-						model.fit(X_train_count, y_train)                	 # Since email body text in string cant be understood , we created numpy array
-						emails_count = X_train_dictionary.transform(emails)  # emails == input data
-						
-						
-						model.predict(emails_count)       					 # 			PREDICTED CORRECT OUTPUT  -> 		returns array if its spam or not !		 
+							
+							from sklearn.naive_bayes import MultinomialNB    	 # Choosing Model -> Naive Bayes 
+							model = MultinomialNB()			
+							model.fit(X_train_count, y_train)                	 # Since email body text in string cant be understood , we created numpy array
+							emails_count = X_train_dictionary.transform(emails)  # emails == input data
+							
+							
+							model.predict(emails_count)       					 # 			PREDICTED CORRECT OUTPUT  -> 		returns array if its spam or not !		 
 					
 					TF-IDF  => 		returns the Dictionary with weight of words assigned to each word in doc 
 									here it directly fits and train the model |
@@ -273,52 +290,89 @@ SUMMARY
 
 						------------------------------------------------------------------------------------------
 
-				Testing Model
-				
-
-					Sklearn Pipeline   =>   dont need to tranform the "sample data" 
-											as compared with CountVectorizer or TfidfVectorizer
-
-											Pipeline([
-												()     --> vectorizer
-												()     --> model name
-											])
-
-						-------------------------------------
-						from sklearn.pipeline import Pipeline
-						from sklearn.naive_bayes import MultinomialNB
-						
-						clf = Pipeline([
-							('vectorizer', CountVectorizer()),		 # --> vectorizer
-							('nb', MultinomialNB())					 # --> model name
-						])
-						
-						clf.fit(X_train, y_train)
-						clf.score(X_test,y_test)					 # --> Cross check the score
-						# get the predictions for X_test and store it in y_pred
-						y_pred = clf.predict(X_test)
-
-
-						--------------------------------------
-						from sklearn.pipeline import Pipeline
-						from sklearn.feature_extraction.text import TfidfVectorizer
-						from sklearn.neighbors import KNeighborsClassifier
-
-						clf = Pipeline([
-							('vectorizer', TfidfVectorizer()),		 # --> vectorizer
-							('KNN', KNeighborsClassifier())			 # --> model name
-						])
-						clf.fit(X_train, y_train)
-						clf.score(X_test,y_test)
-
-						# get the predictions for X_test and store it in y_pred
-						y_pred = clf.predict(X_test)
-
-
-						#4. print the classfication report
-						print(classification_report(y_test, y_pred))
+				sklearn pipeline  ~ ITS FOR MAKING PREDICTIONS WITH INPUT AND OUPUT  way to TEST the model 
 					
-					cosine_similarity => 
+					Sklearn Pipeline   =>  ITS FOR MAKING PREDICTIONS WITH INPUT AND OUPUT 
+					 
+					 	dont need to tranform the "sample data" 
+						as compared with CountVectorizer or TfidfVectorizer
+						as compared with cosine_similarity
+
+												Pipeline([
+													()     --> vectorizer
+													()     --> model name
+												])
+
+							-------------------------------------
+							from sklearn.pipeline import Pipeline
+							from sklearn.naive_bayes import MultinomialNB
+							
+							clf = Pipeline([
+								('vectorizer', CountVectorizer()),		 # --> vectorizer
+								('nb', MultinomialNB())					 # --> model name
+							])
+							
+							clf.fit(X_train, y_train)
+							clf.score(X_test,y_test)					 # --> Cross check the score
+							# get the predictions for X_test and store it in y_pred
+							y_pred = clf.predict(X_test)
+
+
+							--------------------------------------
+							from sklearn.pipeline import Pipeline
+							from sklearn.feature_extraction.text import TfidfVectorizer
+							from sklearn.neighbors import KNeighborsClassifier
+
+							clf = Pipeline([
+								('vectorizer', TfidfVectorizer()),		 # --> vectorizer
+								('KNN', KNeighborsClassifier())			 # --> model name
+							])
+							clf.fit(X_train, y_train)
+							clf.score(X_test,y_test)
+
+							# get the predictions for X_test and store it in y_pred
+							y_pred = clf.predict(X_test)
+
+
+							#4. print the classfication report
+							print(classification_report(y_test, y_pred))
+
+
+						SKLEARN Loop Created to check BOTH vectorizer with all models 
+							- just like GridSearchCV. we loop all models and vectorizers to get count 
+
+								from sklearn.model_selection import train_test_split
+
+								X_train, X_test, y_train, y_test = train_test_split(
+									df.Comment,
+									df.Emotion,
+									test_size=0.2,
+									stratify=df.Emotion_number,
+									random_state=2022
+								)
+								# X_train.shape, X_test.shape, 
+
+								from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+								from sklearn.pipeline import Pipeline
+								from sklearn.ensemble import RandomForestClassifier
+								from sklearn.metrics import classification_report
+								from sklearn.naive_bayes import MultinomialNB
+								
+								# Using Pipeline to Train the data 
+								vectorizers = [TfidfVectorizer, CountVectorizer]
+								models = [RandomForestClassifier, MultinomialNB ]
+
+								for each_vectorizers in vectorizers:
+									for model in models:
+										clf = Pipeline([
+											('each_vectorizers name', each_vectorizers() ),
+											('model name', model())
+										])
+										
+								clf.fit(X_train, y_train)
+								print(f'clf score for model {model()} and vectorizer {each_vectorizers()} is \n',clf.score(X_test,y_test),'\n')
+											
+				cosine_similarity => 
 
 							Let’s say you have two documents. The best way to check whether both documents 
 							are similar or not is to find the cosine similarity between each document. 
@@ -333,26 +387,50 @@ SUMMARY
 
 						!--- using TfidfVectorizer  model to build the model  --!
 
-						from sklearn.feature_extraction import text
-						from sklearn.metrics.pairwise import cosine_similarity		
-			
 						|-----------------------------------------------------------------------------------------------------------------------------|
-						|																															  |
-						| articles = data["Article"].tolist()										# Input made from list of strings 				  |		 																			  |
-						| tfidf = text.TfidfVectorizer(input = articles, stop_words="english")  	# returns Dictionaryby removing stop words 		  |			  |
-						|																															  |
-						| matrix = tfidf.fit_transform(articles)					  # CONVERSION DONE   -> 	from tags column 					  |
-						| sim = cosine_similarity(matrix)							  # checking similar words  									  |	
-						| vector.toarray()                             				  # Vector ( numpy array ) created from tags column				  |
-						| cv.get_feature_names()                     				  # List of all words presented in the array to be HOT ENCODED	  |
-						| def recommend_articles(x):																								  |	
-						|		return ", ".join(data["Title"].loc[x.argsort()[–5:–1]])    															  |
-						| data["Recommended Articles"] = [recommend_articles(x) for x in sim]														  |
-						| data.head()																												  |	
-						|-----------------------------------------------------------------------------------------------------------------------------|							
+																																					  
+							from sklearn.feature_extraction.text import TfidfVectorizer
+							from sklearn.metrics.pairwise import cosine_similarity
+
+							articles = df["tags"].tolist()
+							uni_tfidf = TfidfVectorizer(input=articles, stop_words="english")
+							uni_matrix = uni_tfidf.fit_transform(articles)
+							similarity = cosine_similarity(uni_matrix)
+
+							similarity[0]          # shows similarity of 1 article (COVID article) with each article in the list  
+
+							# distances = sorted(list(enumerate(similarity[0])),reverse=True,key = lambda x: x[1])
+
+							# for i in distances[1:6]:
+							#         similarity for article ->
+							# COVID-19 infection in pregnancy: a Spanish perspective of spontaneous and in vitro fertilization pregnancies == 1 article
+							#         print(df.iloc[i[0]].title)  
+
+
+							def recommend_articles(article):
+								index = df[df['title'] == article].index[0] 
+								distances = sorted(list(enumerate(uni_sim[index])),reverse=True,key = lambda x: x[1])
+								recommended_articles = ''
+								for i in distances[1:6]:
+									recommended_articles += df.iloc[i[0]].title +','
+							        # print(df.iloc[i[0]].title)  							#  Prints the title 
+								return recommended_articles
+							recommend_articles(df.title[0])     							# got the top 5 recommended articles 
+
+							df["Recommended Articles"] = [recommend_articles(x) for x in df.title]
+
+							[	# if issue comes like -> IndexError: index 0 is out of bounds for axis 0 with size 0
+								# its because your input of title is incorrect, check and give correct input to recommend_article function
+								# recommend_articles(df.title[0])
+								# recommend_articles('COVID-19')   X		
+							]	
+						|-----------------------------------------------------------------------------------------------------------------------------|
+
+
 						
 						!--- using CountVectorizer  model to build the model  --!
-							
+						|-----------------------------------------------------------------------------------------------------------------------------|
+	
 							from sklearn.feature_extraction.text import CountVectorizer
 							cv = CountVectorizer(max_features=5000,stop_words='english')
 								
@@ -385,44 +463,9 @@ SUMMARY
 							recommend('Gandhi')  
 							
 							# Got the Recommended movies based on similarity score from similarity
+						|-----------------------------------------------------------------------------------------------------------------------------|
 						
-
-
-				Loop Created to check BOTH vectorizer with all models 
-					- just like GridSearchCV. we loop all models and vectorizers to get count 
-
-						from sklearn.model_selection import train_test_split
-
-						X_train, X_test, y_train, y_test = train_test_split(
-							df.Comment,
-							df.Emotion,
-							test_size=0.2,
-							stratify=df.Emotion_number,
-							random_state=2022
-						)
-						# X_train.shape, X_test.shape, 
-
-						from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-						from sklearn.pipeline import Pipeline
-						from sklearn.ensemble import RandomForestClassifier
-						from sklearn.metrics import classification_report
-						from sklearn.naive_bayes import MultinomialNB
-						
-						# Using Pipeline to Train the data 
-						vectorizers = [TfidfVectorizer, CountVectorizer]
-						models = [RandomForestClassifier, MultinomialNB ]
-
-						for each_vectorizers in vectorizers:
-							for model in models:
-								clf = Pipeline([
-									('each_vectorizers name', each_vectorizers() ),
-									('model name', model())
-								])
-								
-						clf.fit(X_train, y_train)
-						print(f'clf score for model {model()} and vectorizer {each_vectorizers()} is \n',clf.score(X_test,y_test),'\n')
-				
-				Word Embeddings
+				Word Embeddings Used in NLP
 
 					
 					en_core_web_lg == this model is trained on google articles 
@@ -796,18 +839,19 @@ SUMMARY
 		plt.show()
 
 	- Save the model, Load the Model 
-	= using pickle  -> 
 		
-		import pickle
-		with open('model_pickle',"wb") as f:
-			pickle.dump(model_name,f)					# Save 
+		= using pickle  -> 
+			
+			import pickle
+			with open('model_pickle',"wb") as f:
+				pickle.dump(model_name,f)					# Save 
 
-		with open('model_pickle','rb') as f:
-			model = pickle.load(f)						# Load
+			with open('model_pickle','rb') as f:
+				model = pickle.load(f)						# Load
 
-		model.predict([[2,10,10]])						# predict 
+			model.predict([[2,10,10]])						# predict 
 
-	= using joblib -> 
+		= using joblib -> 
 		import joblib
 		joblib.dump(new,'similar_movies.pkl')   		# new == model_name
 	
