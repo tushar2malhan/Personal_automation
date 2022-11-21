@@ -96,11 +96,12 @@ def count_total_from_nested_list(arr):
     total=0
     for i in arr:
         if type(i) == list:
-            print(count_total_from_nested_list(i)) # We give the function with parameter as a list 
-            total +=count_total_from_nested_list(i) #  i Becomes  arr so , it will go to loop and get added in total
+            # We give the function with parameter as a list 
+            # print(count_total_from_nested_list(i))  
+            #  i == arr so , it will go to loop and get added in total
+            total +=count_total_from_nested_list(i) 
         else:
             total +=i
-   
     return total
 
 # count_total_from_nested_list(nested_list)

@@ -1,0 +1,20 @@
+version: '3'
+services:
+    app1:
+      build: ./app1
+      ports:
+        - "5001:5000"
+
+    app2:
+      build: ./app2
+      ports:
+        - "5002:5000"
+
+    nginx:
+      build: ./nginx
+      ports:
+        - "8080:80"     # By default: Nginx listen on port 80
+      links:
+        - app1
+        - app2
+      restart: always   # If the container is stopped, it will be restarted

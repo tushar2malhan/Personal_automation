@@ -1,0 +1,106 @@
+forward proxy => sits infront of web server for bunch of users to communicate with the web server 
+( ACT AS BEHALF OF CLIENT )- VPN, globalProtectVPN, Zscaler
+- inorder to hide their IPv4 public address , making  them ananoymous
+- blocks access to certain content 
+- activity logging
+- increases speed and bandwith by using cache data
+
+
+
+Reverse Proxy => works for the web server and clients communicate with reverse proxy and not actual web server
+( ACT AS BEHALF OF SERVER ) - NGINX, traefik
+- protect the website - by hiding public ipv4 address
+- Load balancing among web servers HPA
+- caching content , saves bandwith
+- handling ssl handshakes
+
+
+server {
+    listen 127.0.0.1:8080;
+    # Additional server configuration
+    # nginx handles localhsot on Port 8080 
+}
+
+
+EXAMPLE 
+
+Create a new file called -> nginx.default. 
+
+    This will be our configuration for nginx. 
+    We’ll listen on port 8020, serve the static 
+    files from the /opt/app/martor_demo/static
+    directory and forward the rest of connections
+    to port 8010, where Gunicorn will be listening:
+
+# nginx.default
+
+    server {
+        listen 8020;
+        server_name example.org;
+
+        location / {
+            proxy_pass http://127.0.0.1:8010;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+        location /static {
+            root /opt/app/martor_demo;
+        }
+    }
+
+Load balancing:
+
+        nginx.conf file 
+        
+            http {
+                
+                upstream loadbalancer {
+                    # 1. Round Robin (default) where we assign weights to each server
+                    least_conn;  # 2. Least Connections :
+                    #                   In this method requests will be redirected to server 
+                    #                   with least active connections. As we are making 
+                    #                   our requests simultaneously, it will has the same 
+                    #                   results with round robin.
+                    server 172.17.0.1:5001 weight=6;
+                    server 172.17.0.1:5002 weight=4;
+                    }
+                    
+                    
+                server {
+                    
+                    # By default, listen for HTTP traffic on port 80
+                    # Running port
+
+                    location / {
+                    proxy_pass http://loadbalancer;
+                    }
+                }
+
+            }
+
+            events {
+                worker_connections  1000;
+            }
+
+        docker compose file 
+
+            version: '3'
+            services:
+                app1:
+                build: ./app1
+                ports:
+                    - "5001:5000"
+
+                app2:
+                build: ./app2
+                ports:
+                    - "5002:5000"
+
+                nginx:
+                build: ./nginx
+                ports:
+                    - "8080:80"     # By default: Nginx listen on port 80
+                links:
+                    - app1
+                    - app2
+                restart: always   # If the container is stopped, it will be restarted

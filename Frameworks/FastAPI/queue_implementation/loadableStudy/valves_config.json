@@ -1,0 +1,156 @@
+{
+  "loading": {
+    "initialCondition": {},
+    "openSingleTank": {
+      "startOfLoading": {
+        "valveSeqCount": -1,
+        "valveSeqInterval": -1
+      }
+    },
+    "initialRate": {},
+    "openAllTanks": {
+      "fullLoadingRate": {
+        "valveSeqCount": -1,
+        "valveSeqInterval": -1
+      }
+    },
+    "increaseToMaxRate": {},
+    "loadingAtMaxRate": {},
+    "topping": {
+      "shuttingSequence": {
+        "valveSeqCount": 1,
+        "valveSeqInterval": 1
+      }
+    }
+  },
+  "deballasting": {
+    "gravity": {
+      "initialCondition": {},
+      "openSingleTank": {
+        "startOfDeballasingByGravity": {
+          "valveSeqCount": -1,
+          "valveSeqInterval": -1
+        }
+      },
+      "initialRate": {},
+      "openAllTanks": {},
+      "increaseToMaxRate": {},
+      "loadingAtMaxRate": {
+        "floodingTheBallastPump": {
+          "valveSeqCount": -1,
+          "valveSeqInterval": -1
+        },
+        "debalastingByPumpAfterGravity": {
+          "valveSeqCount": -1,
+          "valveSeqInterval": -1
+        },
+        "seaToSea": {
+          "valveSeqCount": -1,
+          "valveSeqInterval": -1
+        },
+        "strippingByEductor": {
+          "valveSeqCount": -1,
+          "valveSeqInterval": -1
+        },
+        "seaTosea": {
+          "valveSeqCount": -1,
+          "valveSeqInterval": -1
+        },
+        "shuttingSequence":{
+          "valveSeqCount": -1,
+          "valveSeqInterval": -1
+        }
+      },
+      "topping": {}
+    },
+    "nogravity": {
+      "initialCondition": {},
+      "openSingleTank": {
+        "floodingTheBallastPump": {
+          "valveSeqCount": -1,
+          "valveSeqInterval": -1
+        },
+        "startingOfDeballastingByPumpsWhenNoGravity": {
+          "valveSeqCount": -1,
+          "valveSeqInterval": -1
+        }
+      },
+      "initialRate": {},
+      "openAllTanks": {},
+      "increaseToMaxRate": {},
+      "loadingAtMaxRate": {
+        "seaToSea": {
+          "valveSeqCount": -1,
+          "valveSeqInterval": -1
+        },
+        "strippingByEductor": {
+          "valveSeqCount": -1,
+          "valveSeqInterval": -1
+        },
+        "seaTosea": {
+          "valveSeqCount": -1,
+          "valveSeqInterval": -1
+        },
+        "shuttingSequence":{
+          "valveSeqCount": -1,
+          "valveSeqInterval": -1
+        }
+      },
+      "topping": {}
+    }
+  },
+  "discharging": {},
+  "ballasting": {},
+  "vessel": {
+    "1": {
+      "manifold": {
+        "1": ["CDV15","CDV16"],
+        "2": ["CDV25","CDV26"],
+        "3": ["CDV35","CDV36"],
+        "4": ["CDV45","CDV46"]
+      },
+       "bottomLines": {
+        "1": ["CPV101"],
+        "2": ["CPV102"],
+        "3": ["CPV103"]
+      },
+      "eductorValves": {
+        "1": ["BPV18", "BPV16", "BPV17", "BP1"],
+        "2": ["BPV28", "BPV26", "BPV27", "BP2"]
+      },
+      "notballastTanks": ["AWBP", "AWBS", "APT"],
+      "pumpVesselSide": {
+        "useOnePump": true,
+        "port": ["BP1", "BP2"],
+        "stbd": ["BP1", "BP2"]
+      },
+      "preferredValves": {}
+    },
+    "2": {
+      "manifold": {
+        "1": ["105VL","101VL"],
+        "2": ["106VL","102VL"],
+        "3": ["107VL","103VL"],
+        "4": ["108VL","104VL"]
+      },
+       "bottomLines": {
+        "1": ["760VL"],
+        "2": ["761VL"],
+        "3": ["762VL"]
+      },
+      "eductorValves": {
+        "1": ["708VL", "706VL", "BP1"],
+        "2": ["711VL", "707VL", "BP2"]
+      },
+      "notballastTanks": ["6P", "6S", "APT"],
+      "pumpVesselSide": {
+        "useOnePump": false,
+        "port": ["BP2"],
+        "stbd": ["BP1"]
+      },
+      "preferredValves": {
+        "ballastOverboardMainValve": ["709VL"]
+      }
+    }
+  }
+}

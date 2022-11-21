@@ -1,0 +1,81 @@
+2022-04-06 21:52:08.245 | INFO     | main:task_handler:352 - 40ebccfc-ca64-48a1-880d-70a629072587: Get vessel API
+2022-04-06 21:52:09.416 | INFO     | main:get_vessel_details:118 - 40ebccfc-ca64-48a1-880d-70a629072587: HTTP Exception - [Errno 11001] getaddrinfo failed
+2022-04-06 21:52:09.432 | INFO     | main:get_vessel_details:119 - 40ebccfc-ca64-48a1-880d-70a629072587: Get vessel FILE
+2022-04-06 21:52:09.557 | INFO     | main:task_handler:374 - 40ebccfc-ca64-48a1-880d-70a629072587: Add new loading
+2022-04-06 21:52:24.741 | INFO     | main:post_response:135 - 40ebccfc-ca64-48a1-880d-70a629072587: HTTP Exception - 
+2022-04-06 22:05:05.948 | INFO     | main:task_handler:352 - a7e999b2-3f2d-431d-832c-5004d34a842a: Get vessel API
+2022-04-06 22:05:07.041 | INFO     | main:get_vessel_details:118 - a7e999b2-3f2d-431d-832c-5004d34a842a: HTTP Exception - [Errno 11001] getaddrinfo failed
+2022-04-06 22:05:07.041 | INFO     | main:get_vessel_details:119 - a7e999b2-3f2d-431d-832c-5004d34a842a: Get vessel FILE
+2022-04-06 22:05:07.182 | INFO     | main:task_handler:374 - a7e999b2-3f2d-431d-832c-5004d34a842a: Add new loading
+2022-04-06 22:05:22.495 | INFO     | main:post_response:135 - a7e999b2-3f2d-431d-832c-5004d34a842a: HTTP Exception - 
+2022-04-06 22:08:54.963 | INFO     | main:task_handler:352 - 4f20779f-5c05-48ca-91a8-1b51fb75c195: Get vessel API
+2022-04-06 22:08:56.078 | INFO     | main:get_vessel_details:118 - 4f20779f-5c05-48ca-91a8-1b51fb75c195: HTTP Exception - [Errno 11001] getaddrinfo failed
+2022-04-06 22:08:56.082 | INFO     | main:get_vessel_details:119 - 4f20779f-5c05-48ca-91a8-1b51fb75c195: Get vessel FILE
+2022-04-06 22:08:56.198 | INFO     | main:task_handler:374 - 4f20779f-5c05-48ca-91a8-1b51fb75c195: Add new loading
+2022-04-06 22:09:11.202 | INFO     | main:post_response:135 - 4f20779f-5c05-48ca-91a8-1b51fb75c195: HTTP Exception - 
+2022-04-06 22:11:48.666 | INFO     | main:task_handler:352 - c3b1bba8-38d4-4da4-9d7c-cc5015818186: Get vessel API
+2022-04-06 22:11:49.760 | INFO     | main:get_vessel_details:118 - c3b1bba8-38d4-4da4-9d7c-cc5015818186: HTTP Exception - [Errno 11001] getaddrinfo failed
+2022-04-06 22:11:49.760 | INFO     | main:get_vessel_details:119 - c3b1bba8-38d4-4da4-9d7c-cc5015818186: Get vessel FILE
+2022-04-06 22:11:49.885 | INFO     | main:task_handler:374 - c3b1bba8-38d4-4da4-9d7c-cc5015818186: Add new loading
+2022-04-06 22:12:05.201 | INFO     | main:post_response:135 - c3b1bba8-38d4-4da4-9d7c-cc5015818186: HTTP Exception - 
+2022-04-06 22:13:45.448 | INFO     | main:task_handler:352 - a1c4be1d-f0fe-4bb0-9180-a12bf140156e: Get vessel API
+2022-04-06 22:13:45.464 | INFO     | main:get_vessel_details:118 - a1c4be1d-f0fe-4bb0-9180-a12bf140156e: HTTP Exception - [Errno 11001] getaddrinfo failed
+2022-04-06 22:13:45.464 | INFO     | main:get_vessel_details:119 - a1c4be1d-f0fe-4bb0-9180-a12bf140156e: Get vessel FILE
+2022-04-06 22:13:45.604 | INFO     | main:task_handler:374 - a1c4be1d-f0fe-4bb0-9180-a12bf140156e: Add new loading
+2022-04-06 22:15:01.916 | INFO     | main:post_response:135 - a1c4be1d-f0fe-4bb0-9180-a12bf140156e: HTTP Exception - 
+2022-04-07 14:02:56.729 | INFO     | main:task_handler:352 - 5d19e70a-e8b3-4b5e-918d-5e9e0320209b: Get vessel API
+2022-04-07 14:02:57.916 | INFO     | main:get_vessel_details:118 - 5d19e70a-e8b3-4b5e-918d-5e9e0320209b: HTTP Exception - [Errno 11001] getaddrinfo failed
+2022-04-07 14:02:57.916 | INFO     | main:get_vessel_details:119 - 5d19e70a-e8b3-4b5e-918d-5e9e0320209b: Get vessel FILE
+2022-04-07 14:02:58.104 | INFO     | main:task_handler:374 - 5d19e70a-e8b3-4b5e-918d-5e9e0320209b: Add new loading
+2022-04-07 14:04:10.140 | INFO     | main:start_cpu_bound_task:211 - 5d19e70a-e8b3-4b5e-918d-5e9e0320209b: Loading sequence completed
+2022-04-07 14:04:15.171 | INFO     | main:post_response:135 - 5d19e70a-e8b3-4b5e-918d-5e9e0320209b: HTTP Exception - 
+2022-04-07 14:04:15.171 | INFO     | main:start_cpu_bound_task:251 - 5d19e70a-e8b3-4b5e-918d-5e9e0320209b: Upload result
+2022-04-07 14:04:20.189 | INFO     | main:post_response:135 - 5d19e70a-e8b3-4b5e-918d-5e9e0320209b: HTTP Exception - 
+2022-04-07 14:06:00.666 | INFO     | main:task_handler:352 - 1b3eaced-4b6b-42c9-a083-c48588da9cc9: Get vessel API
+2022-04-07 14:06:00.682 | INFO     | main:get_vessel_details:118 - 1b3eaced-4b6b-42c9-a083-c48588da9cc9: HTTP Exception - [Errno 11001] getaddrinfo failed
+2022-04-07 14:06:00.698 | INFO     | main:get_vessel_details:119 - 1b3eaced-4b6b-42c9-a083-c48588da9cc9: Get vessel FILE
+2022-04-07 14:06:00.901 | INFO     | main:task_handler:374 - 1b3eaced-4b6b-42c9-a083-c48588da9cc9: Add new loading
+2022-04-07 14:07:13.995 | INFO     | main:start_cpu_bound_task:211 - 1b3eaced-4b6b-42c9-a083-c48588da9cc9: Loading sequence completed
+2022-04-07 14:07:19.026 | INFO     | main:post_response:135 - 1b3eaced-4b6b-42c9-a083-c48588da9cc9: HTTP Exception - 
+2022-04-07 14:07:19.026 | INFO     | main:start_cpu_bound_task:251 - 1b3eaced-4b6b-42c9-a083-c48588da9cc9: Upload result
+2022-04-07 14:07:24.057 | INFO     | main:post_response:135 - 1b3eaced-4b6b-42c9-a083-c48588da9cc9: HTTP Exception - 
+2022-04-07 14:14:16.698 | INFO     | main:task_handler:352 - 1bfa5288-c342-46aa-81a4-124e1b39a4db: Get vessel API
+2022-04-07 14:14:16.714 | INFO     | main:get_vessel_details:118 - 1bfa5288-c342-46aa-81a4-124e1b39a4db: HTTP Exception - [Errno 11001] getaddrinfo failed
+2022-04-07 14:14:16.714 | INFO     | main:get_vessel_details:119 - 1bfa5288-c342-46aa-81a4-124e1b39a4db: Get vessel FILE
+2022-04-07 14:14:16.916 | INFO     | main:task_handler:374 - 1bfa5288-c342-46aa-81a4-124e1b39a4db: Add new loading
+2022-04-07 14:15:29.238 | INFO     | main:start_cpu_bound_task:211 - 1bfa5288-c342-46aa-81a4-124e1b39a4db: Loading sequence completed
+2022-04-07 14:15:34.269 | INFO     | main:post_response:135 - 1bfa5288-c342-46aa-81a4-124e1b39a4db: HTTP Exception - 
+2022-04-07 14:15:34.269 | INFO     | main:start_cpu_bound_task:251 - 1bfa5288-c342-46aa-81a4-124e1b39a4db: Upload result
+2022-04-07 14:15:39.299 | INFO     | main:post_response:135 - 1bfa5288-c342-46aa-81a4-124e1b39a4db: HTTP Exception -
+2022-04-07 22:30:26.635 | INFO     | main:task_handler:352 - 140baac3-f785-4c4e-a477-6de2dcf1c989: Get vessel API
+2022-04-07 22:30:27.807 | INFO     | main:get_vessel_details:118 - 140baac3-f785-4c4e-a477-6de2dcf1c989: HTTP Exception - [Errno 11001] getaddrinfo failed
+2022-04-07 22:30:27.807 | INFO     | main:get_vessel_details:119 - 140baac3-f785-4c4e-a477-6de2dcf1c989: Get vessel FILE
+2022-04-07 22:30:27.932 | INFO     | main:task_handler:376 - 140baac3-f785-4c4e-a477-6de2dcf1c989: Add new discharge
+2022-04-07 22:30:58.541 | INFO     | main:start_cpu_bound_task:225 - 140baac3-f785-4c4e-a477-6de2dcf1c989: Discharge study completed
+2022-04-07 22:31:03.573 | INFO     | main:post_response:135 - 140baac3-f785-4c4e-a477-6de2dcf1c989: HTTP Exception - 
+2022-04-07 22:31:03.574 | INFO     | main:start_cpu_bound_task:251 - 140baac3-f785-4c4e-a477-6de2dcf1c989: Upload result
+2022-04-07 22:31:08.604 | INFO     | main:post_response:135 - 140baac3-f785-4c4e-a477-6de2dcf1c989: HTTP Exception - 
+2022-04-08 15:47:06.386 | INFO     | main:task_handler:352 - 52fa31f5-4450-48a6-96c8-5eb188b05766: Get vessel API
+2022-04-08 15:47:07.541 | INFO     | main:get_vessel_details:118 - 52fa31f5-4450-48a6-96c8-5eb188b05766: HTTP Exception - [Errno 11001] getaddrinfo failed
+2022-04-08 15:47:07.541 | INFO     | main:get_vessel_details:119 - 52fa31f5-4450-48a6-96c8-5eb188b05766: Get vessel FILE
+2022-04-08 15:47:07.666 | INFO     | main:task_handler:376 - 52fa31f5-4450-48a6-96c8-5eb188b05766: Add new discharge
+2022-04-08 15:47:18.932 | INFO     | main:start_cpu_bound_task:225 - 52fa31f5-4450-48a6-96c8-5eb188b05766: Discharge study completed
+2022-04-08 15:47:23.951 | INFO     | main:post_response:135 - 52fa31f5-4450-48a6-96c8-5eb188b05766: HTTP Exception - 
+2022-04-08 15:47:23.952 | INFO     | main:start_cpu_bound_task:251 - 52fa31f5-4450-48a6-96c8-5eb188b05766: Upload result
+2022-04-08 15:47:28.984 | INFO     | main:post_response:135 - 52fa31f5-4450-48a6-96c8-5eb188b05766: HTTP Exception - 
+2022-04-08 16:31:43.516 | INFO     | main:task_handler:352 - 84664fb1-9165-47a2-806e-444866a7441f: Get vessel API
+2022-04-08 16:31:44.647 | INFO     | main:get_vessel_details:118 - 84664fb1-9165-47a2-806e-444866a7441f: HTTP Exception - [Errno 11001] getaddrinfo failed
+2022-04-08 16:31:44.649 | INFO     | main:get_vessel_details:119 - 84664fb1-9165-47a2-806e-444866a7441f: Get vessel FILE
+2022-04-08 16:31:44.775 | INFO     | main:task_handler:376 - 84664fb1-9165-47a2-806e-444866a7441f: Add new discharge
+2022-04-08 16:32:17.041 | INFO     | main:start_cpu_bound_task:225 - 84664fb1-9165-47a2-806e-444866a7441f: Discharge study completed
+2022-04-08 16:32:22.078 | INFO     | main:post_response:135 - 84664fb1-9165-47a2-806e-444866a7441f: HTTP Exception - 
+2022-04-08 16:32:22.082 | INFO     | main:start_cpu_bound_task:251 - 84664fb1-9165-47a2-806e-444866a7441f: Upload result
+2022-04-08 16:32:27.094 | INFO     | main:post_response:135 - 84664fb1-9165-47a2-806e-444866a7441f: HTTP Exception - 
+2022-04-08 16:32:38.814 | INFO     | main:task_handler:352 - ab04d427-8e28-4fb1-b03a-b93d95cd6969: Get vessel API
+2022-04-08 16:32:38.823 | INFO     | main:get_vessel_details:118 - ab04d427-8e28-4fb1-b03a-b93d95cd6969: HTTP Exception - [Errno 11001] getaddrinfo failed
+2022-04-08 16:32:38.824 | INFO     | main:get_vessel_details:119 - ab04d427-8e28-4fb1-b03a-b93d95cd6969: Get vessel FILE
+2022-04-08 16:32:38.969 | INFO     | main:task_handler:376 - ab04d427-8e28-4fb1-b03a-b93d95cd6969: Add new discharge
+2022-04-08 16:32:49.695 | INFO     | main:start_cpu_bound_task:225 - ab04d427-8e28-4fb1-b03a-b93d95cd6969: Discharge study completed
+2022-04-08 16:32:54.716 | INFO     | main:post_response:135 - ab04d427-8e28-4fb1-b03a-b93d95cd6969: HTTP Exception - 
+2022-04-08 16:32:54.719 | INFO     | main:start_cpu_bound_task:251 - ab04d427-8e28-4fb1-b03a-b93d95cd6969: Upload result
+2022-04-08 16:32:59.750 | INFO     | main:post_response:135 - ab04d427-8e28-4fb1-b03a-b93d95cd6969: HTTP Exception - 

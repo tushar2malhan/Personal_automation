@@ -1206,31 +1206,36 @@ POINTS
 
 #   Module / Functions should always be splitted out in separate files - Db connectivity file, Db operations file, Main task scheduler 
 #           [ never do operations or calculations in the main.py file or views.py file ]
-# - use config.py for urls, values  and config files for configurations like time limit, status_name, status_values
-# - use function.variables instead global variables for ease access
-# - instead of extracting data in multiple files again > create columns in database table - do the extraction one time only 
+
+# - Use config.py for urls, values  and config files for configurations like time limit, status_name, status_values
+# - Use eval statements for dynamic values
+# - Use function.variables instead global variables for ease of access
+# - Instead of extracting data in multiple files repeatitively 
+#            > create columns in database table - do the extraction one time only 
 #           [ no overload hitting request on db, instead create extra column names and use that in ur code ]
-# - suppose each main heading(module) has different values or if one or more does have same value 
+
+# - Suppose each main heading(module) has different values or if one or more does have same value 
 #           > use dictionary for key value pairs , 
 #           > such that specific url is accessed for specific keyword (Value) for each module 
-#           [ dont specifically use replace or if else statements in these cases, so hard code where key is matched with value and thus we get the url with specific values ]
+#           [ dont specifically use replace or if else statements in these cases,
+#             so hard code where key is matched with value and thus we get the url with specific values ]
 # - Follow coding standards by PEP-8
-
+# - help("modules") ~ to check all the moduels listed in virtual enviornment 
 ############################################################################################################################
                             
 #                            Import From Nested Directory to Nested Directory 
 
-# -  Cannot be done with init.py file 
+# - ~ CANNOT  be done with init.py file 
 # 
-# - import os, sys; sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(_file_))))
+# - import os, sys; sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(_file_))))   ~ in the current dir
 #           [    os.path.abspath(_file_) is the file name of the file which is being executed ]
 #           [    os.path.dirname(os.path.dirname(os.path.abspath(_file_))) is the directory name of the file ]
 
 # - sys.path.append(r"\path\to\dir") takes input as "directory path"  where filename varibales and func are accessed
 
 #                           How to import file name with dash in it  "cpdss-ml"
-# - misc = importlib.import_module("cpdss-ml.app.database") = 
-#           [ where importlib helps to import directory or filename with "-"  
-#             and thus we give path which is dir\to\filename        ]
+# - misc =  importlib.import_module("cpdss-ml.app.database") = 
+#           [ where importlib helps to import directory or filename with "-" ]
+#           [ and thus we give path which is dir\to\filename        ]
 
 ############################################################################################################################

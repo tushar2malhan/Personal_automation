@@ -1,0 +1,82 @@
+option show_stats 1 ; # summary statistics on the size of the optimization problem
+option times 0 ; # a summary of the AMPL translator's time and memory requirments
+option display_precision 0;
+
+
+suffix npool;
+suffix iis symbolic OUT;
+let Action_Amount.npool := 0;
+
+option presolve_eps 1.0e-8;
+#option presolve 0; 
+option solver gurobi;
+#option gurobi_options ('mipgap=1e-8 ams_stub=poolgurobi outlev=1 ams_mode=2  iisfind=' & IIS & ' ams_limit=' & numSolutions & ' timelim=' & runtimeLimit & ' seed='& seed &'');
+option gurobi_options ('presolve=1 heurfrac=0.2 mipfocus=1 mipgap=1e-8 ams_stub=poolgurobi outlev=1 ams_mode=2  iisfind=' & IIS & ' ams_limit=' & numSolutions & ' timelim=' & runtimeLimit & ' seed='& seed &'');
+
+#option gurobi_options ('mipgap=1e-8 ams_stub=poolgurobi numericfocus=3 outlev=1 ams_mode=2 ams_limit=' & numSolutions & ' timelim=' & runtimeLimit & '');
+#option solver CPLEX;
+
+#shell "gurobi -v";
+solve;
+print solve_result, solve_result_num;
+
+param res{s in 1..Action_Amount.npool, c in C, t in T, p in P};
+param shipStatus{s in 1..Action_Amount.npool, c in C, t in T, p in P}; # amount of cargo c in tank t, when the ship leaves port p.
+param volumeStatus{s in 1..Action_Amount.npool, c in C, t in T, p in P}; # volume percentage of cargo c in tank t, when the ship leaves port p.
+param cargoloaded{s in 1..Action_Amount.npool, c in C};
+param cargoloadedport{s in 1..Action_Amount.npool, c in C, p in P};
+param cargoOper{s in 1..Action_Amount.npool, c in C, p in P};
+param totloaded{s in 1..Action_Amount.npool};
+
+param wt{s in 1..Action_Amount.npool, c in C, p in P};
+param wtB{s in 1..Action_Amount.npool, t in TB, p in P union P0}; # weight of seawater in each ballast tank at each port
+param xx{s in 1..Action_Amount.npool, c in C, t in T};
+param objective_value{s in 1..Action_Amount.npool};
+param ballast_value{s in 1..Action_Amount.npool};
+
+##
+param da{s in 1..Action_Amount.npool, f in 1..Fr, p in 1..(NP-1)};
+param sf{s in 1..Action_Amount.npool, f in 1..Fr, p in 1..(NP-1)};
+param bm{s in 1..Action_Amount.npool, f in 1..Fr, p in 1..(NP-1)};
+param ss{s in 1..Action_Amount.npool, f in 1..Fr, p in 1..(NP-1)};
+param sb{s in 1..Action_Amount.npool, f in 1..Fr, p in 1..(NP-1)};
+param ww{s in 1..Action_Amount.npool, f in 1..Fr, p in 1..(NP-1)};
+param mm{s in 1..Action_Amount.npool, f in 1..Fr, p in 1..(NP-1)};
+
+
+if solve_result = "solved" or solve_result_num = 403 then {
+
+	for {i in 1..Action_Amount.npool}
+	{
+	    solution("poolgurobi" & i & ".sol");
+	    let {c in C, t in T, p in P} res[i,c,t,p]:= w[c,t,p];
+	    let {c in C, t in T, p in P} shipStatus[i,c,t,p]:= qw[c,t,p];
+	    let {c in C, t in T, p in P} volumeStatus[i,c,t,p]:= qty[c,t,p]/capacityCargoTank[t];
+	    let {c in C, p in P} wt[i,c,p]:=sum{t in Tc[c]}w[c,t,p];
+	    let {t in TB, p in P union P0} wtB[i,t,p]:=wB[t,p];
+	    let {c in C, t in T} xx[i,c,t] := x[c,t];
+		
+	    let objective_value[i] := Action_Amount;
+	    let {c in C} cargoloaded[i,c] := sum{t in Tc[c], p in P_last_loading} qw[c,t,p];
+        let {c in C, p in P} cargoloadedport[i,c,p] := sum{t in Tc[c]} qw[c,t,p];
+        let {c in C, p in P} cargoOper[i,c,p] := sum{t in Tc[c]} w[c,t,p];
+	    let totloaded[i] := sum{c in C, t in Tc[c], p in P_last_loading} qw[c,t,p];
+	    
+	    let {f in 1..Fr, p in 1..(NP-1)} ss[i,f,p] := BV_SF[f,p] + CD_SF[f,p]*(mean_draft[p]-base_draft[p]);
+	    let {f in 1..Fr, p in 1..(NP-1)} sb[i,f,p] := (BV_BM[f,p]+ CD_BM[f,p]*(mean_draft[p]- base_draft[p]));
+        
+        let {f in 1..Fr, p in 1..(NP-1)} sf[i,f,p] := BV_SF[f,p] + CD_SF[f,p]*(mean_draft[p]-base_draft[p]) - wn[f,p];
+	    let {f in 1..Fr, p in 1..(NP-1)} bm[i,f,p] := wn[f,p]*LCG_fr[f] + mn[f,p] - (BV_BM[f,p]+ CD_BM[f,p]*(mean_draft[p]- base_draft[p]));
+        
+        let {f in 1..Fr, p in 1..(NP-1)} da[i,f,p] := mean_draft[p];
+        let {f in 1..Fr, p in 1..(NP-1)} ww[i,f,p] := wn[f,p];
+	    let {f in 1..Fr, p in 1..(NP-1)} mm[i,f,p] := mn[f,p];
+           
+ 
+	}
+}
+
+#display bm;
+#display displacement;
+#display ss;
+#display da;

@@ -1,0 +1,8 @@
+samples/
+.idea/
+*.pyc
+*.sol
+loadableStudy/input_load.dat
+loadableStudy/result.json
+loadableStudy/ship_status.json
+venv/

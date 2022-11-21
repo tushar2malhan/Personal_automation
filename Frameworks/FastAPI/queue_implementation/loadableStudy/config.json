@@ -1,0 +1,347 @@
+{
+  "url": {
+    "vessel-details": "https://1cpdss-dev.alphaorimarine.com/cpdss/api/cloud/vessel-details/{vesselId}?enableValveSeq=true",
+    "database": "postgresql://postgres:postgres@127.0.0.1:5432/postgres",
+    "LOADABLE": {
+      "loadable-patterns": "http://mol.thinkpalm.info:8085/api/cloud/vessels/{vesselId}/voyages/{voyageId}/loadable-studies/{loadableStudyId}/loadable-patterns",
+      "loadable-study-status": "http://mol.thinkpalm.info:8085/api/cloud/vessels/{vesselId}/voyages/{voyageId}/loadable-studies/{loadableStudyId}/loadable-study-status",
+      "validate-patterns": "http://mol.thinkpalm.info:8085/api/cloud/vessels/{vesselId}/voyages/{voyageId}/loadable-studies/{loadableStudyId}/loadable-patterns/{loadablePatternId}/pattern-validate-result"
+    },
+    "LOADING": {
+      "loading-patterns": "http://13.251.226.207:8085/api/cloud/vessels/{vesselId}/voyages/{voyageId}/loading-info/{infoId}/loading-plan",
+      "loading-status": "http://13.251.226.207:8085/api/cloud/vessels/{vesselId}/voyages/{voyageId}/loading-info/{infoId}/loading-info-status"
+    },
+    "DISCHARGE": {
+      "discharge-patterns": "http://13.251.226.207:8085/api/cloud/vessels/{vesselId}/voyages/{voyageId}/discharge-studies/{dischargeStudyId}/discharge-patterns",
+      "discharge-status": "http://13.251.226.207:8085/api/cloud/vessels/{vesselId}/voyages/{voyageId}/discharge-studies/{dischargeStudyId}/discharge-study-status"
+    },
+    "DISCHARGING": {
+      "discharging-patterns": "http://13.251.226.207:8085/api/cloud/vessels/{vesselId}/voyages/{voyageId}/discharging-info/{infoId}/discharging-plan",
+      "discharging-status": "http://13.251.226.207:8085/api/cloud/vessels/{vesselId}/voyages/{voyageId}/discharging-info/{infoId}/discharging-info-status"
+    }
+  },
+  "log": {
+    "fileName": "main.log",
+    "rotation": "1 week"
+  },
+  "solver": "AMPL",
+  "vessel": {
+    "1": {
+      "adj_LCB": -6638.38,
+      "adj_mean_draft": 0.1481409,
+      "adj_MTC": 2202.56,
+      "after_loading_trim": 1,
+      "ballast_percent": 0.4,
+      "ban_ballast": [
+        "UFPT"
+      ],
+      "ban_ballast_discharge": [
+        "AWBP",
+        "AWBS",
+        "APT"
+      ],
+      "deballast_percent": 0.4,
+      "diff_cargo_slops": [
+        "SLS",
+        "SLP"
+      ],
+      "diff_cargo_tanks": [
+        [
+          "1P",
+          "1C"
+        ],
+        [
+          "2P",
+          "2C"
+        ],
+        [
+          "3P",
+          "3C"
+        ],
+        [
+          "4P",
+          "4C"
+        ],
+        [
+          "5P",
+          "5C"
+        ]
+      ],
+      "gantt_chart_index": [
+        "Time",
+        "SLS",
+        "SLP",
+        "5W",
+        "5C",
+        "1W",
+        "1C",
+        "4W",
+        "4C",
+        "2W",
+        "2C",
+        "3W",
+        "3C"
+      ],
+      "gantt_chart_ballast_index": [
+        "LFPT",
+        "WB1P",
+        "WB1S",
+        "WB2P",
+        "WB2S",
+        "WB3P",
+        "WB3S",
+        "WB4P",
+        "WB4S",
+        "WB5P",
+        "WB5S",
+        "AWBP",
+        "AWBS",
+        "APT"
+      ],
+      "initial_ballast": {
+        "LFPT": 4800,
+        "WB1P": 9000,
+        "WB1S": 9000,
+        "WB2P": 9000,
+        "WB2S": 9000,
+        "WB3P": 9000,
+        "WB3S": 9000,
+        "WB4P": 8900,
+        "WB4S": 8900,
+        "WB5P": 7600,
+        "WB5S": 7600
+      },
+      "last_loading_port_ballast_ban": [
+        "WB1P",
+        "WB1S",
+        "WB2P",
+        "WB2S",
+        "WB3P",
+        "WB3S",
+        "WB4P",
+        "WB4S",
+        "WB5P",
+        "WB5S"
+      ],
+      "loadable_config": false,
+      "min_ballast_aft_draft_limit": 10.29,
+      "min_aft_draft_limit": 9.79,
+      "min_mid_draft_limit": 8.65,
+      "min_for_draft_limit": 7.32,
+      "rob_density": {
+        "DSWP": 1,
+        "DWP": 1,
+        "FWS": 1,
+        "DSWS": 1,
+        "FO2P": 0.98,
+        "FO2S": 0.98,
+        "FO1P": 0.98,
+        "FO1S": 0.98,
+        "BFOSV": 0.98,
+        "FOST": 0.98,
+        "FOSV": 0.98,
+        "DO1S": 0.88,
+        "DO2S": 0.88,
+        "DOSV1": 0.88,
+        "DOSV2": 0.88
+      },
+      "rob_change": 200,
+      "solver": "AMPL",
+      "sf_bm_frac": 0.95,
+      "sym_vol_tanks": [
+        [
+          "1P",
+          "1S"
+        ],
+        [
+          "2P",
+          "2S"
+        ],
+        [
+          "SLS",
+          "SLP"
+        ],
+        [
+          "3P",
+          "3S"
+        ],
+        [
+          "4P",
+          "4S"
+        ],
+        [
+          "5P",
+          "5S"
+        ]
+      ],
+      "tanks_max_cargo": [
+        "SLS",
+        "1P",
+        "1S",
+        "2P",
+        "2S",
+        "4P",
+        "4S",
+        "5P",
+        "3P",
+        "3S",
+        "5S"
+      ]
+    },
+    "2": {
+      "adj_LCB": -68197.25,
+      "adj_mean_draft": 0.1313,
+      "adj_MTC": 2393.987,
+      "after_loading_trim": 1,
+      "ballast_percent": 0.4,
+      "ban_ballast": [],
+      "ban_ballast_discharge": [
+        "WB6P",
+        "WB6S",
+        "APT"
+      ],
+      "deballast_percent": 0.5,
+      "diff_cargo_slops": [
+        "SLS",
+        "SPP"
+      ],
+      "diff_cargo_tanks": [
+        [
+          "1P",
+          "1C"
+        ],
+        [
+          "2P",
+          "2C"
+        ],
+        [
+          "3P",
+          "3C"
+        ],
+        [
+          "4P",
+          "4C"
+        ],
+        [
+          "5P",
+          "5C"
+        ]
+      ],
+      "gantt_chart_index": [
+        "Time",
+        "SLS",
+        "SPP",
+        "5W",
+        "5C",
+        "1W",
+        "1C",
+        "4W",
+        "4C",
+        "2W",
+        "2C",
+        "3W",
+        "3C"
+      ],
+      "gantt_chart_ballast_index": [
+        "FPT",
+        "WB1P",
+        "WB1S",
+        "WB2P",
+        "WB2S",
+        "WB3P",
+        "WB3S",
+        "WB4P",
+        "WB4S",
+        "WB5P",
+        "WB5S",
+        "WB6P",
+        "WB6S",
+        "APT"
+      ],
+      "initial_ballast": {
+        "FPT": 1580,
+        "WB1P": 8800,
+        "WB1S": 8800,
+        "WB2P": 9550,
+        "WB2S": 9550,
+        "WB3P": 10500,
+        "WB3S": 10500,
+        "WB4P": 9450,
+        "WB4S": 9450,
+        "WB5P": 7050,
+        "WB5S": 7050
+      },
+      "last_loading_port_ballast_ban": [
+        "WB1P",
+        "WB1S",
+        "WB2P",
+        "WB2S",
+        "WB3P",
+        "WB3S",
+        "WB4P",
+        "WB4S",
+        "WB5P",
+        "WB5S"
+      ],
+      "loadable_config": false,
+      "min_ballast_aft_draft_limit": 10.69,
+      "min_aft_draft_limit": 10.19,
+      "min_mid_draft_limit": 8.5,
+      "min_for_draft_limit": 7.34,
+      "rob_density": {
+        "DSWP": 1,
+        "DWP": 1,
+        "FWS": 1,
+        "CFWT": 1,
+        "FO2P": 0.98,
+        "FO2S": 0.98,
+        "FO1P": 0.98,
+        "FO1S": 0.98,
+        "DO1S": 0.88,
+        "DO2S": 0.88
+      },
+      "rob_change": 200,
+      "solver": "AMPL",
+      "sf_bm_frac": 0.95,
+      "sym_vol_tanks": [
+        [
+          "1P",
+          "1S"
+        ],
+        [
+          "2P",
+          "2S"
+        ],
+        [
+          "SLS",
+          "SPP"
+        ],
+        [
+          "3P",
+          "3S"
+        ],
+        [
+          "4P",
+          "4S"
+        ],
+        [
+          "5P",
+          "5S"
+        ]
+      ],
+      "tanks_max_cargo": [
+        "SLS",
+        "1P",
+        "1S",
+        "2P",
+        "2S",
+        "4P",
+        "4S",
+        "5P",
+        "3P",
+        "3S",
+        "5S"
+      ]
+    }
+  }
+}
