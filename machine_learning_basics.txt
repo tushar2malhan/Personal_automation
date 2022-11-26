@@ -1,3 +1,5 @@
+keyboard shortcut => 	win + h == voice typing 
+
 ---------------------MACHINE LEARNING------------------------------------------
 
 	ML is supervised and unsupervised form of ability of a computer to generate data based on formulas
@@ -1307,8 +1309,6 @@ ALL MODELS INFORMATION
 
 
 
-
-
 ----------------------------NLP------------------------------------------------
 	
 	Q Face any issue downloading module or module not found error persists ?
@@ -1541,10 +1541,73 @@ ALL MODELS INFORMATION
 
 
 
-
 -----------------------JUPYTER NOTEBOOK SHORTCUTS-------------------------------
 	A = INSERT NEW CELL 
 	B = INSERT IT BELOW
 	D = DELETE CELL
 	S = SAVE CHECKPOINT
 
+
+
+
+------------------------DEEP LEARNING-------------------------------------------
+
+neuron 
+	= In order to  test the image each neuron is meant 
+	to train a Particular feature to detect a particular image 
+	- prominent feature == more weight of the feature of the image 
+	- score = sum(*features * values ); if score > 0.5 image == image detected
+	- backward error propagation 
+	= where error or feedback is passed to the neurons
+	if image is wrongly classified - to adjust the weights , thus we train the neurons or machine
+
+	! pip install tensorflow
+
+	
+
+	Simple neuron network  
+		- without hidden layer  , thus not 100% best prediction 
+		
+
+		- here each image is fed into Input Layer  and output layer will have 10 layers or 10 neurons to classify 
+		the image as compared to other classes and give relevant score for each class 
+
+		Step 1 - image = 2dimesional matrix where each pixel is between (0-255) ! 0 = black and 255 = white ! 
+		(here columns = 7 and rows 7 )
+			X_train.shape
+		
+		Step 2 - then we flat the array into 1 array by numpy reshape
+		( here single array with 49 rows )
+		
+			X_train_flattened = X_train.reshape(len(X_train), 28*28)
+			X_test_flattened = X_test.reshape(len(X_test), 28*28)
+			
+		- so total 49 layers or neurons are trained  to get the output 
+
+		Step 3 - create simple neuron network to detect handwritten images using digits dataset
+
+			model = keras.Sequential([  
+			keras.layers.Dense(10, input_shape=(784,), activation='sigmoid')
+			])
+		   	
+			| == keras.Sequential means u have stack of array == which is X_train_flattened , single array of layers 
+			| == keras.layers.Dense means every neuron connected with each other supplied with input shape (784) as total rows of pixels
+			| == and output shape (10 ) that are 10 different hand written images of the numbers , where from inputs it needs to give score to the output
+
+			
+			model.compile(optimizer='adam',
+						loss='sparse_categorical_crossentropy',
+						metrics=['accuracy'])
+
+			
+			model.fit(X_train_flattened, y_train, epochs=5)
+			
+			| == epochs - You can think of a for-loop over the number of epochs where each loop proceeds over the training dataset.
+
+			# predict first image of the dataset
+			y_predicted = model.predict(X_test_flattened)
+			y_predicted[0]
+
+	Dense neuron Networks 
+		- Each neuron is connected with each other 
+		- with hidden layer  , gives  best prediction 
