@@ -1,7 +1,7 @@
 
 import os
 # from gtts import gTTS
-import speech_recognition as sr
+# import speech_recognition as sr
 
 
 para = '''
@@ -14,7 +14,7 @@ Find all the users which don't have score 10 or 20                              
 Print a list of all the score values from all users excluding the first 10 users. # Student.objects.exclude(id__in=[i for i in range(10)]).values('age')
 '''
 
-#                                               Questions
+################################################################# Questions ######################################################
 # d={}
 # words=para.split()
 # for i in words:
@@ -177,6 +177,58 @@ Z is taken as B[-Z:] time to download the last Z bytes'''
         
     # print(solution("1.00",["0.05","1.00"]))
 
+''' coin change probelem '''
+
+def coin_change(money):
+    coins = [25, 10, 5, 1]
+    coins_used = [0] * len(coins)
+    
+    for each_coin in range(len(coins)):
+        while money >= coins[each_coin]:
+            money -= coins[each_coin]
+            coins_used[each_coin] += 1
+
+    return coins_used
+
+# print(coin_change(33))
+
+
+''' Largest range '''
+
+# looping through the hash table and seeing e
+# very element in the hash table gives us O(1) time  complexity 
+# whereas 
+# in list if we loop through each element it gives us O(n) of time complexity
+# so it's better to look through the hash tables in order to improve the time complexity.
+
+
+
+
+
+def largest_range():
+    arr = [1,11,3,0,15,5,2,4,10,7,12,6]
+    max_range = 0
+    max_range_arr = []
+
+    for i in range(len(arr)-1):
+        current_largest_range = 0
+        first = arr[i] 
+        rest = first+1
+        while rest in arr[i+1:]:
+            rest  += 1
+            current_largest_range +=1
+        print(f'Range  for {first} = ',  current_largest_range, first, rest-1)
+
+        if current_largest_range > max_range:
+            max_range = current_largest_range
+            max_range_arr = [first, rest-1]
+    print(f'\nMax range is {max_range} and the numbers are {max_range_arr}')
+    return max_range_arr
+
+
+
+# largest_range()
+
 
 ##################################################################################################################################################
 
@@ -333,7 +385,7 @@ def requests_beautiful():
     soup = BeautifulSoup(r.text,'html.parser')
 
     # GET title of the Page 
-    print(soup.title.text)
+    print(soup.title)
 
 
     # GET all images from the page
@@ -355,99 +407,99 @@ def requests_beautiful():
 
 ''' selenium automation'''
 
-from selenium import webdriver
-import time
-from selenium.webdriver.common.keys import Keys
-from openpyxl import Workbook  ,load_workbook
-wb = Workbook()  
-url="https://www.mercadona.es/"
-postalcode='08013'
+# from selenium import webdriver
+# import time
+# from selenium.webdriver.common.keys import Keys
+# from openpyxl import Workbook  ,load_workbook
+# wb = Workbook()  
+# url="https://www.mercadona.es/"
+# postalcode='08013'
 
-def web_scrap_automation(url,postcode,*classnames):
-     driver = webdriver.Chrome(executable_path=r"C:\Users\Tushar\Downloads\chromedriver.exe")
-     driver.get(url)
-     print('\t\t',driver.title)
+# def web_scrap_automation(url,postcode,*classnames):
+#      driver = webdriver.Chrome(executable_path=r"C:\Users\Tushar\Downloads\chromedriver.exe")
+#      driver.get(url)
+#      print('\t\t',driver.title)
      
-     def get_values(sheet_num,sheet_name,driver,*innerclasses):     # here innerclasses refers to each element we sent when outer func is called 
-               sheet = wb.create_sheet(sheet_num)
-               sheet.title = sheet_name 
+#      def get_values(sheet_num,sheet_name,driver,*innerclasses):     # here innerclasses refers to each element we sent when outer func is called 
+#                sheet = wb.create_sheet(sheet_num)
+#                sheet.title = sheet_name 
                
-               #   get the Name
-               sheet[f'A{1}']="PRODUCTS"
-               name_tag= driver.find_elements_by_class_name(innerclasses[0])
-               for name in range(len(name_tag)):
-                    sheet[f'A{name+2}']=name_tag[name].text
-                    print(name_tag[name].text)
+#                #   get the Name
+#                sheet[f'A{1}']="PRODUCTS"
+#                name_tag= driver.find_elements_by_class_name(innerclasses[0])
+#                for name in range(len(name_tag)):
+#                     sheet[f'A{name+2}']=name_tag[name].text
+#                     print(name_tag[name].text)
 
                
-               #   get the Price
-               sheet[f'B{1}']="PRICES"
-               price_tag=driver.find_elements_by_class_name(innerclasses[1])
-               for price in range(len(price_tag)):
-                    sheet[f'B{price+2}']= price_tag[price].text
-                    print(price_tag[price].text)
+#                #   get the Price
+#                sheet[f'B{1}']="PRICES"
+#                price_tag=driver.find_elements_by_class_name(innerclasses[1])
+#                for price in range(len(price_tag)):
+#                     sheet[f'B{price+2}']= price_tag[price].text
+#                     print(price_tag[price].text)
 
-               #  getting the image link
-               images = driver.find_elements_by_xpath(innerclasses[2]) 
-               sheet[f'C{1}']="IMAGES"
-               for image in range(len(images)):
-                    sheet[f'C{image+2}']=images[image].get_attribute('src')
-                    print(images[image].get_attribute('src'))
+#                #  getting the image link
+#                images = driver.find_elements_by_xpath(innerclasses[2]) 
+#                sheet[f'C{1}']="IMAGES"
+#                for image in range(len(images)):
+#                     sheet[f'C{image+2}']=images[image].get_attribute('src')
+#                     print(images[image].get_attribute('src'))
 
-               # get the weight
-               weights =driver.find_elements_by_class_name(innerclasses[3]) 
-               sheet[f'D{1}']="WEIGHT"
-               for weight in range(len(weights)):
-                    sheet[f'D{weight+2}'] = weights[weight].text
-                    print(weights[weight].text)
-               print()
+#                # get the weight
+#                weights =driver.find_elements_by_class_name(innerclasses[3]) 
+#                sheet[f'D{1}']="WEIGHT"
+#                for weight in range(len(weights)):
+#                     sheet[f'D{weight+2}'] = weights[weight].text
+#                     print(weights[weight].text)
+#                print()
                     
-               print(f'\n\nDone , Data extracted and saved in your excel for the {sheet_name}')
+#                print(f'\n\nDone , Data extracted and saved in your excel for the {sheet_name}')
 
-     try:
-          #              convert to english language
-          l0=driver.find_element_by_xpath("/html/body/div[1]/nav/div[2]/div/i")
-          l0.click()
-          l1=driver.find_element_by_xpath("/html/body/div[1]/nav/div[2]/div/ul/li[6]/button")
-          l1.click()
+#      try:
+#           #              convert to english language
+#           l0=driver.find_element_by_xpath("/html/body/div[1]/nav/div[2]/div/i")
+#           l0.click()
+#           l1=driver.find_element_by_xpath("/html/body/div[1]/nav/div[2]/div/ul/li[6]/button")
+#           l1.click()
           
-          search_bar = driver.find_element_by_xpath('//*[@id="root"]/header/div/div/form/div/input')
+#           search_bar = driver.find_element_by_xpath('//*[@id="root"]/header/div/div/form/div/input')
           
-          #                   give the postcode
-          try:
-               search_bar.send_keys(postcode)      
-               search_bar.send_keys(Keys.RETURN)
-               l2=driver.find_element_by_xpath('//*[@id="root"]/header/div/div/form/input')
-               l2.click()
-               accept= driver.find_element_by_xpath('//*[@id="root"]/div[1]/div/div/button[2]')
-               accept.click()
-          except:
-               print('No way to pass postal code on the webpage')
+#           #                   give the postcode
+#           try:
+#                search_bar.send_keys(postcode)      
+#                search_bar.send_keys(Keys.RETURN)
+#                l2=driver.find_element_by_xpath('//*[@id="root"]/header/div/div/form/input')
+#                l2.click()
+#                accept= driver.find_element_by_xpath('//*[@id="root"]/div[1]/div/div/button[2]')
+#                accept.click()
+#           except:
+#                print('No way to pass postal code on the webpage')
 
-          time.sleep(10)
-          #                        DYNAMIC FROM HERE 
+#           time.sleep(10)
+#           #                        DYNAMIC FROM HERE 
 
-          get_values('sheet_1','LANDING_PAGE',driver,*classnames)
-          print('\n\n')
+#           get_values('sheet_1','LANDING_PAGE',driver,*classnames)
+#           print('\n\n')
      
-          # #                      View the products from inside 
-          product_button = driver.find_element_by_class_name('banner-item__button')
-          product_button.click()
-          time.sleep(10)
+#           # #                      View the products from inside 
+#           product_button = driver.find_element_by_class_name('banner-item__button')
+#           product_button.click()
+#           time.sleep(10)
 
-          get_values('sheet_2','INNER_PAGE',driver,*classnames)
-          print('\n\n')
+#           get_values('sheet_2','INNER_PAGE',driver,*classnames)
+#           print('\n\n')
 
-          driver.close()      
-        #       filename = fr"C:\Users\Tushar\Desktop\file_{postalcode}.xlsx"  
-        #       os.mkdir(filename)                                                         
-        #   wb.save(filename)                                                          # saving file to the excel 
-        #   wb.remove(wb['Sheet'])
-        #   wb.save(filename)  
+#           driver.close()      
+#         #       filename = fr"C:\Users\Tushar\Desktop\file_{postalcode}.xlsx"  
+#         #       os.mkdir(filename)                                                         
+#         #   wb.save(filename)                                                          # saving file to the excel 
+#         #   wb.remove(wb['Sheet'])
+#         #   wb.save(filename)  
 
-     except Exception as e:
-          print(f'Issue in the postal code ❌{postalcode}❌, check and verify it again')
-          print(e)
+#      except Exception as e:
+#           print(f'Issue in the postal code ❌{postalcode}❌, check and verify it again')
+#           print(e)
 
 # web_scrap_automation(url,postalcode,'product-cell__description-name','product-price__unit-price',"//div[@class='product-cell__image-wrapper']/img","product-price__extra-price",None)
 
@@ -460,7 +512,7 @@ def web_scrap_automation(url,postcode,*classnames):
 
 ######################################################################################################################################################
 
-     # Access variables from function
+# Access variables from function
 
 # global a : print(a)      
 # create global variable  , use the same variable for the function , to call the global variable 
@@ -763,7 +815,7 @@ class Child(Parent1,Parent2):
 
     # @classmethod     >>>          # this class method only works for this class,not parents class 
     # so make sure if your changing parent class variable , dont use this class method on this func
-    def change_parent_cls_variable(cls,value):
+    def change_parent_cls_variable(self,value):
         print('\n\t Old value of Parent1 class variable is ->', Parent1.Parent1 )
         Parent1.Parent1 = value
         print('\t Parent1 class new variable given by child is ->',value)
@@ -1226,16 +1278,24 @@ POINTS
 #                            Import From Nested Directory to Nested Directory 
 
 # - ~ CANNOT  be done with init.py file 
-# 
+
 # - import os, sys; sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(_file_))))   ~ in the current dir
 #           [    os.path.abspath(_file_) is the file name of the file which is being executed ]
 #           [    os.path.dirname(os.path.dirname(os.path.abspath(_file_))) is the directory name of the file ]
 
 # - sys.path.append(r"\path\to\dir") takes input as "directory path"  where filename varibales and func are accessed
 
+
+
 #                           How to import file name with dash in it  "cpdss-ml"
+
+
 # - misc =  importlib.import_module("cpdss-ml.app.database") = 
 #           [ where importlib helps to import directory or filename with "-" ]
 #           [ and thus we give path which is dir\to\filename        ]
 
 ############################################################################################################################
+
+#                          How to set same Path directory location for all users
+# import os
+# main_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

@@ -104,3 +104,23 @@ Load balancing:
                     - app1
                     - app2
                 restart: always   # If the container is stopped, it will be restarted
+
+
+
+Queue mechanism in nginx:
+
+    nginx.conf file 
+    - if connections exceed 300 on server 100 then it will be queued for 70 seconds
+    
+        http {
+            upstream backend_servers {
+
+            server 10.1.1.4:9001 max_conns=300;
+            server 10.1.1.4:9002;
+            server 10.1.1.4:9003;
+
+            queue 100 timeout=70;
+            }
+        }
+
+    

@@ -98,7 +98,11 @@ def count_total_from_nested_list(arr):
         if type(i) == list:
             # We give the function with parameter as a list 
             # print(count_total_from_nested_list(i))  
-            #  i == arr so , it will go to loop and get added in total
+            #  i == arr so , it will run for loop and check if that 
+            # element is a list, then it will call the function again
+            # and again until it finds a number
+            # else if its not list then it will add it to total using for loop
+            print(i, ' this i was an array')
             total +=count_total_from_nested_list(i) 
         else:
             total +=i
@@ -127,7 +131,15 @@ def lc2(arr):
         
 # print(lc2(arr))
 
+# def find_target(arr, target):
 
+#     for i in range(len(arr)-1):
+#         print('check this target = ',target - arr[i],'in\t',arr[:i+1],   )
+#         if target - arr[i] in arr[:i+1]:
+#             print(arr[i],'+', target-arr[i],'= ',target)
+#             return True
+
+# print(find_target(arr, 47))
 
 
 
@@ -173,17 +185,17 @@ def lc2(arr):
  
 # # Stock prices on consecutive days
 pricess2 = [100, 180, 695,260, 310, 40, 535,5 ]
-pricess = ['a','b','c','d','e','g','f']
+pricess = ['c','d','a','b','e','g','f']
 # n = len(price)
  
 # # Function call
 # stockBuySell(price, n)
 
-# f_l=[{pricess[i]:pricess2[i]} for i in range(len(pricess))]
+f_l=[{pricess[i]:pricess2[i]} for i in range(len(pricess))]
 
 # print(sorted([(k,v)for each_dic in f_l for k,v in each_dic.items()],key=lambda x:x[1]))
 # print(f_l)
-# print(sorted(pricess2,key=lambda x:x[0]))
+# print(sorted(pricess2,key = lambda x:x))
 
 
 ''' l = [3,5,2,6]
@@ -291,8 +303,8 @@ THIRD_LIST = SortingAlgo()
 
 
 
-# list1=[1,2,3]
-# list2 =list1
+# list1 = [1,2,3]
+# list2 = list1
 # list3 = [3,4,5]
 # list4 = list3
 # list1[:] = [10,20,30]
@@ -505,4 +517,56 @@ class algo:
 # obj.insta_question()
 
 
+# 23/11/2022            --> interview questions
+var1 = 'tushar'
+var2 = [2,1,5,3,6,6,1]
 
+def find_dup(arr):
+    new = {}
+    for i in arr:
+        if i in new:
+            new[i] +=1
+        else:
+            new[i] =1
+    for k,v in new.items():
+        if v >1:
+            print(k,v) 
+    # for i in range(len(arr)):
+    #     for j in range(i+1, len(arr)):
+    #         if arr[i] == arr[j]:
+    #             print(arr[i],i)
+
+
+# find_dup(var2)
+
+# employee > id, name
+# department > id, name
+# employee_dept > emp_id, dept_id
+# salary > salary
+
+# Q emp.name and dept.name
+
+# select emp.name , dept.name
+# from employee emp join  department 
+#  dept on emp.id = dept.id;
+
+# select max(salary) from salary
+# where salary != (select max(salary) 
+# from salary);
+
+
+
+
+# quicksort  arr2
+
+arr2 = [1,5,2,[6,73,6],0,[9,1]]
+arr = [1,5,2,6,73,6,0,9,1]
+
+# def quick(arr):
+#     # QUICK SORT  inner list 
+
+
+
+# print(quick(arr2))
+
+    

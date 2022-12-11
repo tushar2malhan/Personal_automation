@@ -1,22 +1,23 @@
 '''
-    Author :    Tushar Malhan
-    Requirements : Provide Path to main_dir and check_packages 
+    Description     : Django Automation Tool with frontend and backend options
+    Author          :                Tushar Malhan
+    Requirements    : Provide Path to main_dir and check_packages
+    Status          : Completed
 
 '''
 
-import os , time 
+import os
+import sys
+import time
 
-# CREATE UR DIR FIRST  if not , I'll create it for you
-main_dir = r"C:\Users\Tushar\Desktop\django_Bot"             
 
-# if django , rest_framework , packages are  installed or not , set path where ur packages are installed in ur local system
-# Make sure you have listed your packages directory here  
-check_packages = os.listdir(r"C:\users\tushar\appdata\local\programs\python\python310\lib\site-packages")
+main_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+check_packages = os.listdir([i for i in sys.path if  i.endswith('site-packages')][0])  # print(sys.path)  # Check your python path and do changes accordingly in check_packages
+
 confirmation =  ['yes','yup','y' ,'ok']
 
-if not os.path.exists(main_dir):
-    os.mkdir(main_dir)
-    print('Directory created')
 
 def add_under_installed_apps(main_dir,project_name,app_name,word=None):
       
@@ -78,30 +79,35 @@ if project_initialization in ['django' , 'go','','l','ok','yes']:
     check_requirements(check_packages)
     
     if confirm_the_packages:          
-        # os.system('python -m venv env2')
+        
         print('\t[*]\tAll Main Packages are installed')
         print('\t[*]\tHope your virtualenv is not running in any other thread\n')  
+        
      
     else:
-        os.system('pip install virtualenv && python -m venv env2')
-        os.system('python -m venv env2')
-        print('installing the workload')
+        os.system('pip install virtualenv && virtualenv env && env\Scripts\activate')
+        print('\t[*]\tInstalling the workload')
         os.system(f'pip install django && pip install djangorestframework\
         && pip install django-crispy-forms && pip install django-ckeditor')
     
-    project_name = input('\n[*]\tProject name ? \t')    
+    project_name = input('\n[*]\tProject name ? \t')
+
     if project_name in ['None',None,'',0,'empty']:
-        print('\n Your Project should have a valid Name ')
+        print('\t[*]\t Your Project should have a valid Name ')
         exit()
 
 
     if project_name in listdir_in_ur_home():
         time.sleep(0.5)
         print('\n\t[*]\tProject with that initials already present !')
+        print('\t[*]\tKindly change your project name and try again !\n ')
         exit()
     else:
+        if not os.path.exists(main_dir+"\\"+project_name):
+            os.mkdir(main_dir+"\\"+project_name)
+            print(f'\t[*]\tDirectory  named {project_name} created')
         os.system(f'django-admin startproject {project_name}')
-        print(f'\n\t[*]\tCreated new project named "{project_name}" in {os.getcwd()}\n') 
+        print(f'\n\t[*]\tCreated new project named "{project_name}" in {os.getcwd()} Directory \n') 
     time.sleep(1)
     
 
