@@ -195,6 +195,7 @@ Step Functions
       |      > Executed  lambda  
       |      >>> which in turn executes "Step function State machine" 
       |      >>> sends message with TransactionId to SQS
+      |      >   BEtter to use AWS workflow for crearting State machines
 
 
 
