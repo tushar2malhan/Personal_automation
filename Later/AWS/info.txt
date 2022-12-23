@@ -223,8 +223,11 @@ Security Groups
     
 
 ssh ,puttty , ec2 instance connect  to connect to  ec2 
-    - download putty > file > load private key and select the key (save it ) > enter putty configurations > ec2-user@ipv4 address under hostname > save it > under ssh > auth > browse and laod ssh key 
-    - ssh  -i path_to_pem_file.pem ec2-user@ipv4 address      (if issue use chomd , or check the properties of key - the owner should be you and remove other users and apply )
+    - download putty > file > load private key and select the key (save it ) 
+       > enter putty configurations > ec2-user@ipv4 address under hostname 
+       > save it > under ssh > auth > browse and laod ssh key 
+    - ssh  -i path_to_pem_file.pem ec2-user@ipv4 address      
+     (if issue use chomd , or check the properties of key - the owner should be you and remove other users and apply )
    [  Any timeout (not just for SSH) is related to security groups or a firewall. Ensure your security group looks like this and correctly assigned to your EC2 instance. rules > ssh 0.0.0.0/0  ::/0  ]
 
 Pricing options are available

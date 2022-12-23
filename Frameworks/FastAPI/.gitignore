@@ -2,7 +2,7 @@ samples/
 .idea/
 *.pyc
 *.sol
-*.ini
+
 loadableStudy/input_load.dat
 loadableStudy/result.json
 loadableStudy/ship_status.json
