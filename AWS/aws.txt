@@ -1,0 +1,760 @@
+Aws info 
+
+
+Access Aws 
+    - by management console 
+    - aws cli by access keys 
+    - sdk python boto3 
+
+CLI 
+    - CLI blank if permissions to user not provided 
+    -- aws configure [ give id and pass , nearest region    ]
+    -- aws iam list-users                  # list all users
+    -- aws iam create-user                 # create user
+
+EC2 -  ELASTIC COMPUTE CLOUD
+    t2micro - 1 vpcu (virtual cpu ) with 1 GIb memory , ebs storage only  with low to moderate network performance !
+
+    launching web server on ec2 
+    - choose AMI - amazon machine image   (free tier )
+    - choose instance   type, configurations, sg , user data (pre built scirpt for automation of daily tasks )
+    Sg - allow http port 80 = means from anywhere it allows clients to access the website on port 80
+    - create key pair and choose RSA and login 
+    - start stop ec2 = change in its public ipv4
+    - [ EC2 when launched = Os Boots and the ec2 user data is run
+      when you restart just the OS boots up , so if application is slow it will take time to start up ]
+      EC2 HIBERNATE - when used in memory RAM is preserved and instance boot is much faster , here OS IS NOT STOPPED / RESTARTED ,
+      under the hood - ram state is writeen to encrypted EBS volume  (must be encrypted )
+      Use case - service thats takes time to initialize , save RAM state , no boot up time for application 
+       (only available for on demand and reserved instances , cannot be hibernated more than 60 days )
+       when u connec to ec2 , connect to it and use uptime command to check for how much time the instance was up for ! 
+
+    - just like aws services, key pair is also region specific , so if you want to use it in another region , you have to create it again
+    
+    EC2 instance Types 
+        m5.2xlarge 
+        m : instance class
+        5 : generation class 
+        2xlarge : size within the instance class 
+        [ more the size more the memory , more the cpu load on ur ec2 ]
+    
+    . General purpose  = Compute optimized performance  
+            > for batch processing workloads, high performance web servers , high performance computing HPC , ML , DEDICATED game servers 
+    . Memory optimized = Process large data sets in memory
+            > High performance DBs , cache stores , in memory dbs , real time processing of big unstructured data
+    . Storage optimized = Accessing lot of data sets of Local storage 
+            > High frequency OLTP systems , relational and no sql dbs, cache , data warehouse 
+
+    
+    AMI
+        - AMi refers 
+        - is a customisated image of ec2 instance and if you create your own it gives your faster boot time and 
+        |   they are  built for a specific region only, they're unique for each AWS Region.
+        - You can't launch an EC2 instance using an AMI in another AWS Region, 
+        |   but you can copy the AMI to the target AWS Region and then use it to create your EC2 instances.
+        - we can build the AMI from the EBS snapshots that we  created and we can launch EC2 from it 
+        |  But by default you use the public AMI but you can build your own as well  and sell on aws market
+
+    EC2 > EBS SNAPSHOT > AMI > EC2 ( new AZ  )
+
+
+
+    EC2 Instance Storage
+        - if u need high performance hardware disk , better i/o , for cache temporary data 
+        
+        - You can run a database on an EC2 instance that uses an Instance Store, but you'll have a problem that the data will be lost if the EC2 instance is stopped (it can be restarted without problems). 
+        One solution is that you can set up a replication mechanism on another EC2 instance with an Instance Store to have a standby copy. 
+        Another solution is to set up backup mechanisms for your data. It's all up to you how you want to set up your architecture to validate your requirements. 
+        In this use case, it's around IOPS, so we have to choose an EC2 Instance Store.
+
+    Run Apache on Ec2 
+      - ssh in ec2 instance
+     
+      ~ Ec2 User data ~
+        
+        sudo su;
+       
+        # Get the public IP address of the EC2 instance
+        EC2_IP=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
+
+        # Create the index.html file with the IP address
+        echo "Hello World! The public IP address of this EC2 instance is: $EC2_IP" > /var/www/html/index.html
+        yum update -y; yum install httpd -y; 
+        service httpd start; chkconfig httpd on; 
+        echo "Hello World" > /var/www/html/index.html; 
+        service httpd restart; service httpd status;
+      
+      - If cant Access the website  or Apache server 
+        
+        - Check the security group , if port 80 is open or not
+        | OR  in the browser check url should start with Http and not https
+        | Access http://35.154.208.59/  (public ipv4 of ec2 instance)
+
+        - Check if IGW is accessible to public subnet and routes are defined 
+
+Placement Groups
+    - Placement group is a logical grouping of EC2 instances based on placement group strategies 
+    - 3 startegies available - 
+      Cluster = in single az cluster instances in low latency group (High performance and high risk with GOOD COMMUNICATION BETWEEN THEM , 10 Gb speed network ) > if rack fails ,all instances fails at same time (For Big Data Job),
+      Spread = max 7 instances per group per AZ , spreads across underlying hardware ( Critical applications,minimize failure risk, MAXIMUM AVAILABILITY WHEN AZ FAIL  ) > if rack 1 fails , other one still stable ( For Maximize Availability )
+      Partition = spreads instances across different partitons within AZ ,max 7 Partitions per az in same region , scales 100s EC2's , The instances in partition does not share same racks with other partition instances (For Big Data app , HDFS)
+
+VPC
+  - vpc is isolated network in a Region
+   ( cidr = 10.0.0.0/16 )   
+  - there can be one vpc per AZ ( Availability zone )
+  - thus we divide the vpc into multiple subnets (public & private) in AZ
+    ( cidr1 = 10.0.1.0/24  cidr2 = 10.0.0.0/24  - for public & private subnets )
+    ( cidr is notation block to distribute Ip addresses into subnets )
+  - 10.0.1.0/24  means 10.0.1.0 are network bits  each one called Octects ranging from 0-255 
+  - /24 means Host ID = so out of 4 octects, 3 octects are blocked , remaining 1 octect available to use
+    ( 3 octects also refers 8*3 = 24 == in use ,   1 Octect = 8*1 = 8   == available to use )
+    ( so 2**8 Ip adressess available to use  == 256 ipaddress )
+  
+  classless inter domain routing = reduces wastage of Ip addresses by providing exact no of ip addressess to users 
+   - 172.31.1.0/28  ==  [ 32-28 (28 bits locked, 4 can be used) so  2**4  == 16 Ipaddress available ]
+
+  Example
+   - we Divide VPC Into smaller chunks called subnets called public and private
+    ( These are bounded in a availability zone )
+    - 10.0.0.0/16 = vpc cidr block    so 2 octects locked and 2 can be used == /24
+    |  --  10.0.0.0/24   ~ subnet 1 
+    |  --  10.0.1.0/24   ~ subnet 2
+
+  Process 
+    - Created Vpc in a Region with cidr block 
+      > seperated 2 subnets in AZ with that cidr block 
+      > created 2 route table each > added IGW > edited route of iGW to public subnet 
+      > added 2 ec2 in seperate Subnets ( assign public ip to public subnet )
+      > Access Public subnet EC2 using public ipv4 address
+
+   
+    - Security groups -                 applied on instance levels for routing traffic
+    - Elastic Ips  - fixed Ip addresses applied on instances that dont vanish after restarting ec2's
+
+    - Internet Gateway IGW  attach to subnet for external trafic = called public subnet
+    - Route table are rules specified to allow or deny any traffic - created for the subnets 
+    ( seperatly for private and public subnets and then associate with subnets )
+    [ Destination will be 0.0.0.0.0 ] => means from anywhere 
+    ( adding internet gateway to subnet as target )
+    (  NAT gatway added to private subnet  )
+    
+    - NAT gateway placed in public subnet, allow external traffic for instances in private subnet
+    - is a one way communication , private subnet -> internet,   here internet can communicate back !
+    - NACL  applies on subnet level - allowing traffic or denying it 
+
+
+    - 5 vpc per account , 200 subnets per vpc , total 1000 subnets per account
+    - Vpc peering  = connection between vpc having different cidr blocks
+    - Vpc Endpoint = private connection btw ur vpc and other AWS services without internet
+
+    - Vpn private network = is a service to have secure connection btw ur Vpc to on-premises through IPSec protocol .
+    - here internet is required
+    - for small workloads
+    - only components inside VPC can be used 
+    - internet is  not stable 
+
+    - Direct Network ( much better than VPN ) = direct connect gateway is a network service to connect on premises to aws  without internet 
+    - here internet is NOT  required
+    - for large workloads
+    - all aws resources can be used 
+    - internet is stable 
+
+    Q Use Nat Gateway to access internet from private subnet ?
+    - Attach NAT gateway to public subnet 
+    - Create route table for private subnet and add NAT gateway as target
+      ( Choose the Routes tab, and then choose Edit.
+      Add a route that directs Internet traffic (0.0.0.0/0) to the NAT gateway. )
+
+    Q  Access to Private instance in Private subnet ?
+    > logint to public ec2 
+    > create sample.pem file and copy paste key pair inside public ec2 machine 
+    > chmod 400 sample.pem  >  ssh -i sample.pem ec2-user@<private_ip_address>
+      ( so before  private ec2 cant access google using ping ,
+        we used NAT gatways to allow private subnets to access internet )
+
+IAM
+
+    Identy Access management = Limiting AWS resources to specific users 
+    
+    Iam user     = Unique user based on their capability and their permission to access AWS resources will be different 
+    
+    Iam group    = combine multiple iam users inorder to attach or detach iam policies for permissions
+    
+    Iam Role     = permission initated to Aws resources so that they can directly access resources without access key or secret access ID 
+                | - can be used on iam users to access iam services as well |  ( one iam role + ec2 server == 1 entity )  |
+                | Ex -  Your web app on ec2 needs to access s3 to store images, attach Iam role with S3FullAccess pre-defined policy  |
+                | -  Use Iam roles for EC2 instances > attach the role and when u access ec2 by ssh u can use the resources 
+                |    without aws configure  command (used by iam user to authenticate)
+                |    then we can directly provide iam role which consists of iam policy which is attached to ec2 instance |
+    
+    Iam policies = Permission can be pre defined or custom made 
+                | attached to Iam user, Iam groups, Iam roles 
+                | If custom made > and if resources defined are both Allow and deny 
+                | > then Iam Identy can Access that resource
+
+  
+                Iam json policy syntax
+                    - version : "2012-10-17"
+                    - id : "identifer of the policy"
+                    - statement:[
+                        {
+                            "Sid": identifer of the statement
+                            "Effect": "Allow" or "Deny"
+                            "Principal": "acc/ role / user to which the policy is applied to"
+                            "Action": API CALLS [s3:GetObject, s3:PutObject, ]"
+                            "Resource": "arn:aws:s3:::bucketname/*" or "arn:aws:ec2:*:*:instance"
+                        }
+                    ]
+
+                users > user1 >  add permissions > attach existing policy > search and add policy  (IAM read only access) 
+                * If u add user1 in devs group , so user will contain both individual as well as Group permissions and policies
+
+    IAM Security tools 
+        - Credentials Report > get all info about iam users passwords and their info 
+        - Click User > Access Advisor > shows the list of resources used by them and at what time
+          which is  binded by the Polcy permission
+        - One Iam user is one physical user , make groups for multiple users , enable mFa + password policy , 
+        - Create and use ROLES for giving permissions to aws services ( EC2 or S3 use IAM roles )
+        - Never share IAM users and ACCESS keys 
+
+Lambda
+
+  provide serverless compute resources basis on API Calls
+  - no server required , its serverless architecture - solution to call ur functions as Lambda API 
+  ( just apply your code to the lambda )
+  - Automatic Scaling based on size of workload 
+  - payment marked on amount of time code is runnning 
+  - Example - Adding images to s3 bucket > aws lambda triggered to verify the images and convert to thumbnails > database
+  - Example 2 = client hit request > lambda triggered > based on load > auto scale docker containers
+  - Example 3 = copy ongoing data changes  from source S3 bucket to destination S3 bucket using aws lambda 
+    |           and iam role attached on lambda where we specify source and destination bucket in IAM policy
+    |           action :  s3:GetObject, s3:PutObject,  source bucket Resource: source bucket arn and destination bucket arn
+
+Step Functions 
+
+  - Automation for aws applications 
+    - which are divided into steps to perform multiple actions on aws resources to get tasks done 
+    - just like python script created to run aws resources automatically
+    - can be used as alert scheduler via SNS or SQS, 
+    | run parallel tasks with lambda , use storage in S3, wait for task to complete, retry if failed, provide choices 
+    
+  | Example 1 =  Scenerio where if user purchase succedded return user with "purchase" message
+    |       - 2 lambda functions for purachase confirmation and purachase refund set by user 
+    |       > invoke Iam role on Step function and by default it comes with invoking lambda function
+    |       > created state machine ( step function ) > initialized code to perform based on input type$.
+    |       > attach iam role created to step function > create state machine > Start Execution > give inputs >>> executed Lambda
+
+  | Example 2 - If giving SQS URL or SNS ARN in step functions json code  = it will automatically detect the IAM role for you when you create this step function
+    | for SQS - we give sqs URL to attach in step function code and provide SNS ARN for   aws SNS    |
+
+  | Example 3 - can perform Retry operations too if Tasks of function name fails to add task in Dynomodb table
+    
+      "Comment":{"description of the step function to Understand it "}
+      "StartsAt":{" from which function name u wanna start at ! "}
+      "states" :{'stores all function names', 'type inluded','Next: what to do next' }
+      |           Type can be 
+      |                     "Pass"  - to ignore function       
+      |                     "Task"  - refers to aws function      
+      |                     "Map"   - Validate multiple requests 
+      |                     "Wait"  : run function after waiting or particular Timestamp
+      |                       "Seconds":3 or 
+      |                       "Timestamp":"2022-12-22-18t00:00:00z"
+
+      "$.TranscationID" : { $ refers to input where we give dictionary of key TranscationID and its value }
+      "End": true
+    
+    - json code syntax
+
+      {
+        "comment":"description of step function",
+        "StartsAt":"ProcessTranscation"   # starts at   function name presented under States
+        "States":{
+                "ProcessTranscation":{
+                  "Type": "Pass",           # type can be Pass or Task - which is referred to aws resource
+                  "Next": "StoreHistory"    # Next == after completion what is next function ? 
+                },
+                "StoreHistory":{            # function 2  - here type is task 
+                  "Type": "Task",
+                  "Resource": "ARN or URK",  # refers to aws resource - could be arn or url of that resource 
+                  "Parameters":{
+                    "TableName":"Dynomo db table name",
+                    "item":{
+                      "TranscationID":{
+                        "S.$":"$.TranscationID"
+                      }
+                    }
+                  }
+                },
+                "Retry":[
+                      {
+                        "ErrorEquals":[
+                          "States.ALL"
+                        ],
+                        "IntervalSeconds":1,
+                        "MaxAttempts":3
+                      }
+                ],
+                End : true,
+                "ResultPath":"$.DynomoDB"     # we will give input dictionary with key DynomoDB, here value of key is stored
+        }
+
+      }
+
+      ---input---
+      {"TranscationID":"3849fh89"}
+
+  | Example 4 = execute step function  from lambda to send message in SQS
+
+      |     
+      |     > create json syntax which sends queue message to sqs where inputs are -
+      |     > input:{"MessageBody":{'hi'},"Type":"Message"}, then copy step function ARN
+      |     ( these input keys "MessageBody" , "Type" will be sent through lambda functions )
+      
+      |     > create lambda function from scratch , choose Step function FullAccesss Role 
+      |       (use least priviledge in production where under json code > "Action":"states:StartExecution") 
+      |     
+      |       > lambda code - to interact with step function 
+      |         import json
+                import boto3
+                import uuid
+
+                client = boto3.client('stepfunctions')  
+
+                def lambda_handler(event, context):
+    
+                  transactionId = str(uuid.uuid1()) 
+
+                  input = {'TransactionId': transactionId, 'Type': 'PURCHASE'}
+
+                  response = client.start_execution(
+                      
+                      stateMachineArn = 'use the copied step function ARN here ',
+                      name = transactionId,
+                      input = json.dumps(input)	  
+                      )
+
+      |      > Executed  lambda  
+      |      >>> which in turn executes "Step function State machine" 
+      |      >>> sends message with TransactionId to SQS
+      |      >   BEtter to use AWS workflow for crearting State machines
+
+CloudWatch
+
+    - A metric  is a time-ordered set of data points that are published to CloudWatch set on aws resources
+
+    Why we need CloudWatch monitoring tool ?
+    - if application faces downtime or denies access , we can check logs and identify errors
+    - making applications cost as low as possible by enabling metrics on aws services
+
+    - Basic monitoring    - free,    poll every 5 min, less metrics 
+    - Detailed monitoring - charged, poll every 1 min, Wide range metrics 
+
+    Features
+        - collects and tracks key metrics on aws resources like ec2, rds, elb, s3, asg etc
+        - send system events to aws lambda, sns and other aws resources like lambda
+        - collects, monitors log files
+        - creates alarms and send notifications
+
+    Process 
+        - Collect metrics from aws resources > monitors logs > Automated Response > real time analysis
+        ( if there is change in aws enviornment, it detects those changes intelligently )
+
+    - CloudWatch Alarms
+      CloudWatch > All metrics > select aws resource > select metric (based like cpu utltization, network in, network out, status check failed) 
+      > select statistic > select period > select threshold 
+      > select action == also called as "CloudWatch Events"
+        ( action can be - send sns, send email, send sms, invoke lambda, stop ec2, terminate ec2, reboot ec2, stop asg, terminate asg, reboot asg )
+
+Difference between cloudwatch alarms and events ?
+
+  - CloudWatch Alarms are used to monitor thresholds and 
+    take automated actions when those thresholds are breached. 
+    
+    CloudWatch Events are used to respond to changes in your 
+    resources and automate operational workflows.
+
+Difference between Step Functions and CloudWatch Events ?
+
+  - when provisioning step function  diagram  , 
+    step functions dont need Iam role seperatly to call aws services 
+    ( though later if u add services to diagram, Iam role is needed )
+    while cloudwatch events needs Iam role access before before executing events.
+    
+  - Step Functions  automates long-running processes that involve multiple steps 
+    or tasks, 
+    while CloudWatch Events is more geared towards reacting to particular change
+    in your resources and triggering simple actions.
+  
+  - Step functions allows to design complex workflows with branching and looping logic,
+    and includes features such as retries and error handling
+    while cloudwatch
+    events cant support complex workflows
+
+Projects
+
+    Serverless workflow where cloudwatch trigger events 
+      (based on s3 upload image, DMS changes, EC2 changes ) 
+      which in turn trigger step functions getting the logs from 
+      cloudwatch events as input and thus return trigger lambda function as output
+
+      - Currently if s3 object gets triggered > trigger cloudwatch event 
+      | > execute target ( step function - perform activities on aws resources, , store logs  )
+
+
+      - You may recall that a Step Functions Pass state simply passes its input to its output. 
+        You can use the ResultPath field to modify the output of a state. For example, 
+        you can replace the state input with the result it produces 
+        (for example, output from a Task state’s Lambda function).
+
+        To combine the state’s input with its result, add a new line after line 7 and type:
+        "ResultPath": "$.taskresult",
+
+        How ?
+        - Use the "Pass" action in your state machine to pass the output from the previous 
+        | task to the next task in the state machine. This allows you to use the output of 
+        | the previous task as input to subsequent tasks in the state machine.
+
+        - This way , you dont need to explicitly check the output box [ Add original input to output using ResultPath ]
+        | in the step function state machine workflow diagram
+      
+      - create cloudwatch event rule to trigger on s3 object upload or ec2 changes or dms changes
+      - create step function state machine 
+      | with two states one with pass ( "ResultPath": "$.taskresult" ) to get logs from cloudwatch event 
+      | and second to trigger lambda function to run "hello world"
+      | ( Logs from cloudwatch events will continue to pass to lambda function as input )
+      | added choices if logs shows ec2 is running or stopped  ~ $.detail.state matches string "running"
+      | if runnning > run lambda else end flow 
+
+
+      Terminate Resources
+        - delete state machine
+        - delete cloudwatch event rule
+        - clear iam roles
+
+    Automatic Scheduling of Ec2 instance using lambda, IAM, Ec2, CloudWatch Project
+      
+      - created 4 ec2 
+      - created ec2 full access custom iam policy 
+      - created iam role for lambda to access 
+      - created lambda function in python with the iam role attach to stop ec2 instances
+        ( created 2 lambda functions to start and stop ec2 )
+          import boto3
+
+          def lambda_handler(event, context):
+              ec2 = boto3.client('ec2')
+
+              print('calling main lambda handler ')
+              print(event['InstanceIds'])
+
+
+
+              def lambda_():
+
+                  instance_ids = [event['InstanceIds']]
+                  response = ec2.stop_instances(InstanceIds=instance_ids)
+                # response = ec2.start_instances(InstanceIds=instance_ids) # 2 function to start ec2 
+                  print(response)
+                  print("Inside nested lambda functions")
+                  return response
+                  
+              return lambda_()
+          --- params  ---
+            {
+              "InstanceIds": "i-0a3b69df27aa78f02"
+            }
+
+        ~ u can find ec2 instance id when u click on it  
+        | Instance: i-0a3b69df27aa78f02 (private1)- its not Ipv4 ipaddress
+      - now we create cloudwatch events to automatically stop,start  ec2 automatically
+        create rule > schedule particular event or match event pattern 
+        > add targets ( lambda functions to start or stop ec2, even sns topic to schedule notifications )
+
+    Step functions project for adding entry in dynomo db using lambda
+      
+        create dynomno db table
+        create workflow of dynomno db first- where in step function we putItem
+        {customerId and orderId}
+        then second step to invoke lambda function in the diagram ( for pre iam role configuration )
+
+        - we checking if dynomo db gets 200 status code or not , based on that we create workflow
+        | Now if we want to get the returned output from executed steps
+          > click on workflow > dynomo db > output 
+          > Transform result with ResultSelector - optional 
+          ( get the resulted json from the result u got from executing dynomo db )
+          {"statusCode.$": "$.SdkHttpMetadata.HttpStatusCode"}  ( based on this Http code status we create workflow )
+
+        > check "Add original input to output using ResultPath" box  (  return the output  )
+        $.result    = based on input u give while creating dynomo db entry, it will return the status code in result:statusCode format
+            ~ This way, when u check the dynomo db output response when executing state machine 
+            - u get the result back with status code 
+            ( where earlier u get complex json object with irrelvant fields )
+            ( check and explore items in dynomno db table- items added too ) 
+
+        ~ now we add choice in workflow > 
+          ( where in one end we add lamda function to call credit card service else return 
+          - we do this by adding rule  )
+        - under lambda function ( 2 step ) name == call credit card service 
+          - we need to add rule else return home 
+          ( rule > from output body in dynomo db execution - check result.statusCode if 200 then proceed > add success state )
+          ( else for 2 condition > we add Fail state  > retry failure > add result path back to state == $.result)
+          ~ make sure u return the path in output and catch block $.result so that it can return Fail 
+
+
+Elastic Network Interfaces ( ENI )
+    - its gives ec2 access to the network , they are virtual network card(logical component ) in VPC
+    - have 1 primary IPv4 or more secondary Ipv4 (public ipv4 , 1elastic ipv4 , mac address , one or more SG ), 
+    - can be independently attach to ec2s, bound to PARTICULAR AZ, CANT BE ATTACHED TO ANOTHER AZ's EC2 
+    (   Use case - 2 ec2s running an application and when you can  access that ec2 with the private ip - thanks to ENI (secondary virtual network card ) 
+    we could easily do it without failover within 2 instances )
+
+Elastic Block Storage ( EBS )
+    - EBS volume is a network drive that you attach to a particular instance and the data will still persist after its termination and 
+      it can be only mounted to one instance at a time and it is bound to a specific availability zone only just like EC2 
+    - can attach multiple ebs volumes on single ec2 
+    - in order to move it across the availability zone you need to take the snapshot of it it has a high provision capacity 
+    - basically it is  backup of ebs volumes only and there is no necessary to detach the volume to do the snapshot 
+      but it is a good practice so you create the snapshots to copy data from across the region
+
+    - Volume  in 6 types 
+     gp2/gp3 and io1 io2 can be used as boot volumes   
+     General purpose SSD - cost effective , low latency , for  system boot bolumes ,gp3 increase upto 16000 IOPS , small gp2 upto 3000 IOPS 
+    
+    - Provisioned IOPS SSD 
+    ( for critical applications that sustain IOPS more than 16000 ), good for db workloads
+
+    - HDD . cannot be  boot volumes , with through put  optimized HDD , max IOPS 500 
+          . COLD HDD - for data that is infrequently accessed  ( IOPS 250 )
+    
+    - EBS MULTI ATTACH 
+      attach ebs volume to multiple ec2 instances in same ax , each az has full read and write  permisison to volume 
+      ( for cuncurrent write operations  and HIGH availability )
+    
+    - EBS ENCRYPTION 
+      WHEN U ENCRYPT 
+        data at rest , on fly , snapshot , volumes created from it are envrypted 
+      . Leverage keys from KMS AES 256 
+      . By default, the Root volume type will be deleted as its "Delete On Termination" attribute checked by default. Any other EBS volume types will not be deleted as its "Delete On Termination" attribute disabled by default.
+
+ELASTIC FILE SYSTEM  EFS 
+    - here it can be mounted to multiple ec2s in multi az ( not like ebs which is locked in single az  and here data cant be shared )
+    - 3 times cost of gp2 
+    - all ec2 access the same files 
+    ( web serving , data sharing , multi az )
+    - uses sg to control access to EFS 
+    - COMPATIBLE ONLY WITH LINUX AMI   - not windows 
+    - it automatically scales with pay per use model 
+    - FOr latency sensitive - GENERAL PURPOSE (webserver cms ) , FOr Big data Use MAX I/O (higher latency  ,through put )
+    - Through put mode - bursting 1 TB = 50 mib , set your throughput regrdless of storage size 
+    - STORGE Tiers - move files after N days , for standard and infrequent access (cost to retrieve files and to store files  if files not accessed lately )
+
+EBS vs EFS 
+    can be attached to single ec2 , locked in single AZ , IO increases if disk size increases , 
+    to migrate ebs volume across az > take snapshot > here root vol gets terminated with ec2 by default 
+    -   whereas     -
+    efs mounts 100s of instances across AZ , only for linux , more expensive , use EFS-IA for cost savings 
+
+    Instance store helps to maximum IO , EC2 Instance Store provides the best disk I/O performance.
+
+
+
+
+
+
+
+
+
+Security Groups
+    - Firewalls outside of your ec2  (traffic in and out are dependent on them )
+    - By default all inbound traffic is blocked  and all outside traffic is authorized
+    - what is allowed to go in , is allowed to go out, based on rules by IP addresses 
+    - source 0.0.0.0/0 means everything is allowed
+    - single instance can have multiple security groups , locked in region /vpc > so new region new security group
+    - If application not accessibe , then try to connect to configure your ports of the security group 
+    - ec2_1 > sg_1 > ec2_2 , sg_2 >>> main_sg <<< EC2 >>>
+    - 22 = ssh (secure shell) , http & https (80, 443) access unsecured and secured websites , 21 (FTP file transfer ),3389 (rdp windows control machine )
+    
+
+ssh ,puttty , ec2 instance connect  to connect to  ec2 
+    - download putty > file > load private key and select the key (save it ) 
+       > enter putty configurations > ec2-user@ipv4 address under hostname 
+       > save it > under ssh > auth > browse and laod ssh key 
+    - ssh  -i path_to_pem_file.pem ec2-user@ipv4 address      
+     (if issue use chomd , or check the properties of key - the owner should be you and remove other users and apply )
+   [  Any timeout (not just for SSH) is related to security groups or a firewall. Ensure your security group looks like this and correctly assigned to your EC2 instance. rules > ssh 0.0.0.0/0  ::/0  ]
+
+Pricing options are available
+    - On demand = linux per sec , windows per min , other per hour , no upfront , not long term
+    ( recommended for short term and un interruption workloads ), here u dont know the workload
+    - Reserved Instance  ( 75 % chepaer than on demand )
+                         - reserved = for long workloads 
+                         - convertible reserved  = long workloads with flexbile instances,can change ec2 type
+                         - Scheduled  reserved   = every thursay btwn 3 to 6 pm 
+                            ( for steady stage usage like databases )
+    - Spot instances = short workloads . cheapest and can lose instance , for batch jobs, image processing, any distributed workloads , NOT FOR CRITICAL JOBS or DBS
+        ( as long as max spot price is there  , we keep the instance , after that we get 2 min grace period , we can stop or terminate the instance )
+        ( SPOT BLOCK - when u block spot instance for specific time period > 1-6 hours without interruption )
+        ( spot request - one time request to book spot instance , persistent request to book spot instance for specific time period )
+        - first cancel open active or disable spot request and then terminate the spot instance
+        SPOT FLEETS = spot instances + on demand instances
+           - define launch pools , lowest price 
+           - automatically request spot instance with lowest price 
+
+    - Dedicated Instance = instances running on hardware ,no control over instance placement  
+        ( here billing is per instance )
+    - Dedicated hosts = Book an entire physical server , contorl instance placement 
+        ( physical server , renting entire server ,address compliance requirements and use your server bound software licenses )
+        ( for 3 yr period ,  more expensive , server bound license can be used )
+        (You would like to deploy a database technology on an EC2 instance and the vendor license bills you based on the physical cores and underlying network socket visibility.
+         it will allow EC2 Purchasing Option allows you to get visibility into them?)
+
+    EG 
+        on demand - staying in resort whenever we like and we pay full price , reserved = planning ahead for booking rooms at good discount
+        spot = hotels allows to bid for room , highest bidder gett the room , can get kicked out any time 
+        dedicated hosts = book entire Building of the resort 
+
+
+IPV4 VS IPV6
+    - each octect in ipv4 ranges from 0-255
+    - each computer in private network can talk to each other , but when you have internet gateway , it can go public 
+    - Public ip means unique IP and can be identified on internet WWW
+    - Private Ip means unique too across all private network,but 2 different private networks can have same IP address
+    - machines with private ip conenct to www using NAT (network address translation)
+    - when ec2 restarted , public ipv4 changes , private ipv4 remains same , can attach elastic ip one at a time 
+    - u can only 5 elastic ip in ur account , can map failure to another ec2 
+    - RECOMMENDED = use random IP with DNS register to it
+    - By Default - EC2 comes with private ip for aws network and we cant ssh via it but for public ip  it is used for internet and can use the same for ssh 
+
+
+
+
+SCALABILITY 
+    - means application can handle greater loads of Scalability 
+    - vertical ( increasing size of instance ,use case for database ) & horiztonal (increasing number of instances, ,use case for  web application )
+    - High availability - running application in at least 2 data centers (2 AZs) , like to survive a data center loss 
+    - Load Balancing    - servers that forward traffic to multiple servers 
+    -                    ( Expose a single point DNS to your application , spread load , do regular health checkups , provide SSL termination HTTPS )
+    - ELB is a managed load balancer which  aws gurantees it will work , will take care of upgrades , maintenance , High availability and Health checks of instances
+    - Types of load balancers 
+        > Classic Load balancer CLB (Legacy )
+        > application load balancer  ( Http , Https , websocket )
+        > Network Load Balancer ( TCP , TLS )
+    - Can be private and Public , accessed by security group 
+    - Overall it is recommenned to use newer generation 
+
+
+CLASSIC Load Balancer 
+    - Support TCP layer 4 and HTTPS Layer 7 of TCP/IP model 
+    - health checks based on tcp andh http based , where hostname is fixed 
+    ( we can allow all traffic from load balancers to EC2 via security group - allowing inbound rule -> will distribute traffic equally among all instances )
+
+APPLICATION Load Balancer 
+    - Layer 7 HTTP 
+    - Load Balancing to multiple Http applications across machines (target groups )
+    - support redirect from http to https 
+    - Route traffic based on path in url ( eg /posts & /home )
+    - Route traffic based on hostname in URL (eg one.ex.com  & other.ex.com )
+    - Routing based on Query string headers ( /users?id=123 )
+    (    Great fit for micro services and docker based container sized applications 
+         beacuse they have port mapping feature to redirect to any dynamic port in ECS  )
+    ( HERE TARGET GROUPS can be EC2 , ECS tasks , lambda functions , IP addresses 
+        Thus it can route to multiple target groups and health checks can be done at target group level ) 
+    - ALB cant see IP of the client directly , THE TRUE IP OF THE CLIENT IS INSERTED IN THE HEADER 
+    X-Forwarded-For 
+    [ when your load balancer talks to your EC2 instance,
+    it's going to use the load balancer IP,
+    which is a private IP into your EC2 instance.
+    And so for the EC2 instance to know the client IP,
+    it will have to look at these extra headers
+    in your HTTP request, which are called X-Forwarded-Port and Proto.]
+
+    - LOAD goes from USERS > TO ALB > TO TARGET GROUP > TO EC2
+
+NETWORK  Load Balancer 
+
+    - when you need ultra-high performance, TLS offloading at scale, centralized certificate deployment,
+      support for UDP, 
+    - static IP addresses for your applications. 
+    - Operating at the connection level ( LAYER 4 ), 
+    - Network Load Balancers are capable of handling millions of requests per second 
+      securely while maintaining ultra-low latencies.
+    - protocol TCP & UDP  (no http , no https , no websocket )
+    (   If status of instances are unhealthy , make sure you check the security groups of the instances 
+       so that it allows HTTP traffic from anywhere )
+
+
+GATEWAY Load Balancer   ( GLB )
+    - Layer 3 Network Layer 
+    - Deploy , scale and manage a  fleet of 3 party network virtual appliances in AWS 
+    - LOAD goes from Users > route table > GLB > target group > GLB > EC2 
+    ( single entry exit for all traffic = Transparent Network Gateway )
+    - Uses The GENEVE Protocl on port 6081 
+  
+
+Sticky Sessions ( Session Affinity )
+
+    - We can set the cookie to be sticky , so that the same user will be served the same instance
+    - works for ALB and CLB only 
+    - Use case - so that user dosen't loose session data  but may imabalance the load to single ec2 
+    - Cookies Names > Application based > 
+
+
+
+
+
+S3      vs   Aurora RDS     vs      Dynomo Db       vs    Redshift  
+
+    Structured Data is in fixed format , has fields in table                         -> Aurora RDS (engines including Mysql,PostgreSql)
+    Unstructured data is in free format , has no schema or fields                    -> Dynomo DB (engines including MongoDB)
+    Data Warehouse exist on top on several databases and create layer of abstraction -> Redshift  (combination of all Databases )
+    Data Lake is a central repo for Structured and unstructured data storage         -> S3 ( like your local hardrive )
+
+    S3          - a simple storage service to protect any data, extremly durable 
+                - create a bucket (Container), upload data in it 
+
+    Aurora RDS  - fully managed SQL Relational Database where engines available are MySql, PostgreSql with continous backup to s3 
+    
+    Redshift    - Redshift cluster  = collection of nodes , each node has its own storage , each node has its own database
+                - fastest cloud Data Warehouse for business analytics , use and collect data from other databases
+                - launch a cluster , here in vanilla Redshift, we need to move data from s3 to Redshift to run sql queries 
+                - Redshift Spectrum - Direcly allows to  runs  sql queries on s3   and get data quicksight [ visualizations ]
+
+    Dynomo Db   - fully managed NoSQL database with high availability , high performance , high scalability
+
+
+
+AWS GLUE 
+    Extract -> Tranform -> Load             
+    - is data integration tool  Load data from source to destination   
+    - Exmple (  csv file uploaded to ->  S3 -> from Glue  ->  Redshift      )
+
+
+
+
+
+EC2 Advance concepts ( Nitro , vcpu , capacity reservations )
+    nitro = better performance , ipv6 , enhance networking , 
+            high speed EBS upto 64,000 IOPS
+
+    [   IOPS = input/output operations per second 
+        Performance for EBS is primarily measured in input/output operations per second (IOPS).
+        In the EBS case, IOPS refer to operations on blocks that are up to 16 KB in size.1  Standard volumes deliver 100 IOPS on average.
+        This is roughly to number of IOPS that a single desktop-class 7200 rpm SATA hard drive can deliver. 
+        In comparison, a similar desktop-class SSD drive can deliver anywhere between 5,000 and 100,000 IOPS. 
+        Server-class SSD drives can go much higher.
+    ]
+
+    OPTIMIZE CPU OPTIONS 
+         - EC2 comes with combination of RAM and MEMORY 
+         - in some case , u would want to change vcpu options , so if any license charges u on the cores 
+           you can reomove these cores and utltize effeciently  > so that could be possible by vcpu options in AWS 
+         - Can be done on aws launch only 
+        
+        vCPU - when launching instances , we are launching vpcus only 
+            - multiple threads can run on 1 CPU (  Multithreading ), each thread is like a vcpu 
+
+    CAPACITY RESERVATIONS 
+        - You wish to reserve instances in particular AZ without 1 yr - 3 yr commitment 
+        - it ensures u have enough ec2 capacity when needed for a specific time timeframe 
+
+    
