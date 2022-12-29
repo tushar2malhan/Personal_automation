@@ -1299,3 +1299,28 @@ POINTS
 #                          How to set same Path directory location for all users
 # import os
 # main_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# from pathlib import Path
+# 'driver_path':str(Path.home()/"Downloads/chromedriver_win32/chromedriver.exe"),
+# 'pics_dir':str(Path.home()/"Desktop/attendance/pics")
+
+
+############################################################################################################################
+
+#                         Create System Variables in Windows
+
+# UI              -> Environment Variables > System Variables > New > Variable Name = "name" , Variable Value = "value"
+# shell ( BEST )  ->  set CHANNELDB_NAME=advapi_test 
+# python          -> os.environ["name"] = "value"     ( Note that ~ these environment variables will only be set for the duration of the Python script. )
+
+#                         Execute These env variables in Windows
+
+# python -> print(os.environ.get("name"))  # to get the value of the variable
+# shell  ->   echo %name%                  # to get the value of the variable
+
+#                           Execute These env variables in Linux
+
+# wsl    -> echo $MYSQL_USER
+
+############################################################################################################################
+

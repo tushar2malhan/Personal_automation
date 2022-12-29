@@ -37,14 +37,17 @@ EC2 -  ELASTIC COMPUTE CLOUD
         5 : generation class 
         2xlarge : size within the instance class 
         [ more the size more the memory , more the cpu load on ur ec2 ]
-    
-    . General purpose  = Compute optimized performance  
-            > for batch processing workloads, high performance web servers , high performance computing HPC , ML , DEDICATED game servers 
-    . Memory optimized = Process large data sets in memory
-            > High performance DBs , cache stores , in memory dbs , real time processing of big unstructured data
-    . Storage optimized = Accessing lot of data sets of Local storage 
-            > High frequency OLTP systems , relational and no sql dbs, cache , data warehouse 
+        
+        . General purpose  = Compute optimized performance  
+                > for batch processing workloads, high performance web servers , 
+                > high performance computing HPC , ML , DEDICATED game servers 
 
+        . Memory optimized = Process large data sets in memory
+                > High performance DBs , cache stores , in memory dbs , 
+                real time processing of big unstructured data
+                
+        . Storage optimized = Accessing lot of data sets of Local storage 
+                > High frequency OLTP systems , relational and no sql dbs, cache , data warehouse 
     
     AMI
         - AMi refers 
@@ -56,8 +59,6 @@ EC2 -  ELASTIC COMPUTE CLOUD
         |  But by default you use the public AMI but you can build your own as well  and sell on aws market
 
     EC2 > EBS SNAPSHOT > AMI > EC2 ( new AZ  )
-
-
 
     EC2 Instance Storage
         - if u need high performance hardware disk , better i/o , for cache temporary data 
@@ -92,6 +93,92 @@ EC2 -  ELASTIC COMPUTE CLOUD
 
         - Check if IGW is accessible to public subnet and routes are defined 
 
+    Security Groups
+        - Firewalls outside of your ec2  (traffic in and out are dependent on them )
+        - By default all inbound traffic is blocked  and all outside traffic is authorized
+        - what is allowed to go in , is allowed to go out, based on rules by IP addresses 
+        - source 0.0.0.0/0 means everything is allowed
+        - single instance can have multiple security groups , locked in region /vpc > so new region new security group
+        - If application not accessibe , then try to connect to configure your ports of the security group 
+        - ec2_1 > sg_1 > ec2_2 , sg_2 >>> main_sg <<< EC2 >>>
+        - 22 = ssh (secure shell) , http & https (80, 443) access unsecured and secured websites , 21 (FTP file transfer ),3389 (rdp windows control machine )
+        
+    ssh ,puttty , ec2 instance connect  to connect to  ec2 
+
+        - download putty > file > load private key and select the key (save it ) 
+          > enter putty configurations > ec2-user@ipv4 address under hostname 
+          > save it > under ssh > auth > browse and laod ssh key 
+        - ssh  -i path_to_pem_file.pem ec2-user@ipv4 address      
+        (if issue use chomd , or check the properties of key - the owner should be you and remove other users and apply )
+      [  Any timeout (not just for SSH) is related to security groups or a firewall. Ensure your security group looks like this and correctly assigned to your EC2 instance. rules > ssh 0.0.0.0/0  ::/0  ]
+
+    Pricing options are available
+
+        - On demand = linux per sec , windows per min , other per hour , no upfront , not long term
+        ( recommended for short term and un interruption workloads ), here u dont know the workload
+        - Reserved Instance  ( 75 % chepaer than on demand )
+                            - reserved = for long workloads 
+                            - convertible reserved  = long workloads with flexbile instances,can change ec2 type
+                            - Scheduled  reserved   = every thursay btwn 3 to 6 pm 
+                                ( for steady stage usage like databases )
+        - Spot instances = short workloads . cheapest and can lose instance , for batch jobs, image processing, any distributed workloads , NOT FOR CRITICAL JOBS or DBS
+            ( as long as max spot price is there  , we keep the instance , after that we get 2 min grace period , we can stop or terminate the instance )
+            ( SPOT BLOCK - when u block spot instance for specific time period > 1-6 hours without interruption )
+            ( spot request - one time request to book spot instance , persistent request to book spot instance for specific time period )
+            - first cancel open active or disable spot request and then terminate the spot instance
+            SPOT FLEETS = spot instances + on demand instances
+              - define launch pools , lowest price 
+              - automatically request spot instance with lowest price 
+
+        - Dedicated Instance = instances running on hardware ,no control over instance placement  
+            ( here billing is per instance )
+        - Dedicated hosts = Book an entire physical server , contorl instance placement 
+            ( physical server , renting entire server ,address compliance requirements and use your server bound software licenses )
+            ( for 3 yr period ,  more expensive , server bound license can be used )
+            (You would like to deploy a database technology on an EC2 instance and the vendor license bills you based on the physical cores and underlying network socket visibility.
+            it will allow EC2 Purchasing Option allows you to get visibility into them?)
+
+        EG 
+            on demand - staying in resort whenever we like and we pay full price , reserved = planning ahead for booking rooms at good discount
+            spot = hotels allows to bid for room , highest bidder gett the room , can get kicked out any time 
+            dedicated hosts = book entire Building of the resort 
+
+    IPV4 VS IPV6
+        - each octect in ipv4 ranges from 0-255
+        - each computer in private network can talk to each other , but when you have internet gateway , it can go public 
+        - Public ip means unique IP and can be identified on internet WWW
+        - Private Ip means unique too across all private network,but 2 different private networks can have same IP address
+        - machines with private ip conenct to www using NAT (network address translation)
+        - when ec2 restarted , public ipv4 changes , private ipv4 remains same , can attach elastic ip one at a time 
+        - u can only 5 elastic ip in ur account , can map failure to another ec2 
+        - RECOMMENDED = use random IP with DNS register to it
+        - By Default - EC2 comes with private ip for aws network and we cant ssh via it but for public ip  it is used for internet and can use the same for ssh 
+
+    EC2 Advance concepts ( Nitro , vcpu , capacity reservations )
+        nitro = better performance , ipv6 , enhance networking , 
+                high speed EBS upto 64,000 IOPS
+
+        [   IOPS = input/output operations per second 
+            Performance for EBS is primarily measured in input/output operations per second (IOPS).
+            In the EBS case, IOPS refer to operations on blocks that are up to 16 KB in size.1  Standard volumes deliver 100 IOPS on average.
+            This is roughly to number of IOPS that a single desktop-class 7200 rpm SATA hard drive can deliver. 
+            In comparison, a similar desktop-class SSD drive can deliver anywhere between 5,000 and 100,000 IOPS. 
+            Server-class SSD drives can go much higher.
+        ]
+
+        OPTIMIZE CPU OPTIONS 
+            - EC2 comes with combination of RAM and MEMORY 
+            - in some case , u would want to change vcpu options , so if any license charges u on the cores 
+              you can reomove these cores and utltize effeciently  > so that could be possible by vcpu options in AWS 
+            - Can be done on aws launch only 
+            
+            vCPU - when launching instances , we are launching vpcus only 
+                - multiple threads can run on 1 CPU (  Multithreading ), each thread is like a vcpu 
+
+        CAPACITY RESERVATIONS 
+            - You wish to reserve instances in particular AZ without 1 yr - 3 yr commitment 
+            - it ensures u have enough ec2 capacity when needed for a specific time timeframe 
+    
 Placement Groups
     - Placement group is a logical grouping of EC2 instances based on placement group strategies 
     - 3 startegies available - 
@@ -361,10 +448,16 @@ CloudWatch
         ( if there is change in aws enviornment, it detects those changes intelligently )
 
     - CloudWatch Alarms
-      CloudWatch > All metrics > select aws resource > select metric (based like cpu utltization, network in, network out, status check failed) 
-      > select statistic > select period > select threshold 
-      > select action == also called as "CloudWatch Events"
-        ( action can be - send sns, send email, send sms, invoke lambda, stop ec2, terminate ec2, reboot ec2, stop asg, terminate asg, reboot asg )
+        CloudWatch > All metrics > select aws resource > select metric (based like cpu utltization, network in, network out, status check failed) 
+        > select statistic > select period > select threshold 
+        > select action == also called as "CloudWatch Events"
+          ( action can be - send sns, send email, send sms, invoke lambda, stop ec2, terminate ec2, reboot ec2, stop asg, terminate asg, reboot asg )
+
+    - Subscription filtering
+        - it filters the logs from log stream and sends to destination
+        
+        CloudWatch > Logs > select log group > select log stream > select subscription filter 
+        > select destination (sns, lambda, kinesis, firehose, cloudwatch logs, cloudwatch events)
 
 Difference between cloudwatch alarms and events ?
 
@@ -391,7 +484,7 @@ Difference between Step Functions and CloudWatch Events ?
     while cloudwatch
     events cant support complex workflows
 
-Projects
+~~  PROJECTS  ~~
 
     Serverless workflow where cloudwatch trigger events 
       (based on s3 upload image, DMS changes, EC2 changes ) 
@@ -500,7 +593,6 @@ Projects
           ( else for 2 condition > we add Fail state  > retry failure > add result path back to state == $.result)
           ~ make sure u return the path in output and catch block $.result so that it can return Fail 
 
-
 Elastic Network Interfaces ( ENI )
     - its gives ec2 access to the network , they are virtual network card(logical component ) in VPC
     - have 1 primary IPv4 or more secondary Ipv4 (public ipv4 , 1elastic ipv4 , mac address , one or more SG ), 
@@ -556,152 +648,6 @@ EBS vs EFS
 
     Instance store helps to maximum IO , EC2 Instance Store provides the best disk I/O performance.
 
-
-
-
-
-
-
-
-
-Security Groups
-    - Firewalls outside of your ec2  (traffic in and out are dependent on them )
-    - By default all inbound traffic is blocked  and all outside traffic is authorized
-    - what is allowed to go in , is allowed to go out, based on rules by IP addresses 
-    - source 0.0.0.0/0 means everything is allowed
-    - single instance can have multiple security groups , locked in region /vpc > so new region new security group
-    - If application not accessibe , then try to connect to configure your ports of the security group 
-    - ec2_1 > sg_1 > ec2_2 , sg_2 >>> main_sg <<< EC2 >>>
-    - 22 = ssh (secure shell) , http & https (80, 443) access unsecured and secured websites , 21 (FTP file transfer ),3389 (rdp windows control machine )
-    
-
-ssh ,puttty , ec2 instance connect  to connect to  ec2 
-    - download putty > file > load private key and select the key (save it ) 
-       > enter putty configurations > ec2-user@ipv4 address under hostname 
-       > save it > under ssh > auth > browse and laod ssh key 
-    - ssh  -i path_to_pem_file.pem ec2-user@ipv4 address      
-     (if issue use chomd , or check the properties of key - the owner should be you and remove other users and apply )
-   [  Any timeout (not just for SSH) is related to security groups or a firewall. Ensure your security group looks like this and correctly assigned to your EC2 instance. rules > ssh 0.0.0.0/0  ::/0  ]
-
-Pricing options are available
-    - On demand = linux per sec , windows per min , other per hour , no upfront , not long term
-    ( recommended for short term and un interruption workloads ), here u dont know the workload
-    - Reserved Instance  ( 75 % chepaer than on demand )
-                         - reserved = for long workloads 
-                         - convertible reserved  = long workloads with flexbile instances,can change ec2 type
-                         - Scheduled  reserved   = every thursay btwn 3 to 6 pm 
-                            ( for steady stage usage like databases )
-    - Spot instances = short workloads . cheapest and can lose instance , for batch jobs, image processing, any distributed workloads , NOT FOR CRITICAL JOBS or DBS
-        ( as long as max spot price is there  , we keep the instance , after that we get 2 min grace period , we can stop or terminate the instance )
-        ( SPOT BLOCK - when u block spot instance for specific time period > 1-6 hours without interruption )
-        ( spot request - one time request to book spot instance , persistent request to book spot instance for specific time period )
-        - first cancel open active or disable spot request and then terminate the spot instance
-        SPOT FLEETS = spot instances + on demand instances
-           - define launch pools , lowest price 
-           - automatically request spot instance with lowest price 
-
-    - Dedicated Instance = instances running on hardware ,no control over instance placement  
-        ( here billing is per instance )
-    - Dedicated hosts = Book an entire physical server , contorl instance placement 
-        ( physical server , renting entire server ,address compliance requirements and use your server bound software licenses )
-        ( for 3 yr period ,  more expensive , server bound license can be used )
-        (You would like to deploy a database technology on an EC2 instance and the vendor license bills you based on the physical cores and underlying network socket visibility.
-         it will allow EC2 Purchasing Option allows you to get visibility into them?)
-
-    EG 
-        on demand - staying in resort whenever we like and we pay full price , reserved = planning ahead for booking rooms at good discount
-        spot = hotels allows to bid for room , highest bidder gett the room , can get kicked out any time 
-        dedicated hosts = book entire Building of the resort 
-
-
-IPV4 VS IPV6
-    - each octect in ipv4 ranges from 0-255
-    - each computer in private network can talk to each other , but when you have internet gateway , it can go public 
-    - Public ip means unique IP and can be identified on internet WWW
-    - Private Ip means unique too across all private network,but 2 different private networks can have same IP address
-    - machines with private ip conenct to www using NAT (network address translation)
-    - when ec2 restarted , public ipv4 changes , private ipv4 remains same , can attach elastic ip one at a time 
-    - u can only 5 elastic ip in ur account , can map failure to another ec2 
-    - RECOMMENDED = use random IP with DNS register to it
-    - By Default - EC2 comes with private ip for aws network and we cant ssh via it but for public ip  it is used for internet and can use the same for ssh 
-
-
-
-
-SCALABILITY 
-    - means application can handle greater loads of Scalability 
-    - vertical ( increasing size of instance ,use case for database ) & horiztonal (increasing number of instances, ,use case for  web application )
-    - High availability - running application in at least 2 data centers (2 AZs) , like to survive a data center loss 
-    - Load Balancing    - servers that forward traffic to multiple servers 
-    -                    ( Expose a single point DNS to your application , spread load , do regular health checkups , provide SSL termination HTTPS )
-    - ELB is a managed load balancer which  aws gurantees it will work , will take care of upgrades , maintenance , High availability and Health checks of instances
-    - Types of load balancers 
-        > Classic Load balancer CLB (Legacy )
-        > application load balancer  ( Http , Https , websocket )
-        > Network Load Balancer ( TCP , TLS )
-    - Can be private and Public , accessed by security group 
-    - Overall it is recommenned to use newer generation 
-
-
-CLASSIC Load Balancer 
-    - Support TCP layer 4 and HTTPS Layer 7 of TCP/IP model 
-    - health checks based on tcp andh http based , where hostname is fixed 
-    ( we can allow all traffic from load balancers to EC2 via security group - allowing inbound rule -> will distribute traffic equally among all instances )
-
-APPLICATION Load Balancer 
-    - Layer 7 HTTP 
-    - Load Balancing to multiple Http applications across machines (target groups )
-    - support redirect from http to https 
-    - Route traffic based on path in url ( eg /posts & /home )
-    - Route traffic based on hostname in URL (eg one.ex.com  & other.ex.com )
-    - Routing based on Query string headers ( /users?id=123 )
-    (    Great fit for micro services and docker based container sized applications 
-         beacuse they have port mapping feature to redirect to any dynamic port in ECS  )
-    ( HERE TARGET GROUPS can be EC2 , ECS tasks , lambda functions , IP addresses 
-        Thus it can route to multiple target groups and health checks can be done at target group level ) 
-    - ALB cant see IP of the client directly , THE TRUE IP OF THE CLIENT IS INSERTED IN THE HEADER 
-    X-Forwarded-For 
-    [ when your load balancer talks to your EC2 instance,
-    it's going to use the load balancer IP,
-    which is a private IP into your EC2 instance.
-    And so for the EC2 instance to know the client IP,
-    it will have to look at these extra headers
-    in your HTTP request, which are called X-Forwarded-Port and Proto.]
-
-    - LOAD goes from USERS > TO ALB > TO TARGET GROUP > TO EC2
-
-NETWORK  Load Balancer 
-
-    - when you need ultra-high performance, TLS offloading at scale, centralized certificate deployment,
-      support for UDP, 
-    - static IP addresses for your applications. 
-    - Operating at the connection level ( LAYER 4 ), 
-    - Network Load Balancers are capable of handling millions of requests per second 
-      securely while maintaining ultra-low latencies.
-    - protocol TCP & UDP  (no http , no https , no websocket )
-    (   If status of instances are unhealthy , make sure you check the security groups of the instances 
-       so that it allows HTTP traffic from anywhere )
-
-
-GATEWAY Load Balancer   ( GLB )
-    - Layer 3 Network Layer 
-    - Deploy , scale and manage a  fleet of 3 party network virtual appliances in AWS 
-    - LOAD goes from Users > route table > GLB > target group > GLB > EC2 
-    ( single entry exit for all traffic = Transparent Network Gateway )
-    - Uses The GENEVE Protocl on port 6081 
-  
-
-Sticky Sessions ( Session Affinity )
-
-    - We can set the cookie to be sticky , so that the same user will be served the same instance
-    - works for ALB and CLB only 
-    - Use case - so that user dosen't loose session data  but may imabalance the load to single ec2 
-    - Cookies Names > Application based > 
-
-
-
-
-
 S3      vs   Aurora RDS     vs      Dynomo Db       vs    Redshift  
 
     Structured Data is in fixed format , has fields in table                         -> Aurora RDS (engines including Mysql,PostgreSql)
@@ -721,40 +667,257 @@ S3      vs   Aurora RDS     vs      Dynomo Db       vs    Redshift
 
     Dynomo Db   - fully managed NoSQL database with high availability , high performance , high scalability
 
-
-
 AWS GLUE 
     Extract -> Tranform -> Load             
     - is data integration tool  Load data from source to destination   
     - Exmple (  csv file uploaded to ->  S3 -> from Glue  ->  Redshift      )
 
+SCALABILITY 
+
+    - means application can handle greater loads of Scalability 
+    - vertical ( increasing size of instance ,use case for database ) & horiztonal (increasing number of instances, ,use case for  web application )
+    - High availability - running application in at least 2 data centers (2 AZs) , like to survive a data center loss 
+    - Load Balancing    - servers that forward traffic to multiple servers 
+    -                    ( Expose a single point DNS to your application , spread load , do regular health checkups , provide SSL termination HTTPS )
+    - ELB is a managed load balancer which  aws gurantees it will work , will take care of upgrades , maintenance , High availability and Health checks of instances
+    - Types of load balancers 
+        > Classic Load balancer CLB (Legacy )
+        > application load balancer  ( Http , Https , websocket )
+        > Network Load Balancer ( TCP , TLS )
+    - Can be private and Public , accessed by security group 
+    - Overall it is recommenned to use newer generation 
 
 
+  CLASSIC Load Balancer 
+      - Support TCP layer 4 and HTTPS Layer 7 of TCP/IP model 
+      - health checks based on tcp andh http based , where hostname is fixed 
+      ( we can allow all traffic from load balancers to EC2 via security group - allowing inbound rule -> will distribute traffic equally among all instances )
+
+  APPLICATION Load Balancer 
+      - Layer 7 HTTP 
+      - Load Balancing to multiple Http applications across machines (target groups )
+      - support redirect from http to https 
+      - Route traffic based on path in url ( eg /posts & /home )
+      - Route traffic based on hostname in URL (eg one.ex.com  & other.ex.com )
+      - Routing based on Query string headers ( /users?id=123 )
+      (    Great fit for micro services and docker based container sized applications 
+          beacuse they have port mapping feature to redirect to any dynamic port in ECS  )
+      ( HERE TARGET GROUPS can be EC2 , ECS tasks , lambda functions , IP addresses 
+          Thus it can route to multiple target groups and health checks can be done at target group level ) 
+      - ALB cant see IP of the client directly , THE TRUE IP OF THE CLIENT IS INSERTED IN THE HEADER 
+      X-Forwarded-For 
+      [ when your load balancer talks to your EC2 instance,
+      it's going to use the load balancer IP,
+      which is a private IP into your EC2 instance.
+      And so for the EC2 instance to know the client IP,
+      it will have to look at these extra headers
+      in your HTTP request, which are called X-Forwarded-Port and Proto.]
+
+      - LOAD goes from USERS > TO ALB > TO TARGET GROUP > TO EC2
+
+  NETWORK  Load Balancer 
+
+      - when you need ultra-high performance, TLS offloading at scale, centralized certificate deployment,
+        support for UDP, 
+      - static IP addresses for your applications. 
+      - Operating at the connection level ( LAYER 4 ), 
+      - Network Load Balancers are capable of handling millions of requests per second 
+        securely while maintaining ultra-low latencies.
+      - protocol TCP & UDP  (no http , no https , no websocket )
+      (   If status of instances are unhealthy , make sure you check the security groups of the instances 
+        so that it allows HTTP traffic from anywhere )
 
 
-EC2 Advance concepts ( Nitro , vcpu , capacity reservations )
-    nitro = better performance , ipv6 , enhance networking , 
-            high speed EBS upto 64,000 IOPS
-
-    [   IOPS = input/output operations per second 
-        Performance for EBS is primarily measured in input/output operations per second (IOPS).
-        In the EBS case, IOPS refer to operations on blocks that are up to 16 KB in size.1  Standard volumes deliver 100 IOPS on average.
-        This is roughly to number of IOPS that a single desktop-class 7200 rpm SATA hard drive can deliver. 
-        In comparison, a similar desktop-class SSD drive can deliver anywhere between 5,000 and 100,000 IOPS. 
-        Server-class SSD drives can go much higher.
-    ]
-
-    OPTIMIZE CPU OPTIONS 
-         - EC2 comes with combination of RAM and MEMORY 
-         - in some case , u would want to change vcpu options , so if any license charges u on the cores 
-           you can reomove these cores and utltize effeciently  > so that could be possible by vcpu options in AWS 
-         - Can be done on aws launch only 
-        
-        vCPU - when launching instances , we are launching vpcus only 
-            - multiple threads can run on 1 CPU (  Multithreading ), each thread is like a vcpu 
-
-    CAPACITY RESERVATIONS 
-        - You wish to reserve instances in particular AZ without 1 yr - 3 yr commitment 
-        - it ensures u have enough ec2 capacity when needed for a specific time timeframe 
-
+  GATEWAY Load Balancer   ( GLB )
+      - Layer 3 Network Layer 
+      - Deploy , scale and manage a  fleet of 3 party network virtual appliances in AWS 
+      - LOAD goes from Users > route table > GLB > target group > GLB > EC2 
+      ( single entry exit for all traffic = Transparent Network Gateway )
+      - Uses The GENEVE Protocl on port 6081 
     
+
+  Sticky Sessions ( Session Affinity )
+
+      - We can set the cookie to be sticky , so that the same user will be served the same instance
+      - works for ALB and CLB only 
+      - Use case - so that user dosen't loose session data  but may imabalance the load to single ec2 
+      - Cookies Names > Application based > 
+
+Kinesis
+
+  - Provides real time processing of streaming data at scale
+  - Example of real time data -> multiplayer game, social media feeds , stock market feeds 
+  - 1. We can use Kinesis to collect data 
+  |    from multiple sources and process it in real time
+  | 2. We can then use the data to store it in S3 , 
+  |    DynamoDB , Redshift , ElasticSearch , Kinesis Firehose
+  |    ( To process analytics , machine learning , 
+  |     real time dashboards , real time alerts )
+  
+  - 4 types of Kinesis  
+
+    | 1. Kinesis Data Streams
+    |    = collects gigabyte of data in real time from different sources and sends to output
+    |    - Example -> Stock market feeds , social media feeds
+    |    - Data is stored in shards, Shards can be scaled up or down
+    |    - (  Each data is divided into shards in number of 1000s )
+    |    - Data is stored for 24 hours to process
+    |    - Alarms can be set to trigger alerts
+    |    - Data collected is available in milliseconds to provide real time analytics
+    |    - Thus data is then feeded to other AWS services 
+    |      like S3 , DynamoDB , Redshift , ElasticSearch , Kinesis Data Firehose
+    |    - We cant store data for more than 24 hours ,
+    |      so we can use Kinesis Data Firehose to store data in S3 for long term storage
+    | IMP - Data stored in Kinesis is in encoded format , so we can use Kinesis Analytics to decode it 
+    |       or use Lambda to decode it
+    |     - Aws > Kinesis choose data stream > create data stream > give name > choose number of shards > create stream
+    |     ( for each record, partition key is unique , so that data is stored in different shards )  
+    |      
+    |      def decode_kinesis_record(record):
+    |          """  lambda function to decode data  """
+    |          payload = base64.b64decode(record['kinesis']['data'])
+    |          return json.loads(payload)
+
+
+    | 2. Kinesis Video Streams    
+    |     = collects data from videos from devices to store in AWS
+    |     - Example -> Live on youtube, Video Calls
+    |     - Video is broken into chunks and stored in S3
+    |       Video is analyzed by AWS Rekognition and AWS transcribe
+    |       then we can use the data to build real time dashboards
+    |     - Example of devices are phone, camera, pc etc..
+    |     - Data is replicated across 3 AZs, processed in real time parallelly
+    |     - Alarms can be set to trigger alerts
+
+    | 3. Kinesis Data Firehose
+    |     = Loads streaming data in not real time , but near real time to store data in output 
+    |      ( thats what it makes different from Kinesis data streams )
+    |     - output can be S3 , Redshift , ElasticSearch , Splunk , Lambda
+    |     - Loads data in ur destination within 60 seconds
+    |     - Data is stored in S3 for long term storage upto 365 days
+
+    | 4. Kinesis Data Analytics
+    |     = Easiest way to Analyze streaming data in real time
+    |     ( -> query data in real time )
+
+  Data stream Vs Delivery stream ?
+    - you might use a data stream to process streaming data in 
+    | real-time and trigger alerts or actions based on the data, 
+    | while you might use a delivery stream to load the data into
+    | a data warehouse for offline analysis.
+
+  PROJECTS
+    ~ ETL from dynomo db  to AWS Redshift using Kinesis Data Firehose
+
+    ~ FLOW 
+      = client uploads data  to DynamoDB  ( Unstructured Data )
+      > Lambda invoked                    ( code to transfer data to Kinesis Data Firehose )
+      > Kinesis Data Firehose             ( data logged  )
+      > Data presented S3                 ( Buffered storage )
+      > Finally data pushed Redshift      ( Structured Data )
+    
+    ~ STEPS
+      - create Redshift cluster with subnet group ( having 2 subnets or more ) 
+      - create DynamoDB table named "Employees" with primary key "ID"
+      - create IAM role for LAMBDA to access kinesis data firehose and cloudwatch logs 
+          | ~ ERROR -> ( Your function doesn't have permission to write to Amazon CloudWatch Logs. 
+          |             To view logs, add the AWSLambdaBasicExecutionRole managed policy to its execution role. Open the IAM console)
+          | SOLUTION -> ( Add AWSLambdaBasicExecutionRole to IAM role of lambda function ) 
+          ( change maximum time lambda can run upto 15 minutes from 3 seconds  )
+      
+      - Lets connect dynamo db to lambda 
+          ( such that if stream happens on dynamo db table then lambda is invoked )
+      |   In dynamo db > Enable DynamoDB stream details ( changes reflected will be pushed ) 
+      |    > new and ols events > enable > create trigger > choose ur lamda function >
+      |    ( make sure ur lambda funcion has access to dynamo db table via IAM role )
+      |    - In lambda u can check dynamo db table in function overview to call lambda function
+      |    OR 
+      |    connect the source as dynamo db in LAMBDA function only as + add trigger
+
+      - Create S3 bucket with name "dynamodbRedshift" which will be used as destination for Kinesis Data Firehose
+      
+      - Lets connection between ur lambda to Kinesis Data Firehose using delivery stream
+        Kinesis > choose delivery stream > create delivery stream > give name > choose source as Direct PUT ( which is ur lambda function  ) 
+        > choose destination as Redshift cluster > copy delivery stream name ( PUT-RED-YxVDE )
+        > paste it inside ur lambda function code > save > test > check in cloudwatch logs if lambda function is invoked
+        > Code for lambda function
+            |   """ 
+            |      get data from dynamodb and
+            |      push it to kinesis data firehose 
+            |   """
+            
+            import boto3
+            import json
+
+            firehose = boto3.client('firehose')
+            deliveryStreamName = 'PUT-RED-YxVDE'        # redhsift delivery stream name
+
+            def convert_to_firehose_record(ddb_record):
+                new_image = ddb_record['NewImage']
+                fields = []
+                for key, value in new_image.items():
+                    fields.append(value['S'])
+                firehose_record = ",".join(fields) + "\n"
+                print('firehose_record ',firehose_record)
+                return firehose_record
+
+            def lambda_handler(event, context):
+                print('EVENT',event)
+                print('log group  ',context.log_group_name)
+                print('log stream ',context.log_stream_name)
+                for record in event['Records']:
+                    if record['eventName'] in ['INSERT', 'MODIFY']:
+                        ddb_record = record['dynamodb']
+                        firehose_record = convert_to_firehose_record(ddb_record)
+                        result = firehose.put_record(DeliveryStreamName=deliveryStreamName, Record={ 'Data': firehose_record})
+                        print('Data processed successfully to kinesis data stream ')
+                return 'processed {} records.'.format(len(event['Records']))
+        # script only to add data to dynamo db table
+    
+
+        > check in Kinesis Data Firehose if data is being pushed to S3 bucket
+        > allow inbound traffic to ur redshift cluster from Kinesis Data Firehose ( in security group )
+        ( used the default sg -> which will allow all traffic from anywhere )
+        ( make redshift cluster publically accessible > by default its private > allow it under properties  )
+        
+        > provide redshift cluster name , user name , password , database name , table name in Kinesis Data Firehose
+          ( redhshift > query editor v2 > check database name == dev ( which is redshift-cluster-1/dev) )
+          ( create table == employees ( which is dynamodb table name ) in redshift cluster  )
+        
+          |    CREATE TABLE EMPLOYEES (
+                    Id varchar(255),
+                    Name varchar(255),
+                    City varchar(255),
+                    Email varchar(255),
+                    Designation varchar(255),
+          |         PhoneNumber varchar(255)    );     # table created 
+          
+          ( give the table name "employees" in kinesis data firehose )
+          - choose s3 bucket for buffering data ( s3://dynamodb-redshift )
+          - Under COPY command > type "csv" > create delivery stream 
+
+          - finally give input in DynamoDB > Items: Employees > Edit item > json 
+            {
+              "ID": {
+                "S": "1"
+              },
+              "Name": {
+                "S": "Smith"
+              },
+              "City": {
+                "S": "NewYork"
+              },
+              "Email": {
+                "S": "xyz2dffd@gmail.com"
+              },
+              "Designation": {
+                "S": "Sr.Dev"
+              },
+              "PhoneNumber": {
+                "S": "2124141241"
+              }
+            }
+          - lambda > monitor > view logs in cloudwatch > check if lambda function is invoked
+          - > save > check in redshift cluster if data is being pushed to employees table
+            [  data will take some time to be pushed to redshift cluster ]
+        
