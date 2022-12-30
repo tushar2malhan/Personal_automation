@@ -487,6 +487,7 @@ Difference between Step Functions and CloudWatch Events ?
 ~~  PROJECTS  ~~
 
     Serverless workflow where cloudwatch trigger events 
+      
       (based on s3 upload image, DMS changes, EC2 changes ) 
       which in turn trigger step functions getting the logs from 
       cloudwatch events as input and thus return trigger lambda function as output
@@ -513,7 +514,7 @@ Difference between Step Functions and CloudWatch Events ?
       
       - create cloudwatch event rule to trigger on s3 object upload or ec2 changes or dms changes
       - create step function state machine 
-      | with two states one with pass ( "ResultPath": "$.taskresult" ) to get logs from cloudwatch event 
+      | with two states - one with pass ( "ResultPath": "$.taskresult" ) to get logs from cloudwatch event 
       | and second to trigger lambda function to run "hello world"
       | ( Logs from cloudwatch events will continue to pass to lambda function as input )
       | added choices if logs shows ec2 is running or stopped  ~ $.detail.state matches string "running"
@@ -565,24 +566,24 @@ Difference between Step Functions and CloudWatch Events ?
 
     Step functions project for adding entry in dynomo db using lambda
       
-        create dynomno db table
-        create workflow of dynomno db first- where in step function we putItem
-        {customerId and orderId}
-        then second step to invoke lambda function in the diagram ( for pre iam role configuration )
+        - create dynomno db table
+        - create workflow of dynomno db first- where in step function we putItem
+          {customerId and orderId}
+        - then second step to invoke lambda function in the diagram ( for pre iam role configuration )
 
         - we checking if dynomo db gets 200 status code or not , based on that we create workflow
-        | Now if we want to get the returned output from executed steps
+          | Now if we want to get the returned output from executed steps
           > click on workflow > dynomo db > output 
           > Transform result with ResultSelector - optional 
           ( get the resulted json from the result u got from executing dynomo db )
           {"statusCode.$": "$.SdkHttpMetadata.HttpStatusCode"}  ( based on this Http code status we create workflow )
 
         > check "Add original input to output using ResultPath" box  (  return the output  )
-        $.result    = based on input u give while creating dynomo db entry, it will return the status code in result:statusCode format
-            ~ This way, when u check the dynomo db output response when executing state machine 
-            - u get the result back with status code 
-            ( where earlier u get complex json object with irrelvant fields )
-            ( check and explore items in dynomno db table- items added too ) 
+          $.result    = based on input u give while creating dynomo db entry, it will return the status code in result:statusCode format
+          ~ This way, when u check the dynomo db output response when executing state machine 
+          - u get the result back with status code 
+          ( where earlier u get complex json object with irrelvant fields )
+          ( check and explore items in dynomno db table- items added too ) 
 
         ~ now we add choice in workflow > 
           ( where in one end we add lamda function to call credit card service else return 
@@ -592,6 +593,129 @@ Difference between Step Functions and CloudWatch Events ?
           ( rule > from output body in dynomo db execution - check result.statusCode if 200 then proceed > add success state )
           ( else for 2 condition > we add Fail state  > retry failure > add result path back to state == $.result)
           ~ make sure u return the path in output and catch block $.result so that it can return Fail 
+
+    DMS - Migrate data from S3 to MySQL
+      
+      Pre-requisites
+        - Launch a MySQL RDS instance db.t2micro with mysql version in custom vpc
+          - db_name = postgres (db-identifier) username = postgres, password = postgres123
+          = TEST => `psql -h <postgres_endpoint> -p 5432 -U postgres -d postgres`
+        
+        - ( Mysql client ) Launch ec2 in same vpc with same vpc , open 22 and 3306 port 
+          | Currently, query editor only supports Aurora Serverless databases. 
+          | Only Aurora Serverless database that you have access to will be displayed.
+          | thats y we use mysql client for querying db 
+          -> check Security group configuration section below
+        
+        - Modify RDS security group to provide inbound access from ec2 security group 
+          | and vpc security group on port 3306
+          -> check Security group configuration section below
+        
+        - SSh into ur ec2 and install mysql client `sudo yum install mysql -y`
+        - create an empty bucket in s3 named "dms-s3-bucket-1"
+      
+      Security group configuration
+
+        In the "Type" dropdown, select "Custom TCP Rule".
+
+        In the "Source" field, enter the ID of the EC2 security group (e.g., sg-12345678).
+
+        In the "Protocol" and "Port Range" fields, specify the protocol and port range that you want to allow traffic for. For example, if you want to allow traffic for MySQL, you would specify "TCP" as the protocol and "3306" as the port range.
+
+          ec2 traffic from 5432 to -> RDS on port 
+        # DO mention the port 5432 with the rds sg-ID
+
+        Same way in ec2 security group > allow inbound traffic from rds sg
+        # DO mention the port 5432 with the EC2 sg-ID
+          rds traffic from port 5432 -> ec2 server 
+
+
+        Check the security group rules: 
+        Make sure that the security group associated 
+        with the EC2 instance has an inbound rule that allows traffic to the RDS database. 
+
+        You can also check the security group associated with the RDS database to ensure that it has an inbound rule that allows traffic from the EC2 instance.
+
+      Steps
+        - create IAM role for s3 full acess and write access to rds
+        - create s3 bucket named "dms-s3-bucket-1"
+        - create a folder named address and subfolder named zipcode
+        
+        - create a file named address.csv and upload it to s3 bucket
+          |  Source data files must be in -> s3://Bucket_name/database/table_name/filename.csv format
+          |  Example ->                      s3://dms-s3-bucket-1/address/zipcode/address.csv
+        
+        - create a replica instance in AWS DMS 
+        - Endpoints > create a source endpoint for s3 bucket - test the endpoint
+          | Add iam arn > add s3 bucket name 
+          | * DONT give s3 bucket path, it will detect automatically |
+          > add  table Structure in json format ( description of table in RDS )
+            {
+                "TableCount": "1",
+                "Tables": [
+                    {
+                        "TableName": "zipcode",
+                        "TablePath": "address/zipcode/",
+                        "TableOwner": "address",
+                        "TableColumns": [
+                            {
+                                "ColumnName": "Zip",
+                                "ColumnType": "INT8",
+                                "ColumnNullable": "false",
+                                "ColumnIsPk": "true"
+                            },
+                            {
+                                "ColumnName": "Place",
+                                "ColumnType": "STRING",
+                                "ColumnLength": "50"
+                            },
+                            {
+                                "ColumnName": "State",
+                                "ColumnType": "STRING",
+                                "ColumnLength": "50"
+                            },
+                            {
+                                "ColumnName": "StateAbbr",
+                                "ColumnType": "STRING",
+                      "ColumnLength": "2"
+                            },
+                            {
+                                "ColumnName": "County",
+                                "ColumnType": "STRING",
+                                "ColumnLength": "50"
+                            },
+                            {
+                                "ColumnName": "Latitude",
+                                "ColumnType": "NUMERIC",
+                      "ColumnPrecision": "6",
+                      "ColumnScale": "4"
+                            },
+                            {
+                                "ColumnName": "Longitude",
+                      "ColumnType": "NUMERIC",
+                                "ColumnPrecision": "6",
+                      "ColumnScale": "4"
+                            }
+                        ],
+                        "TableColumnsTotal": "7"
+                    }
+                ]
+            }
+          > Test the endpoint 
+        - create a target endpoint for rds - test the endpoint
+          | add rds endpoint configuration like username, password, port, db-instance-identifier
+          > Test the endpoint > refres if asks for arn 
+        - create a replication task to migrate the data using s3 as source and rds as target
+          | Remember:
+          | For ongoing replication ~
+          |   cdcPath is required in source endpoint
+          |   when task is configured for ongoing replication
+          |   with Amazon S3 as a source.
+          | Schem name and table name is % because they are present in json file 
+        - Look at Table Statistics in the task details to see the number of records that have been migrated.
+        - FINALLy check the data in rds - a database named "address" & table named "zipcode" will be created with all records 
+
+
 
 Elastic Network Interfaces ( ENI )
     - its gives ec2 access to the network , they are virtual network card(logical component ) in VPC
@@ -809,14 +933,14 @@ Kinesis
   PROJECTS
     ~ ETL from dynomo db  to AWS Redshift using Kinesis Data Firehose
 
-    ~ FLOW 
-      = client uploads data  to DynamoDB  ( Unstructured Data )
-      > Lambda invoked                    ( code to transfer data to Kinesis Data Firehose )
-      > Kinesis Data Firehose             ( data logged  )
-      > Data presented S3                 ( Buffered storage )
-      > Finally data pushed Redshift      ( Structured Data )
-    
-    ~ STEPS
+      ~ FLOW 
+        = client uploads data  to DynamoDB  ( Unstructured Data )
+        > Lambda invoked                    ( code to transfer data to Kinesis Data Firehose )
+        > Kinesis Data Firehose             ( data logged  )
+        > Data presented S3                 ( Buffered storage )
+        > Finally data pushed Redshift      ( Structured Data )
+      
+      ~ STEPS
       - create Redshift cluster with subnet group ( having 2 subnets or more ) 
       - create DynamoDB table named "Employees" with primary key "ID"
       - create IAM role for LAMBDA to access kinesis data firehose and cloudwatch logs 
@@ -824,20 +948,23 @@ Kinesis
           |             To view logs, add the AWSLambdaBasicExecutionRole managed policy to its execution role. Open the IAM console)
           | SOLUTION -> ( Add AWSLambdaBasicExecutionRole to IAM role of lambda function ) 
           ( change maximum time lambda can run upto 15 minutes from 3 seconds  )
+          | ~ ERROR -> ( Your function doesn't have permission to write to Firehose.| -> given permission 
+          | ~ ERROR -> Allow lambda functions to access IAM role and not other entity for this project )
       
-      - Lets connect dynamo db to lambda 
+      - Lets connect dynamo db to lambda -> [Trigger]
           ( such that if stream happens on dynamo db table then lambda is invoked )
-      |   In dynamo db > Enable DynamoDB stream details ( changes reflected will be pushed ) 
-      |    > new and ols events > enable > create trigger > choose ur lamda function >
-      |    ( make sure ur lambda funcion has access to dynamo db table via IAM role )
-      |    - In lambda u can check dynamo db table in function overview to call lambda function
-      |    OR 
-      |    connect the source as dynamo db in LAMBDA function only as + add trigger
+        |   In dynamo db > Enable DynamoDB stream details ( changes reflected will be pushed ) 
+        |    > new and ols events > enable > create trigger > choose ur lamda function >
+        |    ( make sure ur lambda funcion has access to dynamo db table via IAM role )
+        |    - In lambda u can check dynamo db table in function overview to call lambda function
+        |    OR 
+        |    connect the source as dynamo db in LAMBDA function only as + add trigger
 
       - Create S3 bucket with name "dynamodbRedshift" which will be used as destination for Kinesis Data Firehose
       
-      - Lets connection between ur lambda to Kinesis Data Firehose using delivery stream
-        Kinesis > choose delivery stream > create delivery stream > give name > choose source as Direct PUT ( which is ur lambda function  ) 
+      - Lets make connection between ur lambda to Kinesis Data Firehose using delivery stream
+        Kinesis > choose delivery stream > create delivery stream > give name 
+        > choose source as Direct PUT ( which is ur lambda function  ) 
         > choose destination as Redshift cluster > copy delivery stream name ( PUT-RED-YxVDE )
         > paste it inside ur lambda function code > save > test > check in cloudwatch logs if lambda function is invoked
         > Code for lambda function
@@ -875,49 +1002,67 @@ Kinesis
         # script only to add data to dynamo db table
     
 
-        > check in Kinesis Data Firehose if data is being pushed to S3 bucket
-        > allow inbound traffic to ur redshift cluster from Kinesis Data Firehose ( in security group )
-        ( used the default sg -> which will allow all traffic from anywhere )
-        ( make redshift cluster publically accessible > by default its private > allow it under properties  )
+      > check in Kinesis Data Firehose if data is being pushed to S3 bucket
+      > allow inbound traffic to ur redshift cluster from Kinesis Data Firehose ( in security group )
+      ( used the default sg -> which will allow all traffic from anywhere )
+      ( make redshift cluster publically accessible > by default its private > allow it under properties  )
+      
+      > provide redshift cluster name , user name , password , database name , table name in Kinesis Data Firehose
+        ( redhshift > query editor v2 > check database name == dev ( which is redshift-cluster-1/dev) )
+        ( create table == employees ( which is dynamodb table name ) in redshift cluster  )
+      
+        |    CREATE TABLE EMPLOYEES (
+                  Id varchar(255),
+                  Name varchar(255),
+                  City varchar(255),
+                  Email varchar(255),
+                  Designation varchar(255),
+        |         PhoneNumber varchar(255)    );     # table created 
         
-        > provide redshift cluster name , user name , password , database name , table name in Kinesis Data Firehose
-          ( redhshift > query editor v2 > check database name == dev ( which is redshift-cluster-1/dev) )
-          ( create table == employees ( which is dynamodb table name ) in redshift cluster  )
-        
-          |    CREATE TABLE EMPLOYEES (
-                    Id varchar(255),
-                    Name varchar(255),
-                    City varchar(255),
-                    Email varchar(255),
-                    Designation varchar(255),
-          |         PhoneNumber varchar(255)    );     # table created 
-          
-          ( give the table name "employees" in kinesis data firehose )
-          - choose s3 bucket for buffering data ( s3://dynamodb-redshift )
-          - Under COPY command > type "csv" > create delivery stream 
+        ( give the table name "employees" in kinesis data firehose )
+        - choose s3 bucket for buffering data ( s3://dynamodb-redshift )
+        - Under COPY command > type "csv" > create delivery stream 
 
-          - finally give input in DynamoDB > Items: Employees > Edit item > json 
-            {
-              "ID": {
-                "S": "1"
-              },
-              "Name": {
-                "S": "Smith"
-              },
-              "City": {
-                "S": "NewYork"
-              },
-              "Email": {
-                "S": "xyz2dffd@gmail.com"
-              },
-              "Designation": {
-                "S": "Sr.Dev"
-              },
-              "PhoneNumber": {
-                "S": "2124141241"
-              }
+        - finally give input in DynamoDB > Items: Employees > Edit item > json 
+          {
+            "ID": {
+              "S": "1"
+            },
+            "Name": {
+              "S": "Smith"
+            },
+            "City": {
+              "S": "NewYork"
+            },
+            "Email": {
+              "S": "xyz2dffd@gmail.com"
+            },
+            "Designation": {
+              "S": "Sr.Dev"
+            },
+            "PhoneNumber": {
+              "S": "2124141241"
             }
-          - lambda > monitor > view logs in cloudwatch > check if lambda function is invoked
-          - > save > check in redshift cluster if data is being pushed to employees table
-            [  data will take some time to be pushed to redshift cluster ]
-        
+          }
+        - lambda > monitor > view logs in cloudwatch > check if lambda function is invoked
+        - > save > check in redshift cluster if data is being pushed to employees table
+          [ Data will take some time to be pushed to redshift cluster ]
+          [ Check your cloudwatch logs if lambda function is invoked and no error is there ]
+      
+    ~ Real Time Data Streaming System with AWS Kinesis, Lambda Functions and a S3 Bucket
+
+      ~ FLOW
+        - data uploaded to s3 bucket , event notification triggered
+        > Lambda (Producer)
+        > Kinesis Data Stream
+        > Lambda (Consumer 1)
+        > Lambda (Consumer 2)
+
+      ~ STEPS
+        Iam role ( cloudwatch logs, kms, s3 full access ) for all lambdas
+        s3 > s3 event notification > target as Lambda ( Producer function )
+        Lambda ( Producer ) - code to read objects from s3 and push to kinesis data stream
+        kinesis data stream > create
+        > Lambda2 & Lambda3 ( consumers ) 
+          - set kinesis as trigger > when change in kinesis, 
+          - these lambdas should be invoked ([print(record['kinesis']['data']) for record in event['Records'] ]) 
