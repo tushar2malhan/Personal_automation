@@ -318,6 +318,145 @@ Lambda
     |           and iam role attached on lambda where we specify source and destination bucket in IAM policy
     |           action :  s3:GetObject, s3:PutObject,  source bucket Resource: source bucket arn and destination bucket arn
 
+  - Lambda Code to read specific CloudWatch stream from CloudWatch logs 
+        
+        import boto3
+
+        cloudwatch_logs = boto3.client('logs')         # Create a CloudWatchLogs client
+
+        def lambda_handler(event, context):
+          
+          """
+            Example  -> pass this in input when test
+            {
+            "logGroupName": "dms-tasks-replica-instance", 
+            "logStreamName": "dms-task-DNW53UA4SLBINYEZLJGLS5VQ4FQGJIEEKEVII7Q",
+            "startFromHead": true}
+          """
+
+          params = {                                  ## Set the parameters for the get_log_events call
+            'logGroupName': event['logGroupName'],
+            'logStreamName': event['logStreamName'],
+            'startFromHead': event['startFromHead']
+          }
+            
+          response = cloudwatch_logs.get_log_events(**params)   ## Call get_log_events to retrieve the logs
+          
+          log_events = response['events']              ## The response object will contain an array of log events in the 'events' field
+          
+          for log_event in log_events:                ## You can loop through the log events and process them as needed
+            print(log_event['message'])
+          
+          return log_events
+
+  - Lambda Code to read all CloudWatch streams from specific CloudWatch logs
+        
+      ## READ ALL LOGS from ALL LOG STREAMS
+
+      
+      import boto3
+
+      # Create a CloudWatchLogs client
+      cloudwatch_logs = boto3.client('logs')
+
+      def lambda_handler(event, context):
+            """
+                {
+                  'logGroupName': '/aws/lambda/YOUR_LAMBDA_FUNCTION_NAME',
+                  'orderBy': 'LogStreamName'
+                }
+            """
+            params = {
+              'logGroupName': event['logGroupName'],
+              # 'orderBy': event['LogStreamName']
+            }
+          
+          
+            # Call describe_log_streams to retrieve the log streams
+            log_streams = []
+            while True:
+                  response = cloudwatch_logs.describe_log_streams(**params)
+                  log_streams.extend(response['logStreams'])
+                  if 'nextToken' not in response:
+                      break
+                  log_stream_params['nextToken'] = response['nextToken']
+          #   print(log_streams)
+          #   return log_streams
+          
+          ##   Read the logs in each log stream
+            logs = []
+            for log_stream in log_streams:
+              print('LOG STREAM        ', log_stream)
+              log_stream_name = log_stream['logStreamName']
+              
+          #     # Set the parameters for the get_log_events call
+              log_event_params = {
+                'logGroupName': params['logGroupName'],
+                'logStreamName': log_stream_name,
+                'startFromHead': True
+              }
+        
+          
+          #     # Call get_log_events to retrieve the logs
+              response = cloudwatch_logs.get_log_events(**log_event_params)
+              
+          #     # The response object will contain an array of log events in the 'events' field
+              log_events = response['events']
+              
+          #     # You can loop through the log events and process them as needed
+              for log_event in log_events:
+                
+                logs.append({log_stream_name:log_event['message']} )
+            
+          #   # Return the logs
+            return logs
+
+  - Lambda code to read all queries executed from log insights query 
+
+      import boto3
+      from datetime import datetime, timedelta
+      import json
+      import time
+
+      def lambda_handler(event, context):
+
+          client = boto3.client('logs')
+
+          query = """fields @timestamp, action, httpRequest.clientIp, httpRequest.country, httpRequest.uri,
+          terminatingRuleId | sort @timestamp desc | LIMIT 5
+          """
+
+          log_group = 'aws-waf-logs-test'
+
+          start_query_response = client.start_query(
+              logGroupName=log_group,
+              startTime=int((datetime.today() - timedelta(hours=24)).timestamp()),
+              endTime=int(datetime.now().timestamp()),
+              queryString=query,
+          )
+
+          query_id = start_query_response['queryId']
+
+          response = None
+
+          while response is None or response['status'] == 'Running':
+              print('Waiting for query to complete ...')
+              time.sleep(1)
+              response = client.get_query_results(queryId=query_id)
+
+          response_string = str(response).replace("'", '"')
+          json_object = json.loads(response_string)
+
+          for counter, j_obj_results in enumerate(json_object["results"]):
+              print("Result #", counter+1)
+              for j_obj in j_obj_results:
+                  print("field:", j_obj['field'], "value:", j_obj['value'])
+
+          return {
+              'statusCode': 200,
+              'body': "Success"
+          }
+
 Step Functions 
 
   - Automation for aws applications 
@@ -526,7 +665,7 @@ Difference between Step Functions and CloudWatch Events ?
         - delete cloudwatch event rule
         - clear iam roles
 
-    Automatic Scheduling of Ec2 instance using lambda, IAM, Ec2, CloudWatch Project
+    Automatic starting and stopping  Ec2 instance using lambda, IAM, Ec2, CloudWatch Project
       
       - created 4 ec2 
       - created ec2 full access custom iam policy 
@@ -560,9 +699,43 @@ Difference between Step Functions and CloudWatch Events ?
 
         ~ u can find ec2 instance id when u click on it  
         | Instance: i-0a3b69df27aa78f02 (private1)- its not Ipv4 ipaddress
+      
       - now we create cloudwatch events to automatically stop,start  ec2 automatically
         create rule > schedule particular event or match event pattern 
         > add targets ( lambda functions to start or stop ec2, even sns topic to schedule notifications )
+
+    Lambda code to initialize new ec2 instance
+       
+        """ make sure to give adequate Iam permissions to run this function """
+        """ Increase time limit of this lambda function otherwise it will create time out error """
+          
+          import boto3
+
+          def lambda_handler(event, context):
+              
+              def create_ec2():
+                  """ 
+                  give adequate Iam permissions 
+                  to run this function 
+                  - increase the limit time of this lambda function 
+                  otherwise it will create time out error 
+                  """
+                  print(' Initializing new EC2 instance: ')
+                  ec2 = boto3.resource('ec2')
+              
+                  instance = ec2.create_instances(
+                      ImageId="ami-0cca134ec43cf708f", # amazon linux
+                      # KeyName=KEY_NAME,
+                      SubnetId="subnet-05a70beba3ac39171", # my public subnet
+                      InstanceType='t2.micro',
+                      MinCount=1,
+                      MaxCount=1
+                  )
+              
+                  print("  New instance created:  ", instance[0].id)
+                  
+              # create_ec2()
+              # return create_ec2()
 
     Step functions project for adding entry in dynomo db using lambda
       
@@ -593,6 +766,23 @@ Difference between Step Functions and CloudWatch Events ?
           ( rule > from output body in dynomo db execution - check result.statusCode if 200 then proceed > add success state )
           ( else for 2 condition > we add Fail state  > retry failure > add result path back to state == $.result)
           ~ make sure u return the path in output and catch block $.result so that it can return Fail 
+
+        - Lambda code to add entry in dynamodb table
+          """ we made sure we add trigger DynamoDB as source to this lambda function """
+              - This way items in dynamodb will be added in events Parameters under transactionIds 
+              - we can use this to add entry in dynamodb table 
+
+            def add_entry_dynamo():
+                  dynamodb = boto3.resource('dynamodb')
+                  table = dynamodb.Table('Customers')
+                  try:
+                      for transaction_id in event['transactionIds']:
+                          table.put_item(Item={'TransactionId': transaction_id})
+                  except:
+                      print('No inputs matched with transactionIds stated ')
+                  return 'Success'
+              
+            add_entry_dynamo()
 
     DMS - Migrate data from S3 to MySQL
       
@@ -935,7 +1125,7 @@ Kinesis
 
       ~ FLOW 
         = client uploads data  to DynamoDB  ( Unstructured Data )
-        > Lambda invoked                    ( code to transfer data to Kinesis Data Firehose )
+        > Lambda invoked from dynamodb      ( Trigger -> code to transfer data to Kinesis Data Firehose )
         > Kinesis Data Firehose             ( data logged  )
         > Data presented S3                 ( Buffered storage )
         > Finally data pushed Redshift      ( Structured Data )
