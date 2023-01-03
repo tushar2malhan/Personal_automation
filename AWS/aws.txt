@@ -318,6 +318,28 @@ Lambda
     |           and iam role attached on lambda where we specify source and destination bucket in IAM policy
     |           action :  s3:GetObject, s3:PutObject,  source bucket Resource: source bucket arn and destination bucket arn
 
+  NOTE 
+    - For LAMBDA CloudWatchLogs using boto3 and get_log_events method:
+
+      One thing to note is that the get_log_events method has 
+      a limit of 10,000 events per request and 
+      a default of 50 events per request. 
+      If there are more than 50 events in a log stream, 
+      you will need to use the nextToken field in the response 
+      to retrieve the next batch of events. You can use a loop 
+      to keep calling get_log_events and appending the new events 
+      to the log_events dictionary until there are no more events to retrieve.
+
+      Additional metadata we can get from the response:
+
+        eventId: The unique identifier for the event.
+        timestamp: The timestamp for when the event occurred.
+        message: The log message.
+        ingestionTime: The timestamp for when the event was ingested into CloudWatch.
+        eventType: The type of the event.
+        logStreamName: The name of the log stream that the event belongs to.
+        logGroupName: The name of the log group that the event belongs to.
+
   - Lambda Code to read specific CloudWatch stream from CloudWatch logs 
         
         import boto3
@@ -360,12 +382,14 @@ Lambda
       cloudwatch_logs = boto3.client('logs')
 
       def lambda_handler(event, context):
+          
             """
                 {
                   'logGroupName': '/aws/lambda/YOUR_LAMBDA_FUNCTION_NAME',
                   'orderBy': 'LogStreamName'
                 }
             """
+            
             params = {
               'logGroupName': event['logGroupName'],
               # 'orderBy': event['LogStreamName']
@@ -410,6 +434,59 @@ Lambda
             
           #   # Return the logs
             return logs
+
+      --------------------------------------------------------------------------------------------------------------
+
+  - READ ALL LOGS from ALL LOG STREAMS and IDENTIFY ERROR IN EACH LOG
+    
+    import boto3
+
+    def lambda_handler(event, context):
+        # Create a CloudWatch Logs client
+        cw_client = boto3.client('logs')
+
+        # Get a list of all log groups
+        log_groups = cw_client.describe_log_groups()
+        
+        log_events = []
+        # Iterate over the log groups
+        for log_group in log_groups['logGroups']:
+            log_group_name = log_group['logGroupName']
+            print(f'Log Group: {log_group_name}')
+
+            # Get a list of all log streams in the log group
+            log_streams = cw_client.describe_log_streams(logGroupName=log_group_name)
+
+            # Iterate over the log streams
+            for log_stream in log_streams['logStreams']:
+                log_stream_name = log_stream['logStreamName']
+                print(f'  Log Stream: {log_stream_name}')
+
+                # Get the events in the log stream
+                events = cw_client.get_log_events(logGroupName=log_group_name, logStreamName=log_stream_name)
+
+                # Iterate over the events
+                for event in events['events']:
+                    message = event['message']
+                    if "error" in message.lower():
+                        # create a key with the word "ERROR" and the error message
+                        key = f'ERROR -> {message} {log_group_name}:{log_stream_name}'
+                    else:
+                        # create a key by concatenating the log group name and log stream name with a colon separator
+                        key = f'{log_group_name}:{log_stream_name}'
+                    
+                    
+                    # create a string key by concatenating the log group name and log stream name with a colon separator
+                    # key = f'{log_group_name}:{log_stream_name}'
+                    # print([key, message])
+                    
+                    log_events.append([key, message])
+                    
+                    # store the log group name and log stream as key and message as value in log_events dictionary
+                    # log_events[key] = message
+        
+        return log_events
+
 
   - Lambda code to read all queries executed from log insights query 
 
@@ -456,6 +533,87 @@ Lambda
               'statusCode': 200,
               'body': "Success"
           }
+
+  - Lambda to read cloudwatch logs from particular source as  a Trigger
+      ---------------------------------------------------------------------------------------------
+      import boto3
+
+      def lambda_handler(event, context):
+          # Create a CloudWatch Logs client
+          cw_client = boto3.client('logs')
+
+          # Get the name of the log group for the trigger source
+          trigger_source = event['source']
+          log_groups = cw_client.describe_log_groups(logGroupNamePrefix=trigger_source)
+          log_group_name = log_groups['logGroups'][0]['logGroupName']
+          print(log_group_name)
+
+      ---------------------------------------------------------------------------------------------
+      import boto3
+
+      # Create a CloudWatch Logs client
+      cw_client = boto3.client('logs')
+
+      # Get the name of the log group for the current Lambda function
+      function_name = context.function_name
+      log_groups = cw_client.describe_log_groups(logGroupNamePrefix=function_name)
+      log_group_name = log_groups['logGroups'][0]['logGroupName']
+      print(log_group_name)
+
+  - Lambda to read object from S3 and send as an email attachment object
+
+    import boto3
+
+    def lambda_handler(event, context):
+        # Create an S3 client
+        s3_client = boto3.client('s3')
+        ses_client = boto3.client('ses')
+
+        # Set the parameters for the email
+        recipient = 'recipient@example.com'
+        sender = 'sender@example.com'
+        subject = 'Attachment Email'
+        body = 'This email contains an attachment.'
+        bucket_name = 'my-bucket'
+        object_key = 'attachment.txt'
+
+        # Download the object from S3
+        response = s3_client.get_object(Bucket=bucket_name, Key=object_key)
+        attachment_data = response['Body'].read()
+
+        # Convert the attachment file to base64 encoding
+        attachment = {
+            'Filename': object_key,
+            'Data': attachment_data.encode('base64'),
+            'ContentType': 'text/plain'
+        }
+
+        # Send the email
+        response = ses_client.send_email(
+            Destination={
+                'ToAddresses': [
+                    recipient,
+                ],
+            },
+            Message={
+                'Subject': {
+                    'Data': subject,
+                },
+                'Body': {
+                    'Text': {
+                        'Data': body,
+                    },
+                },
+            },
+            Source=sender,
+            Attachments=[attachment]
+        )
+
+
+    This code snippet will download the specified object from S3, convert it to base64 encoding, 
+    and send it as an attachment in an email to the specified recipient using Amazon SES.
+    Note that you will need to have the necessary permissions to access the object in S3 and to 
+    send an email using Amazon SES. You can configure these permissions using AWS Identity and Access Management (IAM).
 
 Step Functions 
 
