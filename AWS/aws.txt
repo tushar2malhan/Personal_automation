@@ -340,102 +340,45 @@ Lambda
         logStreamName: The name of the log stream that the event belongs to.
         logGroupName: The name of the log group that the event belongs to.
 
-  - Lambda Code to read specific CloudWatch stream from CloudWatch logs 
-        
-        import boto3
+  - Read CloudWatch logs groups based on input given from user or read first one by default
 
-        cloudwatch_logs = boto3.client('logs')         # Create a CloudWatchLogs client
-
-        def lambda_handler(event, context):
-          
-          """
-            Example  -> pass this in input when test
-            {
-            "logGroupName": "dms-tasks-replica-instance", 
-            "logStreamName": "dms-task-DNW53UA4SLBINYEZLJGLS5VQ4FQGJIEEKEVII7Q",
-            "startFromHead": true}
-          """
-
-          params = {                                  ## Set the parameters for the get_log_events call
-            'logGroupName': event['logGroupName'],
-            'logStreamName': event['logStreamName'],
-            'startFromHead': event['startFromHead']
-          }
-            
-          response = cloudwatch_logs.get_log_events(**params)   ## Call get_log_events to retrieve the logs
-          
-          log_events = response['events']              ## The response object will contain an array of log events in the 'events' field
-          
-          for log_event in log_events:                ## You can loop through the log events and process them as needed
-            print(log_event['message'])
-          
-          return log_events
-
-  - Lambda Code to read all CloudWatch streams from specific CloudWatch logs
-        
-      ## READ ALL LOGS from ALL LOG STREAMS
-
-      
       import boto3
 
-      # Create a CloudWatchLogs client
-      cloudwatch_logs = boto3.client('logs')
-
       def lambda_handler(event, context):
-          
-            """
-                {
-                  'logGroupName': '/aws/lambda/YOUR_LAMBDA_FUNCTION_NAME',
-                  'orderBy': 'LogStreamName'
-                }
-            """
-            
-            params = {
-              'logGroupName': event['logGroupName'],
-              # 'orderBy': event['LogStreamName']
-            }
-          
-          
-            # Call describe_log_streams to retrieve the log streams
-            log_streams = []
-            while True:
-                  response = cloudwatch_logs.describe_log_streams(**params)
-                  log_streams.extend(response['logStreams'])
-                  if 'nextToken' not in response:
-                      break
-                  log_stream_params['nextToken'] = response['nextToken']
-          #   print(log_streams)
-          #   return log_streams
-          
-          ##   Read the logs in each log stream
-            logs = []
-            for log_stream in log_streams:
-              print('LOG STREAM        ', log_stream)
-              log_stream_name = log_stream['logStreamName']
-              
-          #     # Set the parameters for the get_log_events call
-              log_event_params = {
-                'logGroupName': params['logGroupName'],
-                'logStreamName': log_stream_name,
-                'startFromHead': True
-              }
-        
-          
-          #     # Call get_log_events to retrieve the logs
-              response = cloudwatch_logs.get_log_events(**log_event_params)
-              
-          #     # The response object will contain an array of log events in the 'events' field
-              log_events = response['events']
-              
-          #     # You can loop through the log events and process them as needed
-              for log_event in log_events:
-                
-                logs.append({log_stream_name:log_event['message']} )
-            
-          #   # Return the logs
-            return logs
+          cw_client = boto3.client('logs')
+          given_log_group_names = event.get('log_group_names')
+          log_events = []
 
-      --------------------------------------------------------------------------------------------------------------
+          log_groups = cw_client.describe_log_groups()
+          if not given_log_group_names:
+              log_group_names = [group['logGroupName'] for group in log_groups['logGroups']][:1]
+          else:
+              print('Processing for specific log groups ')
+              log_group_names = [group['logGroupName'] for group in log_groups['logGroups'] if group['logGroupName'] in given_log_group_names ]
+          if not log_group_names:
+              log_group_names = [group['logGroupName'] for group in log_groups['logGroups']][:1]
+
+          print('All log group names  ', log_group_names)
+          for log_group_name in log_group_names:
+              log_streams = cw_client.describe_log_streams(logGroupName=log_group_name)
+              
+              for log_stream in log_streams['logStreams']:
+                  log_stream_name = log_stream['logStreamName']
+                  events = cw_client.get_log_events(logGroupName=log_group_name, logStreamName=log_stream_name)
+                  
+                  for event in events['events']:
+                      event.update({'logGroupName': log_group_name, 'logStreamName': log_stream_name})
+                      message = event['message']
+                      timestamp = event['timestamp']
+                      if "error" in message.lower():
+                          print("### ERROR ###", message, timestamp)
+                      else:
+                          print(message, timestamp)
+                  
+                  log_events.append(events)
+          
+          return log_events
+   
 
   - READ ALL LOGS from ALL LOG STREAMS and IDENTIFY ERROR IN EACH LOG
     
