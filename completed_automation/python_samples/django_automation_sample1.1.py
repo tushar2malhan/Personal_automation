@@ -11,7 +11,7 @@ import sys
 import time
 
 
-# # if u need to install application in current directory , uncomment below line
+# # if u need to install application in current directory 
 main_dir = os.path.dirname(os.path.abspath(__file__))  
 
 
@@ -90,14 +90,6 @@ if project_initialization in ['django' , 'go','','l','ok','yes']:
         print('\t[*]\tInstalling the workload')
         import subprocess
 
-        # # Create virtual environment
-        # subprocess.run(['pip', 'install', 'virtualenv'], check=True)
-        # subprocess.run(['virtualenv', 'env'], check=True)
-
-        # # Activate virtual environment
-        # activate_cmd = 'env\\Scripts\\activate.bat' if subprocess.Popen('where activate.bat', stdout=subprocess.PIPE, shell=True).stdout.read() else 'env\\Scripts\\activate'
-        # subprocess.run([activate_cmd], shell=True)
-
         # Install Django and other packages
         packages = ['django', 'djangorestframework', 'django-crispy-forms', 'django-ckeditor']
 
@@ -122,9 +114,6 @@ if project_initialization in ['django' , 'go','','l','ok','yes']:
         print('\t[*]\tKindly change your project name and try again !\n ')
         exit()
     else:
-        # if not os.path.exists(main_dir+"\\"+project_name):
-        #     os.mkdir(main_dir+"\\"+project_name)
-        #     print(f'\t[*]\tDirectory  named {project_name} created')
         os.system(f'django-admin startproject {project_name}')
     
         print(f'\n\t[*]\tCreated new project under Directory "{project_name}" in {os.getcwd()}  \n') 
