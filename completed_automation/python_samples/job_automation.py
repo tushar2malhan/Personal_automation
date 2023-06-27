@@ -1,4 +1,10 @@
+'''
+    Description     : Job automation Tool for TraceArt
+    Author          : Tushar Malhan
+    Requirements    : Install Modules
+    Status          : Completed
 
+'''
 import os , shutil
 from re import A 
 import time

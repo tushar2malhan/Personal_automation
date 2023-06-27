@@ -1,7 +1,7 @@
 '''
     Description     : Django Automation Tool with frontend and backend options
-    Author          :                Tushar Malhan
-    Requirements    : Provide Path to main_dir and check_packages
+    Author          : Tushar Malhan
+    Requirements    : Provide Path to "main_dir" and "check_packages" as its the location of your application
     Status          : Completed
 
 '''
@@ -11,13 +11,15 @@ import sys
 import time
 
 
-main_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# # if u need to install application in current directory , uncomment below line
+main_dir = os.path.dirname(os.path.abspath(__file__))  
 
 
 check_packages = os.listdir([i for i in sys.path if  i.endswith('site-packages')][0])  # print(sys.path)  # Check your python path and do changes accordingly in check_packages
 
 confirmation =  ['yes','yup','y' ,'ok']
-
+class_base = None
+func_base = None
 
 def add_under_installed_apps(main_dir,project_name,app_name,word=None):
       
@@ -85,16 +87,33 @@ if project_initialization in ['django' , 'go','','l','ok','yes']:
         
      
     else:
-        os.system('pip install virtualenv && virtualenv env && env\Scripts\activate')
         print('\t[*]\tInstalling the workload')
-        os.system(f'pip install django && pip install djangorestframework\
-        && pip install django-crispy-forms && pip install django-ckeditor')
-    
-    project_name = input('\n[*]\tProject name ? \t')
+        import subprocess
 
-    if project_name in ['None',None,'',0,'empty']:
-        print('\t[*]\t Your Project should have a valid Name ')
-        exit()
+        # # Create virtual environment
+        # subprocess.run(['pip', 'install', 'virtualenv'], check=True)
+        # subprocess.run(['virtualenv', 'env'], check=True)
+
+        # # Activate virtual environment
+        # activate_cmd = 'env\\Scripts\\activate.bat' if subprocess.Popen('where activate.bat', stdout=subprocess.PIPE, shell=True).stdout.read() else 'env\\Scripts\\activate'
+        # subprocess.run([activate_cmd], shell=True)
+
+        # Install Django and other packages
+        packages = ['django', 'djangorestframework', 'django-crispy-forms', 'django-ckeditor']
+
+        for package in packages:
+            subprocess.run(['pip', 'install', package], check=True)
+
+
+    while True:
+        project_name = input('\n[*]\tProject name ? \t')
+        invalid_names = ['none', '', 'empty', 'test']
+        if project_name.lower() in invalid_names or not project_name.strip():
+            print('\n\t[*]\tYour project should have a valid name.')
+        else:
+            break
+        
+        
 
 
     if project_name in listdir_in_ur_home():
@@ -103,11 +122,12 @@ if project_initialization in ['django' , 'go','','l','ok','yes']:
         print('\t[*]\tKindly change your project name and try again !\n ')
         exit()
     else:
-        if not os.path.exists(main_dir+"\\"+project_name):
-            os.mkdir(main_dir+"\\"+project_name)
-            print(f'\t[*]\tDirectory  named {project_name} created')
+        # if not os.path.exists(main_dir+"\\"+project_name):
+        #     os.mkdir(main_dir+"\\"+project_name)
+        #     print(f'\t[*]\tDirectory  named {project_name} created')
         os.system(f'django-admin startproject {project_name}')
-        print(f'\n\t[*]\tCreated new project named "{project_name}" in {os.getcwd()} Directory \n') 
+    
+        print(f'\n\t[*]\tCreated new project under Directory "{project_name}" in {os.getcwd()}  \n') 
     time.sleep(1)
     
 
@@ -189,7 +209,7 @@ DATABASES = {
   
 
     ask = input('\n[*] Wanna add rest_framework modules in ur views  ?\t ').strip().lower()
-    if ask in ['yes','yup','y' ,'ok','yes ',' yes']:
+    if ask in ['yes','yup','y' ,'ok','yes ',' yes'] or ask.startswith('y'):
         with open(fr'{main_dir}\{project_name}\{app_name}\views.py','w') as f2:
             f2.write(
 '''
@@ -345,9 +365,10 @@ f'''
 '''     )
   
 
-  
-    view_ans = input('\n[*] Do you want a class base view ? \n\n\t[*]\t| yes == for class base API || no is for DRF  base API | \t ')
+    
+    view_ans = input('\n[*] Do you want a class base view ? \n\n\t[*] For class base API  ~ Yes || No for DRF  base API  \t ')
     if view_ans in confirmation:
+        class_base = view_ans
         class_name = input('\n\t[*]\tClassname  of your view ? \t')
         os.chdir(f'{main_dir}\{project_name}\{app_name}')
         with open('views.py', 'a+') as f:
@@ -377,7 +398,7 @@ class  {class_name} (APIView):                                  # CLASS BASE API
 
 ''')
     else:
-        print('\n\t[*]\tAlright , using DRF based API ')
+        print('\n\t[*] Alright , using DRF based API ')
         func_name = input('\n\t[*] Name of your function base API ?\t ')
         os.chdir(f'{main_dir}\{project_name}\{app_name}')
         with open('views.py', 'a+') as f:
@@ -404,28 +425,8 @@ def {func_name}(request,pk=None):
     os.chdir(f'{main_dir}\{project_name}')         # Inside our Project folder , can make changes using manage.py file 
 
     time.sleep(2)
-    print('\n\t[*]\tTime to add urls for your views , that you created for your app \t')
+    print('\n\t[*] Time to add urls for your views , that you created for your app \t\n')
     time.sleep(2)
-
-    tell = input('\n[*] Are your views class base or function base ? \t')
-    print('\n')
-    
-    if view_ans in confirmation and tell in ['func','function','functionbase','function-base','function_base','()','Function','FUNCTION']:
-        time.sleep(3)
-        print('\n\t[*]\tYou have given an incorrect input, Its CLASS Base ')
-        time.sleep(1.5)
-
-        print("\U0001F606")
-
-
-    elif view_ans not in confirmation  and tell in ['class','classbase','class_base','cls','class-base','c','Class','CLASS']:
-        time.sleep(3)
-        print('\n\t[*]\tYou have given an incorrect input, Its FUNCTION Base ')
-        time.sleep(1.5)
-        print("\U0001F606")
-    
-
-
     if view_ans in  confirmation :
         os.chdir(f'{main_dir}\{project_name}\{app_name}')
         with open('urls.py', 'w') as f:
@@ -437,7 +438,7 @@ from .views import  *
 from django.http.response import HttpResponse,JsonResponse
 
 urlpatterns = [
-    path('', {class_name}.as_view()),
+    path('drf/', {class_name}.as_view()),
     path('<int:pk>', {class_name}.as_view()),      # if you need to pass any parameter for your server 
     path('home/',lambda request:HttpResponse('Message Created By Tushar Malhan'  ) )
 ]
@@ -454,7 +455,7 @@ from .views import  *
 from django.http.response import HttpResponse,JsonResponse
 
 urlpatterns = [
-    path('', {func_name}),
+    path('drf/', {func_name}),
     path('<int:pk>', {func_name}),                        
     path('home/',lambda request:HttpResponse('Message Created By Tushar Malhan ' ) )
     ]
@@ -633,11 +634,11 @@ class UserRegisterForm(UserCreationForm):
         with open('urls.py','w') as f:
             for index ,line in enumerate(lines_list):
                 location = index - 1
-            lines_list.insert(location,f'\tpath("index/", index), \n')
+            lines_list.insert(location,f'\tpath("", index), \n')
             f.writelines(lines_list)
     
     else:
-        print('\n\t[*]Sure, Its confirmed it is a Backend Application')
+        print('\n\t[*] Sure, it is a Backend Application')
 
     model_request = input('\n[*] Do you want to create a model for this project ? \t')
     
